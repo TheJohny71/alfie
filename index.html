@@ -3,180 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alfie</title>
+    <title>Alfie - Create moments for what matters</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/inter/3.19.3/inter.css" rel="stylesheet">
     <style>
-        /* Core styles */
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --purple-dark: #6D28D9;
+            --purple-light: #7C3AED;
+        }
+
         body {
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            background: linear-gradient(125deg, #1a1333 0%, #2D1D5A 50%, #1a1333 100%);
-            font-family: 'Inter', sans-serif;
-            overflow: hidden;
+            font-family: 'Space Grotesk', sans-serif;
+            background: linear-gradient(135deg, var(--purple-dark), var(--purple-light));
             color: white;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
         }
 
-        .container {
+        .nav {
+            padding: 2rem;
+            display: flex;
+            align-items: center;
             position: relative;
-            height: 100vh;
+            z-index: 2;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.75rem;
+            font-weight: 500;
+            letter-spacing: -0.03em;
+        }
+
+        .logo img {
+            height: 2.5rem;
+            width: auto;
+        }
+
+        .hero {
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
             padding: 2rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Floating elements */
-        .floating-shapes {
+        .floating-circles {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            right: 0;
+            bottom: 0;
             pointer-events: none;
+            opacity: 0.6;
         }
 
-        .shape {
+        .circle {
             position: absolute;
             border-radius: 50%;
-            background: rgba(124, 58, 237, 0.1);
-            backdrop-filter: blur(8px);
-            animation: float 20s infinite ease-in-out;
-        }
-
-        /* Dynamic text styling */
-        .hero-text {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 700;
-            line-height: 1.1;
-            text-align: center;
-            opacity: 0;
-            animation: fadeUp 1s forwards 0.5s;
-            background: linear-gradient(to right, #fff, #e0e0e0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            max-width: 900px;
-        }
-
-        .hero-text span {
-            display: block;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeUp 1s forwards;
-        }
-
-        .hero-text span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .hero-text span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        .subtext {
-            font-size: clamp(1rem, 3vw, 1.5rem);
-            opacity: 0.8;
-            margin-top: 2rem;
-            text-align: center;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeUp 1s forwards 0.6s;
-        }
-
-        .cta-button {
-            margin-top: 3rem;
-            padding: 1rem 2rem;
-            font-size: 1.125rem;
-            color: white;
-            background: rgba(124, 58, 237, 0.2);
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(8px);
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeUp 1s forwards 0.8s;
-        }
-
-        .cta-button:hover {
             background: rgba(124, 58, 237, 0.3);
-            transform: translateY(-2px);
+            animation: float 20s infinite ease-in-out;
+            backdrop-filter: blur(5px);
         }
 
         @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(10px, -10px) rotate(5deg); }
-            50% { transform: translate(-5px, 15px) rotate(-5deg); }
-            75% { transform: translate(-15px, -5px) rotate(3deg); }
+            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(30px, -30px) scale(1.1) rotate(5deg); }
         }
 
-        @keyframes fadeUp {
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-title {
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin: 0;
+            transform: translateX(-5%);
+            letter-spacing: -0.04em;
+            background: linear-gradient(45deg, #fff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: slideIn 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .subtitle-wrapper {
+            position: relative;
+            margin: 3rem 0;
+            transform: translateX(10%);
+            animation: slideInDelayed 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s backwards;
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            font-weight: 400;
+            margin: 0;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        .tagline {
+            font-size: 1.25rem;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            margin-top: 2rem;
+            transform: translateX(-15%);
+            animation: slideInDelayed 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.6s backwards;
+            position: relative;
+            display: block;
+            margin-bottom: 3rem;
+        }
+
+        .cta-wrapper {
+            margin-top: 2rem;
+            transform: translateX(5%);
+            animation: fadeInUp 1s ease-out 1s backwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1.25rem 2.5rem;
+            border-radius: 100px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.25rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            letter-spacing: 0.02em;
+        }
+
+        .cta-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20%);
+            }
             to {
-                transform: translateY(0);
                 opacity: 1;
+                transform: translateX(-5%);
             }
         }
 
-        .gradient-wave {
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            top: -50%;
-            left: -50%;
-            background: radial-gradient(circle at center, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
-            animation: rotateGradient 20s infinite linear;
-            pointer-events: none;
+        @keyframes slideInDelayed {
+            from {
+                opacity: 0;
+                transform: translateX(20%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(10%);
+            }
         }
 
-        @keyframes rotateGradient {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) translateX(5%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) translateX(5%);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 3rem;
+                transform: translateX(0);
+            }
+            .subtitle-wrapper {
+                transform: translateX(0);
+                margin: 2rem 0;
+            }
+            .subtitle {
+                font-size: 1.5rem;
+            }
+            .tagline {
+                position: relative;
+                transform: translateX(0);
+                margin-top: 2rem;
+            }
+            .cta-wrapper {
+                margin-top: 4rem;
+                transform: translateX(0);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="gradient-wave"></div>
-        <div class="floating-shapes">
-            <!-- Shapes will be added via JavaScript -->
+    <nav class="nav">
+        <div class="logo">
+            <img src="/api/placeholder/40/40" alt="Alfie Logo">
+            <span>alfie</span>
         </div>
-        
-        <h1 class="hero-text">
-            <span>Create moments</span>
-            <span>for what</span>
-            <span>matters</span>
-        </h1>
-        
-        <p class="subtext">Because the best stories aren't written at your desk</p>
-        
-        <button class="cta-button">Start Planning →</button>
-    </div>
+    </nav>
 
-    <script>
-        // Add floating shapes
-        const shapesContainer = document.querySelector('.floating-shapes');
-        const shapes = 15; // Number of floating shapes
+    <main class="hero">
+        <div class="floating-circles">
+            <div class="circle" style="width: 300px; height: 300px; top: 15%; left: 5%; animation-delay: 0s;"></div>
+            <div class="circle" style="width: 200px; height: 200px; top: 65%; left: 65%; animation-delay: -5s;"></div>
+            <div class="circle" style="width: 150px; height: 150px; top: 25%; left: 75%; animation-delay: -10s;"></div>
+            <div class="circle" style="width: 250px; height: 250px; top: 75%; left: 15%; animation-delay: -15s;"></div>
+        </div>
 
-        for (let i = 0; i < shapes; i++) {
-            const shape = document.createElement('div');
-            shape.className = 'shape';
+        <div class="content-wrapper">
+            <h1 class="main-title">Create moments<br>for what matters</h1>
             
-            // Random size between 50px and 200px
-            const size = Math.random() * 150 + 50;
-            shape.style.width = `${size}px`;
-            shape.style.height = `${size}px`;
+            <div class="subtitle-wrapper">
+                <p class="subtitle">Because the best stories<br>aren't written at your desk</p>
+            </div>
             
-            // Random position
-            shape.style.left = `${Math.random() * 100}%`;
-            shape.style.top = `${Math.random() * 100}%`;
+            <p class="tagline">Your companion to a seamless year of leave</p>
             
-            // Random animation delay and duration
-            shape.style.animationDelay = `${Math.random() * 5}s`;
-            shape.style.animationDuration = `${Math.random() * 10 + 15}s`;
-            
-            shapesContainer.appendChild(shape);
-        }
-    </script>
+            <div class="cta-wrapper">
+                <a href="/calendar" class="cta-button">Start Planning →</a>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
