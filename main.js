@@ -1,15 +1,9 @@
-const { createElement, useState, useEffect } = React;
+// Get React and ReactDOM from the global scope
+const { createElement } = React;
 const { createRoot } = ReactDOM;
 
-// Basic App component
-const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate some loading time
-    setTimeout(() => setIsLoading(false), 1000);
-  }, []);
-
+// Simple App component
+function App() {
   return createElement(
     'div',
     {
@@ -19,24 +13,25 @@ const App = () => {
         alignItems: 'center',
         minHeight: '100vh',
         backgroundColor: '#0D1117',
-        color: '#FFFFFF'
+        color: '#FFFFFF',
+        fontFamily: 'Inter, sans-serif'
       }
     },
     createElement(
       'div',
-      { style: { textAlign: 'center' } },
+      {
+        style: {
+          textAlign: 'center',
+          padding: '2rem'
+        }
+      },
       createElement('h1', null, 'Welcome to Alfie'),
-      createElement('p', null, 'Your PTO planning application'),
-      isLoading && createElement('img', {
-        src: './assets/loading-spinner.svg',
-        alt: 'Loading',
-        width: 40,
-        height: 40
-      })
+      createElement('p', null, 'Your PTO planning application')
     )
   );
-};
+}
 
-// Create root and render
-const root = createRoot(document.getElementById('root'));
-root.render(createElement(React.StrictMode, null, createElement(App)));
+// Initialize the app
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(createElement(App));
