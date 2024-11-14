@@ -25,8 +25,27 @@ function App() {
           padding: '2rem'
         }
       },
-      createElement('h1', null, 'Welcome to Alfie'),
-      createElement('p', null, 'Your PTO planning application')
+      createElement('h1', {
+        style: {
+          fontSize: '2.5rem',
+          marginBottom: '1rem'
+        }
+      }, 'Welcome to Alfie'),
+      createElement('p', {
+        style: {
+          fontSize: '1.25rem',
+          opacity: 0.9
+        }
+      }, 'Your PTO planning application'),
+      createElement('img', {
+        src: './assets/alfie-icon.png',
+        alt: 'Alfie Icon',
+        style: {
+          width: '64px',
+          height: '64px',
+          marginTop: '2rem'
+        }
+      })
     )
   );
 }
