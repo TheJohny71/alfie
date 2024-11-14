@@ -1,32 +1,42 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import WelcomePage from './components/welcome/WelcomePage';
-import Calendar from './components/calendar/Calendar';
-import './styles/main.css';
+const { createElement, useState, useEffect } = React;
+const { createRoot } = ReactDOM;
 
-const renderApp = () => {
-  const rootElement = document.getElementById('root');
-  if (!rootElement) return;
+// Basic App component
+const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
 
-  const getCurrentPage = () => {
-    const path = window.location.pathname;
-    const basePath = '/alfie-pto-planner/';
-    
-    if (path.includes('calendar.html') || path === `${basePath}calendar.html`) {
-      return <Calendar />;
-    }
-    return <WelcomePage />;
-  };
+  useEffect(() => {
+    // Simulate some loading time
+    setTimeout(() => setIsLoading(false), 1000);
+  }, []);
 
-  ReactDOM.createRoot(rootElement).render(
-    <React.StrictMode>
-      {getCurrentPage()}
-    </React.StrictMode>
+  return createElement(
+    'div',
+    {
+      style: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        backgroundColor: '#0D1117',
+        color: '#FFFFFF'
+      }
+    },
+    createElement(
+      'div',
+      { style: { textAlign: 'center' } },
+      createElement('h1', null, 'Welcome to Alfie'),
+      createElement('p', null, 'Your PTO planning application'),
+      isLoading && createElement('img', {
+        src: './assets/loading-spinner.svg',
+        alt: 'Loading',
+        width: 40,
+        height: 40
+      })
+    )
   );
 };
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', renderApp);
-} else {
-  renderApp();
-}
+// Create root and render
+const root = createRoot(document.getElementById('root'));
+root.render(createElement(React.StrictMode, null, createElement(App)));
