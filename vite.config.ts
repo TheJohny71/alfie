@@ -3,21 +3,17 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/alfie/',  // Match the GitHub Pages path
+  base: '/alfie/',  // Must match your repo name exactly
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    sourcemap: true,
+    // Ensure consistent asset file names
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-        },
-      },
-    },
-  },
-  server: {
-    port: 3000,
-    host: true
+        entryFileNames: `assets/[name].js`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`
+      }
+    }
   }
 })
