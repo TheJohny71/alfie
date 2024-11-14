@@ -33,10 +33,17 @@ jobs:
       - name: Install dependencies
         run: npm clean-install
 
+      # Add debug steps
+      - name: Debug - List directories before build
+        run: ls -la
+
       - name: Build
         run: npm run build
         env:
           VITE_BASE_URL: '/alfie/'
+
+      - name: Debug - List build output
+        run: ls -la dist
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
