@@ -1,20 +1,28 @@
-export type ViewMode = 'day' | 'week' | 'month';
-export type Region = string;
+// src/types/index.ts
 
-export interface CalendarState {
-    currentDate: Date;
-    selectedDate?: Date;
-    viewMode: ViewMode;
-    region: Region;
+export interface DateRange {
+  start: Date;
+  end: Date;
 }
 
-export interface Holiday {
-    date: Date;
-    name: string;
-    type: string;
+export interface CalendarProps {
+  selectedDate?: Date;
+  handleDateChange?: (date: Date) => void;
+  handleDateSelect?: (date: Date) => void;
 }
 
 export interface WeekViewProps {
-    state: CalendarState;
-    holidays?: Holiday[];
+  viewMode?: 'week' | 'month';
+  region?: string;
+  index?: number;
 }
+
+export interface LeaveRequest {
+  id: string;
+  startDate: Date;
+  endDate: Date;
+  type: string;
+  status: string;
+}
+
+export type ViewMode = 'week' | 'month' | 'year';
