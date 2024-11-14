@@ -3,15 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#6D28D9">
     <title>Alfie - Create moments for what matters</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/inter/3.19.3/inter.css" rel="stylesheet">
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%238B5CF6'/%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%238B5CF6'/%3E%3C/svg%3E">
+    
+    <!-- Meta tags -->
+    <meta name="description" content="Alfie - Your companion to a seamless year of leave">
+    <meta property="og:title" content="Alfie - Create moments for what matters">
+    <meta property="og:description" content="Because the best stories aren't written at your desk">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-        
         :root {
             --purple-primary: #8B5CF6;
             --purple-light: #A78BFA;
             --purple-dark: #6D28D9;
+            --purple-gradient: linear-gradient(135deg, #6D28D9, #8B5CF6);
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -19,21 +40,22 @@
             padding: 0;
             min-height: 100vh;
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Space Grotesk', sans-serif;
-            background: linear-gradient(135deg, var(--purple-dark), var(--purple-primary));
+            background: var(--purple-gradient);
             color: white;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
+        /* Navigation */
         .nav {
             padding: 2rem;
             display: flex;
             align-items: center;
             position: relative;
             z-index: 2;
-            mix-blend-mode: difference;
         }
 
         .logo {
@@ -47,6 +69,18 @@
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+        }
+
+        /* Hero Section */
         .hero {
             flex: 1;
             display: flex;
@@ -58,6 +92,7 @@
             padding: 0 2rem;
         }
 
+        /* Floating Background Elements */
         .floating-circles {
             position: fixed;
             top: 0;
@@ -76,9 +111,8 @@
             background: radial-gradient(circle at 30% 30%, var(--purple-light), var(--purple-primary));
             opacity: 0.4;
             mix-blend-mode: plus-lighter;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: float 20s infinite ease-in-out;
             will-change: transform, opacity;
+            animation: float 20s infinite ease-in-out;
         }
 
         @keyframes float {
@@ -92,6 +126,7 @@
             }
         }
 
+        /* Content Styles */
         .content-wrapper {
             position: relative;
             z-index: 1;
@@ -136,7 +171,6 @@
             color: rgba(255, 255, 255, 0.95);
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             animation: subtitlePulse 8s ease-in-out infinite;
-            font-style: normal;
             letter-spacing: -0.01em;
             background: linear-gradient(to right, rgba(255,255,255,0.95), rgba(255,255,255,0.8));
             -webkit-background-clip: text;
@@ -190,15 +224,15 @@
             transform: translateX(4px);
         }
 
-        @keyframes buttonGlow {
-            0%, 100% {
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            }
-            50% {
-                box-shadow: 0 4px 30px rgba(124, 58, 237, 0.3);
-            }
-        }
+        /* Animation Timing */
+        .circle:nth-child(1) { animation-delay: 0s; }
+        .circle:nth-child(2) { animation-delay: -5s; }
+        .circle:nth-child(3) { animation-delay: -10s; }
+        .circle:nth-child(4) { animation-delay: -15s; }
+        .circle:nth-child(5) { animation-delay: -7s; }
+        .circle:nth-child(6) { animation-delay: -12s; }
 
+        /* Ambient Light Effect */
         .ambient-light {
             position: absolute;
             top: 50%;
@@ -211,6 +245,7 @@
             z-index: 0;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
             .main-title {
                 font-size: 3rem;
@@ -224,33 +259,33 @@
             .floating-circles {
                 filter: blur(20px);
             }
+            .cta-button {
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
+            }
         }
 
-        /* Apple-style hover state refinements */
-        .interactive-element {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .interactive-element:hover {
-            transform: scale(1.02);
-        }
-
-        /* Modern scroll behavior */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* High-performance animations */
-        * {
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .circle,
+            .main-title,
+            .subtitle,
+            .tagline,
+            .cta-button {
+                animation: none;
+                transition: none;
+            }
         }
     </style>
 </head>
 <body>
     <nav class="nav">
-        <div class="logo interactive-element">
-            <img src="/api/placeholder/40/40" alt="Alfie Logo">
+        <div class="logo">
+            <div class="logo-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="12" fill="white" fill-opacity="0.9"/>
+                </svg>
+            </div>
             <span>alfie</span>
         </div>
     </nav>
