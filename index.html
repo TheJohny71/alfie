@@ -4,101 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Alfie - Create moments that matter with our intuitive PTO planning application">
-    <meta name="theme-color" content="#4F3D83">
-    
     <title>Welcome to Alfie</title>
     
-    <!-- Favicon - only using available assets -->
+    <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
     <link rel="icon" type="image/png" href="./assets/alfie-icon.png">
     
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- React Dependencies -->
+    <!-- React -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     
-    <!-- Styles -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    
-    <!-- Initial loading styles -->
     <style>
-        :root {
-            --background: #0D1117;
-            --primary: #4F3D83;
-            --secondary: #234B9B;
-            --text: #FFFFFF;
-            --loading-bg: rgba(13, 17, 23, 0.9);
-        }
-
         body {
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
-            background-color: var(--background);
-            color: var(--text);
-        }
-
-        .loading-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: var(--loading-bg);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 50;
-            justify-content: center;
-            align-items: center;
-            color: var(--text);
-            font-size: 1.25rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .loading-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .loading-content {
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .visually-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
-        }
-
-        #fallback {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: var(--background);
-            color: var(--text);
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 1rem;
-        }
-
-        #fallback.show {
-            display: flex;
-        }
-
-        .init-spinner {
-            width: 40px;
-            height: 40px;
-            margin: 0 auto 1rem;
+            background-color: #0D1117;
+            color: #FFFFFF;
         }
 
         #root {
@@ -107,77 +32,16 @@
     </style>
 </head>
 <body>
-    <!-- Skip to main content for accessibility -->
-    <a href="#root" class="visually-hidden">Skip to main content</a>
-    
-    <!-- Loading Overlay -->
-    <div id="loading" class="loading-overlay" aria-live="polite">
-        <div class="loading-content">
-            <img src="./assets/loading-spinner.svg" alt="Loading" class="init-spinner" role="progressbar">
-            <div>Loading Alfie...</div>
+    <div id="root">
+        <!-- Loading state -->
+        <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+            <div style="text-align: center;">
+                <img src="./assets/loading-spinner.svg" alt="Loading" width="40" height="40">
+                <div>Loading Alfie...</div>
+            </div>
         </div>
     </div>
-    
-    <!-- React Root -->
-    <div id="root"></div>
-    
-    <!-- Fallback content -->
-    <div id="fallback" aria-hidden="true">
-        <div class="loading-content">
-            <img src="./assets/loading-spinner.svg" alt="Loading" class="init-spinner">
-            <div>Loading Alfie...</div>
-            <p style="margin-top: 1rem; opacity: 0.7">
-                If nothing loads, please ensure JavaScript is enabled and try refreshing the page.
-            </p>
-        </div>
-    </div>
-    
-    <!-- Main Script -->
-    <script>
-        // Create a script element for main.js
-        const script = document.createElement('script');
-        script.src = './main.js';
-        script.type = 'text/javascript';
-        document.body.appendChild(script);
 
-        // Show loading overlay immediately
-        document.getElementById('loading').classList.add('active');
-        
-        // Set timeout for fallback message
-        let loadingTimeout = setTimeout(() => {
-            const root = document.getElementById('root');
-            const fallback = document.getElementById('fallback');
-            const loading = document.getElementById('loading');
-            
-            if (!root.children.length) {
-                fallback.classList.add('show');
-                loading.classList.remove('active');
-            }
-        }, 3000);
-        
-        // Cleanup function
-        const cleanup = () => {
-            clearTimeout(loadingTimeout);
-            const loading = document.getElementById('loading');
-            if (loading) {
-                loading.classList.remove('active');
-                setTimeout(() => loading.remove(), 300);
-            }
-        };
-        
-        // Add event listeners
-        window.addEventListener('load', cleanup);
-        window.addEventListener('error', cleanup);
-        
-        // Handle page visibility changes
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible') {
-                const root = document.getElementById('root');
-                if (!root.children.length) {
-                    window.location.reload();
-                }
-            }
-        });
-    </script>
+    <script src="./main.js"></script>
 </body>
 </html>
