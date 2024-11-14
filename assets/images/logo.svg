@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="surfaceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+        </linearGradient>
+        
+        <filter id="appleGlass" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
+            <feOffset dx="0" dy="1" result="offsetBlur"/>
+            <feFlood flood-color="#ffffff" flood-opacity="0.1" result="offsetColor"/>
+            <feComposite in="offsetColor" in2="offsetBlur" operator="in" result="offsetBlur"/>
+            
+            <feFlood flood-color="#000000" flood-opacity="0.15" result="innerShadowColor"/>
+            <feComposite in="innerShadowColor" in2="SourceAlpha" operator="out" result="innerShadow"/>
+            <feGaussianBlur in="innerShadow" stdDeviation="1" result="innerShadow"/>
+            
+            <feMerge>
+                <feMergeNode in="offsetBlur"/>
+                <feMergeNode in="innerShadow"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+        
+        <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.2" />
+            <stop offset="50%" style="stop-color:#ffffff;stop-opacity:0" />
+            <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.1" />
+        </linearGradient>
+    </defs>
+    
+    <g filter="url(#appleGlass)">
+        <circle cx="20" cy="20" r="18" fill="url(#surfaceGradient)"/>
+        <path d="M2 20a18 18 0 0 1 36 0" fill="url(#shine)" opacity="0.5"/>
+        <text x="50%" y="58%" 
+              text-anchor="middle" 
+              dominant-baseline="middle"
+              font-family="-apple-system, SF Pro Display, system-ui"
+              font-weight="600"
+              font-size="22"
+              fill="white"
+              fill-opacity="0.95"
+              style="letter-spacing: -0.02em;">
+            a
+        </text>
+    </g>
+</svg>
