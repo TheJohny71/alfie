@@ -1,72 +1,71 @@
+// src/components/calendar/WeekView.tsx
 import React from 'react';
-import { CalendarState } from '../types';
-
-interface Holiday {
-    date: Date;
-    name: string;
-    type: string;
-}
-
-interface WeekViewProps {
-    state: CalendarState;
-    holidays?: Holiday[];
-}
+import type { WeekViewProps } from '../types';
 
 export const WeekView: React.FC<WeekViewProps> = ({ state, holidays }) => {
-    const { currentDate, selectedDate, viewMode, region } = state;
+    const { currentDate, selectedDate, region } = state;
 
-    const getWeekDays = (date: Date) => {
-        const week = [];
-        const current = new Date(date);
-        current.setDate(current.getDate() - current.getDay()); // Start of week (Sunday)
-        
-        for (let i = 0; i < 7; i++) {
-            week.push(new Date(current));
-            current.setDate(current.getDate() + 1);
-        }
-        return week;
+    // Get the start of the week (Sunday)
+    const getWeekStart = (date: Date): Date => {
+        const newDate = new Date(date);
+        const day = newDate.getDay();
+        const diff = newDate.getDate() - day;
+        return new Date(newDate.setDate(diff));
     };
 
-    const weekDays = getWeekDays(currentDate);
+    // Get array of dates for the week
+    const getWeekDates = (startDate: Date): Date[] => {
+        const dates: Date[] = [];
+        for (let i = 0; i < 7; i++) {
+            const newDate = new Date(startDate);
+            newDate.setDate(startDate.getDate() + i);
+            dates.push(newDate);
+        }
+        return dates;
+    };
+
+    const weekStart = getWeekStart(currentDate);
+    const weekDates = getWeekDates(weekStart);
+
+    const isHoliday = (date: Date): string | null => {
+        const holiday = holidays.find(h => 
+            h.date.toDateString() === date.toDateString() && 
+            h.region === region
+        );
+        return holiday ? holiday.name : null;
+    };
 
     return (
         <div className="week-view">
             <div className="week-header">
-                {weekDays.map((day, index) => (
-                    <div 
-                        key={day.toISOString()} 
-                        className={`day-header ${
-                            selectedDate && day.toDateString() === selectedDate.toDateString() 
-                                ? 'selected' 
-                                : ''
-                        }`}
-                    >
-                        <div className="day-name">{day.toLocaleDateString('en-US', { weekday: 'short' })}</div>
-                        <div className="day-date">{day.getDate()}</div>
+                {weekDates.map(date => (
+                    <div key={date.toISOString()} className="week-day-header">
+                        <div className="day-name">
+                            {date.toLocaleDateString('en-US', { weekday: 'short' })}
+                        </div>
+                        <div className="day-date">
+                            {date.getDate()}
+                        </div>
                     </div>
                 ))}
             </div>
-            
             <div className="week-body">
-                {weekDays.map((day) => {
-                    const dayHolidays = holidays?.filter(
-                        holiday => holiday.date.toDateString() === day.toDateString()
-                    );
+                {weekDates.map(date => {
+                    const holidayName = isHoliday(date);
+                    const isSelected = selectedDate?.toDateString() === date.toDateString();
+                    const isToday = new Date().toDateString() === date.toDateString();
                     
                     return (
                         <div 
-                            key={day.toISOString()} 
-                            className={`day-column ${
-                                selectedDate && day.toDateString() === selectedDate.toDateString()
-                                    ? 'selected'
-                                    : ''
-                            }`}
+                            key={date.toISOString()}
+                            className={`week-day ${isSelected ? 'selected' : ''} ${isToday ? 'today' : ''}`}
                         >
-                            {dayHolidays?.map((holiday, index) => (
-                                <div key={index} className={`holiday-item ${holiday.type.toLowerCase()}`}>
-                                    {holiday.name}
+                            {holidayName && (
+                                <div className="holiday-marker">
+                                    {holidayName}
                                 </div>
-                            ))}
+                            )}
+                            {/* Add your day content here */}
                         </div>
                     );
                 })}
@@ -74,3 +73,5 @@ export const WeekView: React.FC<WeekViewProps> = ({ state, holidays }) => {
         </div>
     );
 };
+
+export default WeekView;
