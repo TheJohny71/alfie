@@ -11,19 +11,20 @@
         :root {
             --purple-primary: #8B5CF6;
             --purple-light: #A78BFA;
-            --purple-dark: #7C3AED;
+            --purple-dark: #6D28D9;
         }
 
         body {
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, 'Space Grotesk', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Space Grotesk', sans-serif;
             background: linear-gradient(135deg, var(--purple-dark), var(--purple-primary));
             color: white;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         .nav {
@@ -32,6 +33,7 @@
             align-items: center;
             position: relative;
             z-index: 2;
+            mix-blend-mode: difference;
         }
 
         .logo {
@@ -43,11 +45,6 @@
             letter-spacing: -0.03em;
             color: rgba(255, 255, 255, 0.95);
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo img {
-            height: 2.5rem;
-            width: auto;
         }
 
         .hero {
@@ -68,7 +65,9 @@
             right: 0;
             bottom: 0;
             pointer-events: none;
-            opacity: 0.6;
+            opacity: 0.7;
+            filter: blur(40px);
+            transform: scale(1.1);
         }
 
         .circle {
@@ -76,9 +75,10 @@
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, var(--purple-light), var(--purple-primary));
             opacity: 0.4;
-            mix-blend-mode: soft-light;
+            mix-blend-mode: plus-lighter;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             animation: float 20s infinite ease-in-out;
+            will-change: transform, opacity;
         }
 
         @keyframes float {
@@ -98,75 +98,66 @@
             max-width: 1000px;
             margin: 0 auto;
             perspective: 1000px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
         }
 
         .main-title {
             font-size: 5.5rem;
             font-weight: 700;
             line-height: 1.1;
-            margin: 0 0 1.5rem;
-            background: linear-gradient(to right, #fff, #E9D5FF);
+            margin: 0;
+            background: linear-gradient(135deg, #F3E8FF, #6D28D9);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
             animation: titleFloat 6s ease-in-out infinite;
             letter-spacing: -0.02em;
+            filter: drop-shadow(0 0 20px rgba(109, 40, 217, 0.2));
         }
 
         @keyframes titleFloat {
             0%, 100% {
                 transform: translateY(0) rotateX(0deg);
+                filter: drop-shadow(0 0 20px rgba(109, 40, 217, 0.2));
             }
             50% {
                 transform: translateY(-10px) rotateX(2deg);
+                filter: drop-shadow(0 0 30px rgba(109, 40, 217, 0.4));
             }
         }
 
         .subtitle {
             font-size: 2rem;
             font-weight: 400;
-            margin: 0 0 1rem;
-            opacity: 0.9;
-            font-style: italic;
+            margin: 0;
             color: rgba(255, 255, 255, 0.95);
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             animation: subtitlePulse 8s ease-in-out infinite;
-        }
-
-        @keyframes subtitlePulse {
-            0%, 100% {
-                opacity: 0.9;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.02);
-            }
+            font-style: normal;
+            letter-spacing: -0.01em;
+            background: linear-gradient(to right, rgba(255,255,255,0.95), rgba(255,255,255,0.8));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .tagline {
             font-size: 1.25rem;
-            font-weight: 300;
-            letter-spacing: 0.02em;
-            margin: 2rem 0;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            margin: 0;
             color: rgba(255, 255, 255, 0.85);
             text-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
             animation: taglineSlide 10s ease-in-out infinite;
-        }
-
-        @keyframes taglineSlide {
-            0%, 100% {
-                transform: translateX(0);
-                opacity: 0.85;
-            }
-            50% {
-                transform: translateX(5px);
-                opacity: 1;
-            }
+            opacity: 0.9;
         }
 
         .cta-button {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 1.25rem 2.5rem;
@@ -188,6 +179,17 @@
             box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
         }
 
+        .cta-button::after {
+            content: "→";
+            transition: transform 0.3s ease;
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+
+        .cta-button:hover::after {
+            transform: translateX(4px);
+        }
+
         @keyframes buttonGlow {
             0%, 100% {
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -197,12 +199,17 @@
             }
         }
 
-        .circle:nth-child(1) { animation-delay: 0s; }
-        .circle:nth-child(2) { animation-delay: -5s; }
-        .circle:nth-child(3) { animation-delay: -10s; }
-        .circle:nth-child(4) { animation-delay: -15s; }
-        .circle:nth-child(5) { animation-delay: -7s; }
-        .circle:nth-child(6) { animation-delay: -12s; }
+        .ambient-light {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at center, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
 
         @media (max-width: 768px) {
             .main-title {
@@ -214,32 +221,57 @@
             .tagline {
                 font-size: 1rem;
             }
+            .floating-circles {
+                filter: blur(20px);
+            }
+        }
+
+        /* Apple-style hover state refinements */
+        .interactive-element {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .interactive-element:hover {
+            transform: scale(1.02);
+        }
+
+        /* Modern scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* High-performance animations */
+        * {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
     </style>
 </head>
 <body>
     <nav class="nav">
-        <div class="logo">
+        <div class="logo interactive-element">
             <img src="/api/placeholder/40/40" alt="Alfie Logo">
             <span>alfie</span>
         </div>
     </nav>
 
+    <div class="ambient-light"></div>
+
     <main class="hero">
         <div class="floating-circles">
-            <div class="circle" style="width: 300px; height: 300px; top: 15%; left: 5%;"></div>
-            <div class="circle" style="width: 200px; height: 200px; top: 65%; left: 65%;"></div>
-            <div class="circle" style="width: 150px; height: 150px; top: 25%; left: 75%;"></div>
-            <div class="circle" style="width: 250px; height: 250px; top: 75%; left: 15%;"></div>
-            <div class="circle" style="width: 180px; height: 180px; top: 45%; left: 35%;"></div>
-            <div class="circle" style="width: 220px; height: 220px; top: 85%; left: 85%;"></div>
+            <div class="circle" style="width: 400px; height: 400px; top: 15%; left: 5%;"></div>
+            <div class="circle" style="width: 300px; height: 300px; top: 65%; left: 65%;"></div>
+            <div class="circle" style="width: 250px; height: 250px; top: 25%; left: 75%;"></div>
+            <div class="circle" style="width: 350px; height: 350px; top: 75%; left: 15%;"></div>
+            <div class="circle" style="width: 280px; height: 280px; top: 45%; left: 35%;"></div>
+            <div class="circle" style="width: 320px; height: 320px; top: 85%; left: 85%;"></div>
         </div>
 
         <div class="content-wrapper">
             <h1 class="main-title">Create moments<br>for what matters</h1>
             <p class="subtitle">Because the best stories<br>aren't written at your desk</p>
             <p class="tagline">Your companion to a seamless year of leave</p>
-            <a href="/calendar" class="cta-button">Start Planning →</a>
+            <a href="/calendar" class="cta-button">Start Planning</a>
         </div>
     </main>
 </body>
