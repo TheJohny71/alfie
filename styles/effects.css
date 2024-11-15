@@ -1,0 +1,106 @@
+/* Interactive Canvas */
+.interactive-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Parallax Container */
+.parallax-container {
+    position: fixed;
+    inset: 0;
+    perspective: 1000px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.parallax-shape {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, 
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0) 70%);
+    opacity: 0.1;
+    transition: transform 0.2s ease-out;
+}
+
+.shape1 {
+    width: 600px;
+    height: 600px;
+    top: -100px;
+    left: -100px;
+}
+
+.shape2 {
+    width: 400px;
+    height: 400px;
+    top: 40%;
+    right: -100px;
+}
+
+.shape3 {
+    width: 300px;
+    height: 300px;
+    bottom: -50px;
+    left: 30%;
+}
+
+/* Ambient Scenes */
+.ambient-scenes {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.scene {
+    position: absolute;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.scene[data-scene="beach"] {
+    bottom: 50px;
+    right: 50px;
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(45deg, 
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0) 100%);
+}
+
+.scene[data-scene="mountain"] {
+    top: 100px;
+    right: 150px;
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(-45deg, 
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0) 100%);
+}
+
+.scene[data-scene="city"] {
+    bottom: 150px;
+    left: 100px;
+    width: 180px;
+    height: 180px;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0) 100%);
+}
+
+/* Enhanced Mesh Gradient */
+.mesh-gradient__layer {
+    background: radial-gradient(circle at center,
+        var(--color-accent) 0%,
+        var(--color-secondary) 30%,
+        var(--color-primary) 70%
+    ), 
+    linear-gradient(45deg,
+        rgba(74, 42, 130, 0.2) 0%,
+        rgba(45, 18, 88, 0.2) 50%,
+        rgba(30, 11, 56, 0.2) 100%
+    );
+    background-blend-mode: screen;
+}
