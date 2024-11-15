@@ -22,10 +22,30 @@
 .mb-3 { margin-bottom: var(--spacing-lg); }
 .mb-4 { margin-bottom: var(--spacing-xl); }
 
+/* Padding */
+.p-0 { padding: 0; }
+.p-1 { padding: var(--spacing-sm); }
+.p-2 { padding: var(--spacing-md); }
+.p-3 { padding: var(--spacing-lg); }
+.p-4 { padding: var(--spacing-xl); }
+
 /* Text Alignment */
 .text-left { text-align: left; }
 .text-center { text-align: center; }
 .text-right { text-align: right; }
+
+/* Typography */
+.font-light { font-weight: 300; }
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+/* Opacity */
+.opacity-0 { opacity: 0; }
+.opacity-50 { opacity: 0.5; }
+.opacity-75 { opacity: 0.75; }
+.opacity-100 { opacity: 1; }
 
 /* Effects */
 .backdrop-blur {
@@ -42,3 +62,16 @@
 .z-1 { z-index: 1; }
 .z-10 { z-index: 10; }
 .z-100 { z-index: 100; }
+
+/* Responsive */
+.hidden-mobile {
+    @media (max-width: 768px) {
+        display: none;
+    }
+}
+
+.hidden-desktop {
+    @media (min-width: 769px) {
+        display: none;
+    }
+}
