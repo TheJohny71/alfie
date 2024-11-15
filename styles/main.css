@@ -6,13 +6,14 @@
     --color-text: #FFFFFF;
     
     --font-primary: 'Quicksand', sans-serif;
-    --font-display: 'Dancing Script', cursive;
     
     --spacing-xs: 0.5rem;
     --spacing-sm: 1rem;
     --spacing-md: 2rem;
     --spacing-lg: 3rem;
     --spacing-xl: 4rem;
+
+    --transition-smooth: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Base Reset */
@@ -33,7 +34,7 @@ body {
     background: var(--color-primary);
     color: var(--color-text);
     min-height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
     position: relative;
 }
 
@@ -68,4 +69,15 @@ a {
     inset: 0;
     z-index: 0;
     overflow: hidden;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--spacing-md);
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
 }
