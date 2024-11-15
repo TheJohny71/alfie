@@ -10,19 +10,35 @@
     <link rel="stylesheet" href="styles/components.css">
     <link rel="stylesheet" href="styles/animations.css">
     <link rel="stylesheet" href="styles/utilities.css">
+    <link rel="stylesheet" href="styles/effects.css">
 </head>
 <body>
+    <!-- Interactive Canvas Layer -->
+    <canvas id="interactiveCanvas" class="interactive-canvas"></canvas>
+    
     <!-- Background Effects -->
     <div class="background-effects">
         <div class="mesh-gradient">
             <div class="mesh-gradient__layer"></div>
             <div class="mesh-gradient__overlay"></div>
         </div>
+        <div class="parallax-container">
+            <div class="parallax-shape shape1"></div>
+            <div class="parallax-shape shape2"></div>
+            <div class="parallax-shape shape3"></div>
+        </div>
         <div class="waves">
             <div class="wave wave1"></div>
             <div class="wave wave2"></div>
             <div class="wave wave3"></div>
         </div>
+    </div>
+
+    <!-- Ambient Scenes -->
+    <div class="ambient-scenes">
+        <div class="scene" data-scene="beach"></div>
+        <div class="scene" data-scene="mountain"></div>
+        <div class="scene" data-scene="city"></div>
     </div>
 
     <!-- Navigation -->
@@ -54,15 +70,6 @@
         </div>
     </main>
 
-    <script>
-        // Add mouse move effect for button glow
-        document.querySelector('.cta-button').addEventListener('mousemove', (e) => {
-            const rect = e.target.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width) * 100;
-            const y = ((e.clientY - rect.top) / rect.height) * 100;
-            e.target.style.setProperty('--x', `${x}%`);
-            e.target.style.setProperty('--y', `${y}%`);
-        });
-    </script>
+    <script src="js/effects.js"></script>
 </body>
 </html>
