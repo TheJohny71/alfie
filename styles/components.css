@@ -1,67 +1,121 @@
-/* Brand & Navigation */
+/* Brand */
 .brand {
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
-  font-size: 2.5rem;
-  font-family: var(--font-primary);
-  font-weight: 500;
-  color: white;
-  text-decoration: none;
-  opacity: 0.9;
-  z-index: 10;
-  transition: opacity 0.3s ease;
+    font-family: var(--font-primary);
+    font-size: 2.5rem;
+    font-weight: 500;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+.brand:hover {
+    opacity: 1;
 }
 
 /* Hero Section */
 .hero {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 2rem;
-  position: relative;
-  z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-xl);
+    position: relative;
+    z-index: 1;
 }
 
 .content-wrapper {
-  width: 100%;
-  max-width: 800px;
-  text-align: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
+.hero-content {
+    max-width: 800px;
+    margin-left: var(--spacing-xl);
+}
+
+/* Typography Components */
 .main-title {
-  font-size: 5.5rem;
-  background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+    font-family: var(--font-primary);
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    font-weight: 500;
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.1;
+}
+
+.title-line {
+    display: block;
+    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .subtitle {
-  font-size: 2rem;
-  font-weight: 300;
-  opacity: 0.9;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 300;
+    margin-bottom: var(--spacing-sm);
+    opacity: 0.9;
 }
 
 .tagline {
-  font-size: 1.25rem;
-  opacity: 0.7;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 300;
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.7;
 }
 
 /* CTA Button */
+.cta-wrapper {
+    margin-top: var(--spacing-xl);
+}
+
 .cta-button {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  background: rgba(74, 42, 130, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1rem 2.5rem;
-  border-radius: 100px;
-  color: white;
-  text-decoration: none;
-  font-size: 1.25rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  overflow: hidden;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 1rem 2.5rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--color-text);
+    background: rgba(74, 42, 130, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(74, 42, 130, 0.3);
+}
+
+.cta-button span {
+    position: relative;
+    z-index: 1;
+}
+
+.cta-button::after {
+    content: "→";
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.cta-button:hover::after {
+    transform: translateX(4px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .hero {
+        padding: var(--spacing-md);
+    }
+    
+    .hero-content {
+        margin-left: 0;
+        text-align: center;
+    }
+    
+    .brand {
+        font-size: 2rem;
+    }
 }
