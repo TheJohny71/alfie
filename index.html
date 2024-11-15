@@ -5,11 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alfie - Create moments for what matters</title>
     
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.4; }
+            50% { transform: translate(30px, -30px) rotate(5deg); opacity: 0.6; }
         }
 
         body {
@@ -29,13 +36,12 @@
             position: absolute;
             top: 2rem;
             left: 2rem;
-            font-size: 2rem;
-            font-weight: 200;
+            font-size: 2.5rem;
+            font-family: 'Dancing Script', cursive;
             color: white;
             text-decoration: none;
-            letter-spacing: -0.03em;
-            z-index: 10;
             opacity: 0.9;
+            z-index: 10;
         }
 
         .hero {
@@ -44,37 +50,47 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
             padding: 0 2rem;
             position: relative;
         }
 
         .content-wrapper {
-            max-width: 1000px;
+            width: 100%;
+            max-width: 800px;
             margin: 0 auto;
             z-index: 2;
+            text-align: center;
+        }
+
+        .title-wrapper {
+            display: inline-block;
+            text-align: left;
+            margin-bottom: 3rem;
         }
 
         .main-title {
+            font-family: 'Dancing Script', cursive;
             font-size: 5.5rem;
-            font-weight: 200;
             line-height: 1.1;
-            margin-bottom: 2rem;
             letter-spacing: -0.02em;
+            margin-bottom: 2rem;
+            font-weight: 400;
         }
 
         .subtitle {
             font-size: 2rem;
             font-weight: 300;
-            margin: 1.5rem 0;
             opacity: 0.9;
+            text-align: center;
+            margin-bottom: 1rem;
         }
 
         .tagline {
             font-size: 1.25rem;
             font-weight: 300;
-            margin: 1rem 0 3rem;
             opacity: 0.7;
+            text-align: center;
+            margin-bottom: 3rem;
         }
 
         .cta-button {
@@ -112,25 +128,32 @@
             position: absolute;
             border-radius: 50%;
             background: radial-gradient(circle at center, rgba(110, 66, 193, 0.4), transparent);
+            animation: float 20s infinite ease-in-out;
         }
 
-        .shape-1 { width: 400px; height: 400px; top: 10%; left: 5%; }
-        .shape-2 { width: 300px; height: 300px; top: 60%; left: 60%; }
-        .shape-3 { width: 350px; height: 350px; top: 20%; left: 70%; }
+        .shape-1 { 
+            width: 400px; height: 400px; 
+            top: 10%; left: 5%; 
+            animation-delay: 0s;
+        }
+        
+        .shape-2 { 
+            width: 300px; height: 300px; 
+            top: 60%; left: 60%; 
+            animation-delay: -5s;
+        }
+        
+        .shape-3 { 
+            width: 350px; height: 350px; 
+            top: 20%; left: 70%; 
+            animation-delay: -10s;
+        }
 
         @media (max-width: 768px) {
-            .brand {
-                font-size: 1.5rem;
-            }
-            .main-title {
-                font-size: 3.5rem;
-            }
-            .subtitle {
-                font-size: 1.5rem;
-            }
-            .tagline {
-                font-size: 1rem;
-            }
+            .brand { font-size: 2rem; }
+            .main-title { font-size: 3.5rem; }
+            .subtitle { font-size: 1.5rem; }
+            .tagline { font-size: 1rem; }
         }
     </style>
 </head>
@@ -145,7 +168,9 @@
         </div>
 
         <div class="content-wrapper">
-            <h1 class="main-title">Create moments<br>for what matters</h1>
+            <div class="title-wrapper">
+                <h1 class="main-title">Create moments<br>for what matters.....</h1>
+            </div>
             <p class="subtitle">Because the best stories<br>aren't written at your desk</p>
             <p class="tagline">Your companion to a seamless year of leave</p>
             <a href="/calendar" class="cta-button">Start Planning</a>
