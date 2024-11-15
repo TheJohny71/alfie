@@ -1,34 +1,71 @@
-/* Base Reset & Typography */
+/* Design System Variables */
 :root {
-  --color-primary: #1E0B38;
-  --color-secondary: #2D1258;
-  --color-accent: #4A2A82;
-  --font-primary: 'Quicksand', sans-serif;
-  --font-display: 'Dancing Script', cursive;
+    --color-primary: #1E0B38;
+    --color-secondary: #2D1258;
+    --color-accent: #4A2A82;
+    --color-text: #FFFFFF;
+    
+    --font-primary: 'Quicksand', sans-serif;
+    --font-display: 'Dancing Script', cursive;
+    
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 2rem;
+    --spacing-lg: 3rem;
+    --spacing-xl: 4rem;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Base Reset */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 html {
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  font-family: var(--font-primary);
-  background: var(--color-primary);
-  color: white;
-  min-height: 100vh;
-  overflow-x: hidden;
+    font-family: var(--font-primary);
+    background: var(--color-primary);
+    color: var(--color-text);
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
 }
 
+/* Typography Base */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 1.2;
+    margin: 0;
+    line-height: 1.2;
+}
+
+p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Layout */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--spacing-md);
+    z-index: 100;
+}
+
+.background-effects {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
 }
