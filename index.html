@@ -3,21 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#2D1258">
     <title>Alfie - Create moments for what matters</title>
     
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@200;300;400&display=swap" rel="stylesheet">
-    
     <style>
-        :root {
-            --deep-purple: #2D1258;
-            --mid-purple: #3A1674;
-            --light-purple: #6E42C1;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -28,8 +16,8 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, var(--deep-purple) 0%, var(--mid-purple) 50%, var(--deep-purple) 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #2D1258 0%, #3A1674 50%, #2D1258 100%);
             color: white;
             display: flex;
             flex-direction: column;
@@ -44,36 +32,10 @@
             font-size: 2rem;
             font-weight: 200;
             color: white;
+            text-decoration: none;
             letter-spacing: -0.03em;
             z-index: 10;
-            text-decoration: none;
-        }
-
-        .floating-circles {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            opacity: 0.7;
-            filter: blur(40px);
-        }
-
-        .circle {
-            position: absolute;
-            border-radius: 50%;
-            background: var(--light-purple);
-            opacity: 0.3;
-            mix-blend-mode: plus-lighter;
-            animation: float 20s infinite ease-in-out;
-        }
-        @keyframes float {
-            0%, 100% { 
-                transform: translate(0, 0) scale(1) rotate(0deg);
-                opacity: 0.3;
-            }
-            50% { 
-                transform: translate(30px, -30px) scale(1.1) rotate(5deg);
-                opacity: 0.5;
-            }
+            opacity: 0.9;
         }
 
         .hero {
@@ -85,24 +47,19 @@
             text-align: center;
             padding: 0 2rem;
             position: relative;
-            z-index: 1;
         }
 
         .content-wrapper {
             max-width: 1000px;
             margin: 0 auto;
-            perspective: 1000px;
+            z-index: 2;
         }
 
         .main-title {
             font-size: 5.5rem;
             font-weight: 200;
             line-height: 1.1;
-            margin: 0;
-            background: linear-gradient(135deg, #FFFFFF 0%, rgba(255,255,255,0.8) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: titleFloat 6s ease-in-out infinite;
+            margin-bottom: 2rem;
             letter-spacing: -0.02em;
         }
 
@@ -110,46 +67,56 @@
             font-size: 2rem;
             font-weight: 300;
             margin: 1.5rem 0;
-            color: rgba(255,255,255,0.9);
+            opacity: 0.9;
         }
 
         .tagline {
             font-size: 1.25rem;
             font-weight: 300;
-            letter-spacing: 0.01em;
-            margin: 1rem 0 2.5rem;
-            color: rgba(255,255,255,0.7);
+            margin: 1rem 0 3rem;
+            opacity: 0.7;
         }
 
         .cta-button {
             display: inline-flex;
             align-items: center;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 1.25rem 2.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 2.5rem;
             border-radius: 100px;
             color: white;
             text-decoration: none;
             font-size: 1.25rem;
-            font-weight: 300;
-            transition: all 0.4s ease;
-            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
 
         .cta-button:hover {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
         }
 
-        @keyframes titleFloat {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
+        .cta-button::after {
+            content: "→";
+            margin-left: 0.5rem;
         }
+
+        .background-shapes {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(110, 66, 193, 0.4), transparent);
+        }
+
+        .shape-1 { width: 400px; height: 400px; top: 10%; left: 5%; }
+        .shape-2 { width: 300px; height: 300px; top: 60%; left: 60%; }
+        .shape-3 { width: 350px; height: 350px; top: 20%; left: 70%; }
 
         @media (max-width: 768px) {
             .brand {
@@ -171,42 +138,18 @@
     <a href="/" class="brand">alfie</a>
 
     <main class="hero">
-        <div class="floating-circles">
-            <div class="circle" style="width: 400px; height: 400px; top: 15%; left: 5%;"></div>
-            <div class="circle" style="width: 300px; height: 300px; top: 65%; left: 65%;"></div>
-            <div class="circle" style="width: 250px; height: 250px; top: 25%; left: 75%;"></div>
-            <div class="circle" style="width: 350px; height: 350px; top: 75%; left: 15%;"></div>
+        <div class="background-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
         </div>
 
         <div class="content-wrapper">
             <h1 class="main-title">Create moments<br>for what matters</h1>
             <p class="subtitle">Because the best stories<br>aren't written at your desk</p>
             <p class="tagline">Your companion to a seamless year of leave</p>
-            <a href="/calendar" class="cta-button">Start Planning →</a>
+            <a href="/calendar" class="cta-button">Start Planning</a>
         </div>
     </main>
 </body>
 </html>
-document.addEventListener('DOMContentLoaded', () => {
-    const circles = document.querySelectorAll('.circle');
-    
-    circles.forEach(circle => {
-        const randomDelay = Math.random() * 5;
-        circle.style.animationDelay = `${randomDelay}s`;
-    });
-});
-
-// Optional: Add parallax effect on mouse move
-document.addEventListener('mousemove', (e) => {
-    const circles = document.querySelectorAll('.circle');
-    const mouseX = e.clientX / window.innerWidth;
-    const mouseY = e.clientY / window.innerHeight;
-
-    circles.forEach((circle, index) => {
-        const speed = (index + 1) * 20;
-        const x = (mouseX - 0.5) * speed;
-        const y = (mouseY - 0.5) * speed;
-        
-        circle.style.transform = `translate(${x}px, ${y}px)`;
-    });
-});
