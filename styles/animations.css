@@ -1,61 +1,44 @@
-/* Mesh Gradient */
-.mesh-gradient {
+/* Aurora Background */
+.aurora-container {
     position: fixed;
     inset: 0;
     overflow: hidden;
+    background: linear-gradient(to bottom right, var(--color-primary), var(--color-secondary));
 }
 
-.mesh-gradient__layer {
+.aurora-beam {
     position: absolute;
-    inset: -50%;
-    background: radial-gradient(
-        circle at center,
-        var(--color-accent) 0%,
-        var(--color-secondary) 30%,
-        var(--color-primary) 70%
-    );
-    animation: rotate 20s linear infinite;
-    opacity: 0.6;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    transition: var(--transition-smooth);
 }
 
-.mesh-gradient__overlay {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-        circle at 30% 40%,
-        transparent 0%,
-        var(--color-primary) 70%
-    );
+.aurora-beam-1 {
+    background: linear-gradient(217deg, rgba(74, 42, 130, 0.2), transparent 70%);
+    animation: aurora-beam-1 30s linear infinite;
 }
 
-/* Waves */
-.waves {
-    position: fixed;
-    inset: 0;
-    opacity: 0.4;
-    pointer-events: none;
+.aurora-beam-2 {
+    background: linear-gradient(127deg, rgba(45, 18, 88, 0.2), transparent 70%);
+    animation: aurora-beam-2 40s linear infinite;
 }
 
-.wave {
+.aurora-beam-3 {
+    background: linear-gradient(336deg, rgba(139, 92, 246, 0.2), transparent 70%);
+    animation: aurora-beam-3 50s linear infinite;
+}
+
+/* Mouse Gradient */
+.mouse-gradient {
     position: absolute;
     inset: 0;
-    opacity: 0.4;
-    border-radius: 40%;
-}
-
-.wave1 {
-    animation: wave 10s infinite linear;
-    background: rgba(74, 42, 130, 0.2);
-}
-
-.wave2 {
-    animation: wave 16s infinite linear;
-    background: rgba(45, 18, 88, 0.2);
-}
-
-.wave3 {
-    animation: wave 20s infinite linear;
-    background: rgba(30, 11, 56, 0.2);
+    opacity: 0.3;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                rgba(139, 92, 246, 0.15), 
+                transparent 60%);
+    transition: opacity 0.3s ease;
 }
 
 /* Button Glow */
@@ -99,12 +82,8 @@
 
 /* Keyframes */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @keyframes slideUp {
@@ -118,20 +97,17 @@
     }
 }
 
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+@keyframes aurora-beam-1 {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(180deg); }
 }
 
-@keyframes wave {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+@keyframes aurora-beam-2 {
+    0%, 100% { transform: rotate(90deg); }
+    50% { transform: rotate(270deg); }
+}
+
+@keyframes aurora-beam-3 {
+    0%, 100% { transform: rotate(180deg); }
+    50% { transform: rotate(360deg); }
 }
