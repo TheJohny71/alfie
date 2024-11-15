@@ -5,38 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alfie - Create moments for what matters</title>
     
-     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
-     <link rel="stylesheet" href="styles/main.css">
-     <link rel="stylesheet" href="styles/components.css">
-     <link rel="stylesheet" href="styles/animations.css">
-     <link rel="stylesheet" href="styles/utilities.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    <link rel="stylesheet" href="styles/utilities.css">
 </head>
 <body>
-    <div class="mesh-gradient">
-        <div class="mesh-gradient__layer"></div>
-        <div class="mesh-gradient__overlay"></div>
+    <!-- Background Effects -->
+    <div class="background-effects">
+        <div class="mesh-gradient">
+            <div class="mesh-gradient__layer"></div>
+            <div class="mesh-gradient__overlay"></div>
+        </div>
+        <div class="waves">
+            <div class="wave wave1"></div>
+            <div class="wave wave2"></div>
+            <div class="wave wave3"></div>
+        </div>
     </div>
 
-    <div class="waves">
-        <div class="wave wave1"></div>
-        <div class="wave wave2"></div>
-        <div class="wave wave3"></div>
-    </div>
+    <!-- Navigation -->
+    <header class="header">
+        <a href="/" class="brand fade-in">alfie</a>
+    </header>
 
-    <a href="/" class="brand">alfie</a>
-
+    <!-- Main Content -->
     <main class="hero">
         <div class="content-wrapper">
-            <div class="title-wrapper">
-                <h1 class="main-title">Create moments<br>for what matters.....</h1>
+            <div class="hero-content slide-up">
+                <h1 class="main-title">
+                    <span class="title-line">Create moments</span>
+                    <span class="title-line">for what matters....</span>
+                </h1>
+                
+                <div class="hero-text fade-in-delayed">
+                    <p class="subtitle">Because the best stories<br>aren't written at your desk</p>
+                    <p class="tagline">Your companion to a seamless year of leave</p>
+                </div>
+
+                <div class="cta-wrapper fade-in-delayed-2">
+                    <a href="/calendar" class="cta-button">
+                        <span>Start Planning</span>
+                        <div class="button-glow"></div>
+                    </a>
+                </div>
             </div>
-            <p class="subtitle">Because the best stories<br>aren't written at your desk</p>
-            <p class="tagline">Your companion to a seamless year of leave</p>
-            <a href="/calendar" class="cta-button">
-                <span>Start Planning</span>
-                <div class="button-glow"></div>
-            </a>
         </div>
     </main>
+
+    <script>
+        // Add mouse move effect for button glow
+        document.querySelector('.cta-button').addEventListener('mousemove', (e) => {
+            const rect = e.target.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            e.target.style.setProperty('--x', `${x}%`);
+            e.target.style.setProperty('--y', `${y}%`);
+        });
+    </script>
 </body>
 </html>
