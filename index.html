@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="styles/utilities.css">
     <link rel="stylesheet" href="styles/effects.css">
     
-    <!-- Favicon -->
+    <!-- Favicon - Note: path matches your GitHub structure -->
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
 </head>
 <body>
@@ -36,7 +36,7 @@
     <!-- Navigation Header -->
     <header class="header">
         <nav class="nav-container">
-            <a href="/" class="brand fade-in" aria-label="Alfie Home">alfie</a>
+            <a href="/" class="brand fade-in">alfie</a>
         </nav>
     </header>
 
@@ -58,10 +58,9 @@
 
                 <!-- Call to Action -->
                 <div class="cta-wrapper fade-in-delayed-2">
-                    <a href="/calendar" class="cta-button" aria-label="Start Planning Your Leave">
+                    <a href="#" class="cta-button">
                         <span>Start Planning</span>
                         <div class="button-glow"></div>
-                        <span class="sr-only">Opens calendar planning page</span>
                     </a>
                 </div>
             </div>
@@ -71,30 +70,15 @@
     <!-- Footer -->
     <footer class="footer fade-in-delayed-2">
         <div class="footer-content">
-            <nav class="footer-nav" aria-label="Footer Navigation">
-                <a href="/contact" class="footer-link">Contact Us</a>
-                <a href="/about" class="footer-link">Learn More</a>
-                <a href="/privacy" class="footer-link">Privacy Policy</a>
+            <nav class="footer-nav">
+                <a href="#" class="footer-link">Contact Us</a>
+                <a href="#" class="footer-link">Learn More</a>
+                <a href="#" class="footer-link">Privacy Policy</a>
             </nav>
         </div>
     </footer>
 
     <!-- Scripts -->
     <script src="js/effects.js" defer></script>
-
-    <!-- Screen Reader Only Class -->
-    <style>
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-    </style>
 </body>
 </html>
