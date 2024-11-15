@@ -3,73 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alfie - Create moments for what matters</title>
+    <meta name="description" content="Alfie - Your companion to a seamless year of leave. Plan your time off and create moments that matter.">
+    <title>Alfie - Make Time for What Matters</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/components.css">
     <link rel="stylesheet" href="styles/animations.css">
     <link rel="stylesheet" href="styles/utilities.css">
     <link rel="stylesheet" href="styles/effects.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
 </head>
 <body>
-    <!-- Interactive Canvas Layer -->
-    <canvas id="interactiveCanvas" class="interactive-canvas"></canvas>
-    
     <!-- Background Effects -->
     <div class="background-effects">
-        <div class="mesh-gradient">
-            <div class="mesh-gradient__layer"></div>
-            <div class="mesh-gradient__overlay"></div>
+        <!-- Aurora Effect Container -->
+        <div class="aurora-container">
+            <div class="aurora-beam aurora-beam-1"></div>
+            <div class="aurora-beam aurora-beam-2"></div>
+            <div class="aurora-beam aurora-beam-3"></div>
         </div>
-        <div class="parallax-container">
-            <div class="parallax-shape shape1"></div>
-            <div class="parallax-shape shape2"></div>
-            <div class="parallax-shape shape3"></div>
-        </div>
-        <div class="waves">
-            <div class="wave wave1"></div>
-            <div class="wave wave2"></div>
-            <div class="wave wave3"></div>
-        </div>
+        
+        <!-- Mouse-following Gradient -->
+        <div class="mouse-gradient"></div>
     </div>
 
-    <!-- Ambient Scenes -->
-    <div class="ambient-scenes">
-        <div class="scene" data-scene="beach"></div>
-        <div class="scene" data-scene="mountain"></div>
-        <div class="scene" data-scene="city"></div>
-    </div>
-
-    <!-- Navigation -->
+    <!-- Navigation Header -->
     <header class="header">
-        <a href="/" class="brand fade-in">alfie</a>
+        <nav class="nav-container">
+            <a href="/" class="brand fade-in" aria-label="Alfie Home">alfie</a>
+        </nav>
     </header>
 
     <!-- Main Content -->
     <main class="hero">
         <div class="content-wrapper">
             <div class="hero-content slide-up">
+                <!-- Main Title -->
                 <h1 class="main-title">
-                    <span class="title-line">Create moments</span>
-                    <span class="title-line">for what matters....</span>
+                    <span class="title-line">Make Time for</span>
+                    <span class="title-line">What Matters...</span>
                 </h1>
                 
+                <!-- Hero Text -->
                 <div class="hero-text fade-in-delayed">
-                    <p class="subtitle">Because the best stories<br>aren't written at your desk</p>
+                    <p class="subtitle">Because the best stories<br>unfold when you're living them</p>
                     <p class="tagline">Your companion to a seamless year of leave</p>
                 </div>
 
+                <!-- Call to Action -->
                 <div class="cta-wrapper fade-in-delayed-2">
-                    <a href="/calendar" class="cta-button">
+                    <a href="/calendar" class="cta-button" aria-label="Start Planning Your Leave">
                         <span>Start Planning</span>
                         <div class="button-glow"></div>
+                        <span class="sr-only">Opens calendar planning page</span>
                     </a>
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="js/effects.js"></script>
+    <!-- Footer -->
+    <footer class="footer fade-in-delayed-2">
+        <div class="footer-content">
+            <nav class="footer-nav" aria-label="Footer Navigation">
+                <a href="/contact" class="footer-link">Contact Us</a>
+                <a href="/about" class="footer-link">Learn More</a>
+                <a href="/privacy" class="footer-link">Privacy Policy</a>
+            </nav>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/effects.js" defer></script>
+
+    <!-- Screen Reader Only Class -->
+    <style>
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
 </body>
 </html>
