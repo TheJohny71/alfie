@@ -1,0 +1,61 @@
+/* Mesh Gradient */
+.mesh-gradient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.mesh-gradient__layer {
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(
+    circle at center,
+    var(--color-accent) 0%,
+    var(--color-secondary) 30%,
+    var(--color-primary) 70%
+  );
+  animation: rotate 20s linear infinite;
+  opacity: 0.6;
+}
+
+/* Wave Animation */
+.waves {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.wave {
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+  border-radius: 40%;
+  animation: wave 12s infinite linear;
+}
+
+/* Keyframes */
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes wave {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Button Animation */
+.button-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--x, 50%) var(--y, 50%),
+    rgba(255,255,255,0.2) 0%,
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
