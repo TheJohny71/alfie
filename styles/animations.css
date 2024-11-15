@@ -1,61 +1,137 @@
 /* Mesh Gradient */
 .mesh-gradient {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
 }
 
 .mesh-gradient__layer {
-  position: absolute;
-  inset: -50%;
-  background: radial-gradient(
-    circle at center,
-    var(--color-accent) 0%,
-    var(--color-secondary) 30%,
-    var(--color-primary) 70%
-  );
-  animation: rotate 20s linear infinite;
-  opacity: 0.6;
+    position: absolute;
+    inset: -50%;
+    background: radial-gradient(
+        circle at center,
+        var(--color-accent) 0%,
+        var(--color-secondary) 30%,
+        var(--color-primary) 70%
+    );
+    animation: rotate 20s linear infinite;
+    opacity: 0.6;
 }
 
-/* Wave Animation */
+.mesh-gradient__overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at 30% 40%,
+        transparent 0%,
+        var(--color-primary) 70%
+    );
+}
+
+/* Waves */
 .waves {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  opacity: 0.4;
-  pointer-events: none;
+    position: fixed;
+    inset: 0;
+    opacity: 0.4;
+    pointer-events: none;
 }
 
 .wave {
-  position: absolute;
-  inset: 0;
-  opacity: 0.4;
-  border-radius: 40%;
-  animation: wave 12s infinite linear;
+    position: absolute;
+    inset: 0;
+    opacity: 0.4;
+    border-radius: 40%;
+}
+
+.wave1 {
+    animation: wave 10s infinite linear;
+    background: rgba(74, 42, 130, 0.2);
+}
+
+.wave2 {
+    animation: wave 16s infinite linear;
+    background: rgba(45, 18, 88, 0.2);
+}
+
+.wave3 {
+    animation: wave 20s infinite linear;
+    background: rgba(30, 11, 56, 0.2);
+}
+
+/* Button Glow */
+.button-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at var(--x, 50%) var(--y, 50%),
+        rgba(255,255,255,0.2) 0%,
+        transparent 50%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cta-button:hover .button-glow {
+    opacity: 1;
+}
+
+/* Entry Animations */
+.fade-in {
+    animation: fadeIn 0.8s ease forwards;
+}
+
+.fade-in-delayed {
+    opacity: 0;
+    animation: fadeIn 0.8s ease forwards;
+    animation-delay: 0.3s;
+}
+
+.fade-in-delayed-2 {
+    opacity: 0;
+    animation: fadeIn 0.8s ease forwards;
+    animation-delay: 0.6s;
+}
+
+.slide-up {
+    opacity: 0;
+    animation: slideUp 1s ease forwards;
 }
 
 /* Keyframes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes wave {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Button Animation */
-.button-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at var(--x, 50%) var(--y, 50%),
-    rgba(255,255,255,0.2) 0%,
-    transparent 50%
-  );
-  opacity: 0;
-  transition: opacity 0.3s ease;
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
