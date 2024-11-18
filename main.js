@@ -1,9 +1,10 @@
 // main.js
 const React = window.React;
 const ReactDOM = window.ReactDOM;
-const { createElement, useState, useEffect } = React;
+const { createElement: h, useState, useEffect } = React;
 const { createRoot } = ReactDOM;
 
+// Import modal components
 const { ModalProvider, ModalTriggers } = await import('./components/modals/index.js');
 
 function App() {
@@ -14,136 +15,103 @@ function App() {
     setCurrentView(view);
   };
 
-  return createElement(
+  // Create elements with keys
+  const headerElement = h(
+    "header",
+    { className: "header", key: "header" },
+    h(
+      "nav",
+      { className: "nav-container", key: "nav" },
+      [
+        h("a", { href: "/", className: "brand fade-in", key: "brand" }, "alfie"),
+        h(
+          "div",
+          { className: "region-toggle", key: "region-toggle" },
+          [
+            h(
+              "button",
+              {
+                key: "uk-button",
+                className: `region-btn ${currentRegion === "UK" ? "active" : ""}`,
+                onClick: () => setCurrentRegion("UK")
+              },
+              "UK"
+            ),
+            h(
+              "button",
+              {
+                key: "us-button",
+                className: `region-btn ${currentRegion === "US" ? "active" : ""}`,
+                onClick: () => setCurrentRegion("US")
+              },
+              "US"
+            )
+          ]
+        )
+      ]
+    )
+  );
+
+  // Create main content elements with keys
+  const mainContent = h(
+    "main",
+    { className: "flex-grow", key: "main" },
+    [
+      h(
+        "section",
+        {
+          key: "welcome-section",
+          id: "welcome",
+          className: "hero",
+          style: { display: currentView === "welcome" ? "block" : "none" }
+        },
+        // ... rest of your welcome section code with added keys
+      ),
+      h(
+        "section",
+        {
+          key: "calendar-section",
+          id: "calendar",
+          className: "calendar-section",
+          style: { display: currentView === "calendar" ? "block" : "none" }
+        }
+      )
+    ]
+  );
+
+  // Create footer element with key
+  const footerElement = h(
+    "footer",
+    { className: "footer fade-in-delayed-2", key: "footer" },
+    h(
+      "div",
+      { className: "footer-content", key: "footer-content" },
+      h(
+        "nav",
+        { className: "footer-nav", key: "footer-nav" },
+        [
+          h("a", { href: "#", className: "footer-link", key: "contact" }, "Contact Us"),
+          h("a", { href: "#", className: "footer-link", key: "learn" }, "Learn More"),
+          h("a", { href: "#", className: "footer-link", key: "privacy" }, "Privacy Policy")
+        ]
+      )
+    )
+  );
+
+  return h(
     ModalProvider,
-    null,
-    createElement(
+    { key: "modal-provider" },
+    h(
       "div",
       {
+        key: "app-container",
         style: {
           display: "flex",
           flexDirection: "column",
           minHeight: "100vh",
         }
       },
-      // Header
-      createElement(
-        "header",
-        { className: "header" },
-        createElement(
-          "nav",
-          { className: "nav-container" },
-          createElement("a", { href: "/", className: "brand fade-in" }, "alfie"),
-          createElement(
-            "div",
-            { className: "region-toggle" },
-            createElement(
-              "button",
-              {
-                className: `region-btn ${currentRegion === "UK" ? "active" : ""}`,
-                onClick: () => setCurrentRegion("UK")
-              },
-              "UK"
-            ),
-            createElement(
-              "button",
-              {
-                className: `region-btn ${currentRegion === "US" ? "active" : ""}`,
-                onClick: () => setCurrentRegion("US")
-              },
-              "US"
-            )
-          )
-        )
-      ),
-
-      // Main Content
-      createElement(
-        "main",
-        { className: "flex-grow" },
-        // Welcome Section
-        createElement(
-          "section",
-          {
-            id: "welcome",
-            className: "hero",
-            style: { display: currentView === "welcome" ? "block" : "none" }
-          },
-          createElement(
-            "div",
-            { className: "content-wrapper" },
-            createElement(
-              "div",
-              { className: "hero-content slide-up" },
-              createElement(
-                "h1",
-                { className: "main-title" },
-                createElement("span", { className: "title-line" }, "Make Time for"),
-                createElement("span", { className: "title-line" }, "What Matters...")
-              ),
-              createElement(
-                "div",
-                { className: "hero-text fade-in-delayed" },
-                createElement(
-                  "p",
-                  { className: "subtitle" },
-                  "Because the best stories",
-                  createElement("br"),
-                  "unfold when you are living them"
-                ),
-                createElement(
-                  "p",
-                  { className: "tagline" },
-                  "Your companion to a seamless year of leave"
-                )
-              ),
-              createElement(
-                "div",
-                { className: "cta-wrapper fade-in-delayed-2" },
-                createElement(
-                  "button",
-                  {
-                    className: "cta-button",
-                    onClick: () => handleViewChange("calendar")
-                  },
-                  createElement("span", null, "Start Planning"),
-                  createElement("div", { className: "button-glow" })
-                )
-              )
-            )
-          )
-        ),
-
-        // Calendar Section
-        createElement(
-          "section",
-          {
-            id: "calendar",
-            className: "calendar-section",
-            style: { display: currentView === "calendar" ? "block" : "none" }
-          }
-        )
-      ),
-
-      // Footer
-      createElement(
-        "footer",
-        { className: "footer fade-in-delayed-2" },
-        createElement(
-          "div",
-          { className: "footer-content" },
-          createElement(
-            "nav",
-            { className: "footer-nav" },
-            createElement("a", { href: "#", className: "footer-link" }, "Contact Us"),
-            createElement("a", { href: "#", className: "footer-link" }, "Learn More"),
-            createElement("a", { href: "#", className: "footer-link" }, "Privacy Policy")
-          )
-        )
-      ),
-      
-      // Modal Triggers
-      createElement(ModalTriggers, null)
+      [headerElement, mainContent, footerElement, h(ModalTriggers, { key: "modal-triggers" })]
     )
   );
 }
@@ -151,4 +119,4 @@ function App() {
 // Initialize the app
 const container = document.getElementById("root");
 const root = createRoot(container);
-root.render(createElement(App));
+root.render(h(App, { key: "app" }));
