@@ -1,174 +1,165 @@
-// Import React and ReactDOM
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { ModalProvider, ModalTriggers } from './components/modals';
+// Get React from global scope
+const { createElement, useState, useEffect } = window.React;
+const { createRoot } = window.ReactDOM;
 
-// App Component
+// Import modal components
+const { ModalProvider, ModalTriggers } = window.AlfieModals;
+
+// Main App Component
 function App() {
-  return (
-    <ModalProvider>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: '100vh',
-          backgroundColor: '#0D1117',
-          color: '#FFFFFF',
-          fontFamily: 'SF Pro Display, Inter, sans-serif'
-        }}
-      >
-        <div
-          style={{
-            textAlign: 'center',
-            padding: '2rem'
-          }}
-        >
-          <h1
-            style={{
-              fontSize: '2.5rem',
-              marginBottom: '1rem'
-            }}
-          >
-            Welcome to Alfie
-          </h1>
-          <p
-            style={{
-              fontSize: '1.25rem',
-              opacity: 0.9
-            }}
-          >
-            Your PTO planning application
-          </p>
-          <img
-            src="./assets/alfie-icon.png"
-            alt="Alfie Icon"
-            style={{
-              width: '64px',
-              height: '64px',
-              marginTop: '2rem'
-            }}
-          />
-        </div>
-        
-        {/* Add the Modal Triggers */}
-        <ModalTriggers />
-        
-        {/* Aurora Background Effect */}
-        <div className="aurora-container">
-          <div className="aurora-beam aurora-beam-1"></div>
-          <div className="aurora-beam aurora-beam-2"></div>
-          <div className="aurora-beam aurora-beam-3"></div>
-          <div className="mouse-gradient"></div>
-        </div>
-        
-        {/* Particles Container */}
-        <div id="particles-container"></div>
-      </div>
-    </ModalProvider>
+  const [currentView, setCurrentView] = useState('welcome');
+  const [currentRegion, setCurrentRegion] = useState('UK');
+
+  // Handle view transitions
+  const handleViewChange = (view) => {
+    setCurrentView(view);
+  };
+
+  // Region toggle handler
+  const handleRegionToggle = () => {
+    setCurrentRegion(prev => prev === 'UK' ? 'US' : 'UK');
+  };
+
+  return createElement(
+    ModalProvider,
+    null,
+    createElement(
+      'div',
+      {
+        className: 'app-container',
+      },
+      // Background Effects
+      createElement('div', { className: 'background-effects' },
+        createElement('div', { className: 'aurora-container' },
+          createElement('div', { className: 'aurora-beam aurora-beam-1' }),
+          createElement('div', { className: 'aurora-beam aurora-beam-2' }),
+          createElement('div', { className: 'aurora-beam aurora-beam-3' })
+        ),
+        createElement('div', { className: 'mouse-gradient' })
+      ),
+
+      // Header with Region Toggle
+      createElement('header', { className: 'header' },
+        createElement('nav', { className: 'nav-container' },
+          createElement('a', { href: '/', className: 'brand fade-in' }, 'alfie'),
+          createElement('div', { className: 'region-toggle' },
+            createElement('button', {
+              className: `region-btn ${currentRegion === 'UK' ? 'active' : ''}`,
+              onClick: () => setCurrentRegion('UK')
+            }, 'UK'),
+            createElement('button', {
+              className: `region-btn ${currentRegion === 'US' ? 'active' : ''}`,
+              onClick: () => setCurrentRegion('US')
+            }, 'US')
+          )
+        )
+      ),
+
+      // Main Content
+      createElement('main', null,
+        // Welcome Section
+        createElement('section', {
+          id: 'welcome',
+          className: 'hero',
+          style: { display: currentView === 'welcome' ? 'block' : 'none' }
+        },
+          createElement('div', { className: 'content-wrapper' },
+            createElement('div', { className: 'hero-content slide-up' },
+              createElement('h1', { className: 'main-title' },
+                createElement('span', { className: 'title-line' }, 'Make Time for'),
+                createElement('span', { className: 'title-line' }, 'What Matters...')
+              ),
+              createElement('div', { className: 'hero-text fade-in-delayed' },
+                createElement('p', { className: 'subtitle' }, 
+                  'Because the best stories',
+                  createElement('br'),
+                  'unfold when you're living them'
+                ),
+                createElement('p', { className: 'tagline' }, 
+                  'Your companion to a seamless year of leave'
+                )
+              ),
+              createElement('div', { className: 'cta-wrapper fade-in-delayed-2' },
+                createElement('button', {
+                  className: 'cta-button',
+                  onClick: () => handleViewChange('calendar')
+                },
+                  createElement('span', null, 'Start Planning'),
+                  createElement('div', { className: 'button-glow' })
+                )
+              )
+            )
+          )
+        ),
+
+        // Calendar Section
+        createElement('section', {
+          id: 'calendar',
+          className: 'calendar-section',
+          style: { display: currentView === 'calendar' ? 'block' : 'none' }
+        },
+          createElement('div', { className: 'calendar-view' },
+            // Calendar content is managed by calendar.js
+          )
+        )
+      ),
+
+      // Footer
+      createElement('footer', { className: 'footer fade-in-delayed-2' },
+        createElement('div', { className: 'footer-content' },
+          createElement('nav', { className: 'footer-nav' },
+            createElement('a', { href: '#', className: 'footer-link' }, 'Contact Us'),
+            createElement('a', { href: '#', className: 'footer-link' }, 'Learn More'),
+            createElement('a', { href: '#', className: 'footer-link' }, 'Privacy Policy')
+          )
+        )
+      ),
+
+      // Modal Triggers
+      createElement(ModalTriggers, null)
+    )
   );
 }
 
 // Initialize the app
 const container = document.getElementById('root');
 const root = createRoot(container);
-root.render(<App />);
+root.render(createElement(App));
 
-// Mouse Movement Handler
+// Event Listeners for Background Effects
 document.addEventListener('mousemove', (e) => {
-  // Update CSS variables for mouse position
-  const x = e.clientX / window.innerWidth;
-  const y = e.clientY / window.innerHeight;
-  
-  document.documentElement.style.setProperty('--mouse-x', `${x * 100}%`);
-  document.documentElement.style.setProperty('--mouse-y', `${y * 100}%`);
-
-  // Update aurora beams subtly based on mouse position
-  const beams = document.querySelectorAll('.aurora-beam');
-  beams.forEach((beam, index) => {
-    const depth = (index + 1) * 0.03;
-    const moveX = (x - 0.5) * depth * 100;
-    const moveY = (y - 0.5) * depth * 100;
+  requestAnimationFrame(() => {
+    const x = e.clientX / window.innerWidth;
+    const y = e.clientY / window.innerHeight;
     
-    beam.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${index * 120}deg)`;
+    document.documentElement.style.setProperty('--mouse-x', `${x * 100}%`);
+    document.documentElement.style.setProperty('--mouse-y', `${y * 100}%`);
+
+    const beams = document.querySelectorAll('.aurora-beam');
+    beams.forEach((beam, index) => {
+      const depth = (index + 1) * 0.03;
+      const moveX = (x - 0.5) * depth * 100;
+      const moveY = (y - 0.5) * depth * 100;
+      beam.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${index * 120}deg)`;
+    });
   });
 });
-
-// Performance Optimization
-let rafId = null;
-const optimizedMouseMove = (callback) => {
-  return (e) => {
-    if (rafId) {
-      cancelAnimationFrame(rafId);
-    }
-    rafId = requestAnimationFrame(() => {
-      callback(e);
-      rafId = null;
-    });
-  };
-};
 
 // Responsive Handler
 const handleResize = () => {
   document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
 };
 
-window.addEventListener('resize', optimizedMouseMove(handleResize));
-handleResize(); // Initial call
+window.addEventListener('resize', () => {
+  requestAnimationFrame(handleResize);
+});
 
-// Page Load Animation Sequence
+// Initial calls
+handleResize();
+
+// Initialize particles on load
 document.addEventListener('DOMContentLoaded', () => {
   requestAnimationFrame(() => {
     document.body.classList.add('loaded');
   });
-  
-  // Initialize particles
-  const particlesContainer = document.getElementById('particles-container');
-  if (particlesContainer) {
-    initParticles();
-  }
-});
-
-// Particle system initialization
-function initParticles() {
-  const container = document.getElementById('particles-container');
-  const particleCount = Math.min(50, Math.floor(window.innerWidth / 20)); // Responsive particle count
-  
-  for (let i = 0; i < particleCount; i++) {
-    const particle = createParticle();
-    container.appendChild(particle);
-  }
-}
-
-function createParticle() {
-  const particle = document.createElement('div');
-  particle.className = 'particle';
-  
-  const size = Math.random() * 2 + 1;
-  particle.style.width = `${size}px`;
-  particle.style.height = `${size}px`;
-  
-  particle.style.left = `${Math.random() * 100}%`;
-  particle.style.top = `${Math.random() * 100}%`;
-  particle.style.opacity = Math.random() * 0.5 + 0.2;
-  
-  const duration = Math.random() * 10 + 15;
-  const delay = Math.random() * 5;
-  
-  particle.style.animation = `float ${duration}s ${delay}s infinite linear`;
-  
-  return particle;
-}
-
-// Reset particles on window resize
-let resizeTimeout;
-window.addEventListener('resize', () => {
-  clearTimeout(resizeTimeout);
-  resizeTimeout = setTimeout(() => {
-    const container = document.getElementById('particles-container');
-    if (container) {
-      container.innerHTML = '';
-      initParticles();
-    }
-  }, 250);
 });
