@@ -141,6 +141,180 @@
     opacity: 1;
 }
 
+/* Leave Request Panel */
+.leave-request-panel {
+    position: fixed;
+    right: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 400px;
+    background: var(--color-overlay);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+    color: var(--color-text);
+    z-index: var(--z-modal);
+    display: none;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.request-btn {
+    background: var(--color-accent);
+    color: var(--color-text);
+    border: none;
+    border-radius: var(--radius-full);
+    padding: 0.5rem 1rem;
+    font-family: var(--font-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    margin-left: auto;
+    display: block;
+    margin: var(--spacing-sm);
+}
+
+.request-btn:hover {
+    transform: translateY(-1px);
+    background: rgba(107, 66, 190, 0.9);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.panel-header h3 {
+    font-size: var(--text-xl);
+    font-weight: 500;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--color-text);
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: var(--transition-base);
+    padding: 0.25rem;
+}
+
+.close-btn:hover {
+    opacity: 1;
+}
+
+/* Form Elements */
+.leave-type-selector,
+.date-selection {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-select,
+.form-input {
+    width: 100%;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    font-family: var(--font-primary);
+    font-size: var(--text-base);
+    transition: var(--transition-base);
+}
+
+.form-select:focus,
+.form-input:focus {
+    border-color: var(--color-accent);
+    outline: none;
+}
+
+.form-select option {
+    background: var(--color-primary);
+    color: var(--color-text);
+}
+
+.date-range {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+}
+
+.date-input {
+    position: relative;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: var(--text-sm);
+    opacity: 0.8;
+}
+
+/* Summary Section */
+.leave-summary {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    font-size: var(--text-base);
+}
+
+.summary-item .label {
+    opacity: 0.8;
+}
+
+.summary-item .value {
+    font-weight: 500;
+}
+
+.validation-message {
+    min-height: 1.5rem;
+    color: #f87171;
+    font-size: var(--text-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Submit Button */
+.submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--color-accent);
+    border: none;
+    border-radius: var(--radius-full);
+    color: var(--color-text);
+    font-family: var(--font-primary);
+    font-size: var(--text-base);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.submit-btn:not(:disabled):hover {
+    transform: translateY(-1px);
+    background: rgba(107, 66, 190, 0.9);
+}
+
+/* Calendar Integration */
+.calendar-day.leave-requested {
+    background: var(--color-highlight);
+    border-color: var(--color-accent);
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .hero {
@@ -163,5 +337,17 @@
     .region-btn {
         padding: 0.4rem 0.8rem;
         font-size: 0.8rem;
+    }
+    
+    .leave-request-panel {
+        right: var(--spacing-sm);
+        left: var(--spacing-sm);
+        width: auto;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    .request-btn {
+        margin: var(--spacing-sm) auto;
     }
 }
