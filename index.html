@@ -20,13 +20,28 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
 
-    <!-- React Dependencies -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- React Dependencies - Order is important -->
+    <script>
+        // Define global React and ReactDOM variables
+        window.React = { createElement: null };
+        window.ReactDOM = { createRoot: null };
+    </script>
+    <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.22.5/babel.min.js"></script>
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <!-- Configure Babel -->
+    <script>
+        Babel.registerPreset('custom', {
+            presets: [
+                [Babel.availablePresets.react],
+                [Babel.availablePresets.env, { modules: false }]
+            ]
+        });
+    </script>
 </head>
 <body>
     <!-- Background Effects -->
@@ -141,7 +156,6 @@
                 window.particlesInitialized = true;
                 const container = document.getElementById('particles-container');
                 if (container) {
-                    // Ensure container is empty
                     container.innerHTML = '';
                 }
             }
@@ -155,8 +169,8 @@
     <script src="js/region-context.js"></script>
 
     <!-- React Components -->
-    <script type="text/babel" data-type="module" src="components/modals/index.js"></script>
-    <script type="text/babel" data-type="module" src="main.js"></script>
+    <script type="text/babel" data-presets="custom" src="components/modals/index.js"></script>
+    <script type="text/babel" data-presets="custom" src="main.js"></script>
 
     <!-- Initialization Script -->
     <script>
