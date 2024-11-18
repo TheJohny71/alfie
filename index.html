@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="styles/calendar.css">
     
     <!-- Favicon -->
-   <link rel="icon" type="image/svg+xml" href="/alfie/assets/images/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="/alfie/assets/images/favicon.svg">
 </head>
 <body>
     <!-- Background Effects -->
@@ -35,6 +35,10 @@
     <header class="header">
         <nav class="nav-container">
             <a href="/" class="brand fade-in">alfie</a>
+            <div class="region-toggle fade-in">
+                <button class="region-btn active" data-region="UK">UK</button>
+                <button class="region-btn" data-region="US">US</button>
+            </div>
         </nav>
     </header>
 
@@ -95,11 +99,11 @@
                 <div class="leave-status">
                     <div class="status-item">
                         <span class="status-dot pto"></span>
-                        <span>PTO/Leave</span>
+                        <span data-term="leave">Annual Leave</span>
                     </div>
                     <div class="status-item">
                         <span class="status-dot holiday"></span>
-                        <span>Holiday</span>
+                        <span data-term="holiday">Bank Holiday</span>
                     </div>
                     <div class="status-item">
                         <span class="status-dot weekend"></span>
@@ -123,6 +127,7 @@
 
     <!-- Scripts -->
     <script src="js/effects.js" defer></script>
+    <script src="js/region-context.js" defer></script>
     <script src="js/calendar.js" defer></script>
     <script>
         // Handle transition between welcome and calendar sections
