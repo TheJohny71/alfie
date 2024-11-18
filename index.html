@@ -15,21 +15,19 @@
     <link rel="stylesheet" href="styles/animations.css">
     <link rel="stylesheet" href="styles/utilities.css">
     <link rel="stylesheet" href="styles/effects.css">
+    <link rel="stylesheet" href="styles/calendar.css">
     
-    <!-- Favicon - Note: path matches your GitHub structure -->
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
 </head>
 <body>
     <!-- Background Effects -->
     <div class="background-effects">
-        <!-- Aurora Effect Container -->
         <div class="aurora-container">
             <div class="aurora-beam aurora-beam-1"></div>
             <div class="aurora-beam aurora-beam-2"></div>
             <div class="aurora-beam aurora-beam-3"></div>
         </div>
-        
-        <!-- Mouse-following Gradient -->
         <div class="mouse-gradient"></div>
     </div>
 
@@ -41,30 +39,75 @@
     </header>
 
     <!-- Main Content -->
-    <main class="hero">
-        <div class="content-wrapper">
-            <div class="hero-content slide-up">
-                <!-- Main Title -->
-                <h1 class="main-title">
-                    <span class="title-line">Make Time for</span>
-                    <span class="title-line">What Matters...</span>
-                </h1>
-                
-                <!-- Hero Text -->
-                <div class="hero-text fade-in-delayed">
-                    <p class="subtitle">Because the best stories<br>unfold when you're living them</p>
-                    <p class="tagline">Your companion to a seamless year of leave</p>
-                </div>
+    <main>
+        <!-- Welcome Section -->
+        <section id="welcome" class="hero">
+            <div class="content-wrapper">
+                <div class="hero-content slide-up">
+                    <h1 class="main-title">
+                        <span class="title-line">Make Time for</span>
+                        <span class="title-line">What Matters...</span>
+                    </h1>
+                    
+                    <div class="hero-text fade-in-delayed">
+                        <p class="subtitle">Because the best stories<br>unfold when you're living them</p>
+                        <p class="tagline">Your companion to a seamless year of leave</p>
+                    </div>
 
-                <!-- Call to Action -->
-                <div class="cta-wrapper fade-in-delayed-2">
-                    <a href="#" class="cta-button">
-                        <span>Start Planning</span>
-                        <div class="button-glow"></div>
-                    </a>
+                    <div class="cta-wrapper fade-in-delayed-2">
+                        <button class="cta-button" id="startButton">
+                            <span>Start Planning</span>
+                            <div class="button-glow"></div>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <!-- Calendar Section (Initially Hidden) -->
+        <section id="calendar" class="calendar-section" style="display: none;">
+            <div class="calendar-view">
+                <header class="calendar-header">
+                    <div class="nav-controls">
+                        <button class="nav-btn" id="prevMonth">←</button>
+                        <h2 id="currentMonth">November 2024</h2>
+                        <button class="nav-btn" id="nextMonth">→</button>
+                    </div>
+                    <div class="view-controls">
+                        <button class="view-btn active" data-view="month">Month</button>
+                        <button class="view-btn" data-view="week">Week</button>
+                    </div>
+                </header>
+                
+                <div class="calendar-grid">
+                    <div class="weekdays">
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                        <div>Sun</div>
+                    </div>
+                    <div class="days" id="calendarDays"></div>
+                </div>
+                
+                <div class="leave-status">
+                    <div class="status-item">
+                        <span class="status-dot pto"></span>
+                        <span>PTO/Leave</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-dot holiday"></span>
+                        <span>Holiday</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-dot weekend"></span>
+                        <span>Weekend</span>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Footer -->
@@ -80,5 +123,13 @@
 
     <!-- Scripts -->
     <script src="js/effects.js" defer></script>
+    <script src="js/calendar.js" defer></script>
+    <script>
+        // Handle transition between welcome and calendar sections
+        document.getElementById('startButton').addEventListener('click', function() {
+            document.getElementById('welcome').style.display = 'none';
+            document.getElementById('calendar').style.display = 'block';
+        });
+    </script>
 </body>
 </html>
