@@ -35,10 +35,6 @@
     <header class="header">
         <nav class="nav-container">
             <a href="/" class="brand fade-in">alfie</a>
-            <div class="region-toggle fade-in">
-                <button class="region-btn active" data-region="UK">UK</button>
-                <button class="region-btn" data-region="US">US</button>
-            </div>
         </nav>
     </header>
 
@@ -112,6 +108,85 @@
                 </div>
             </div>
         </section>
+
+        <!-- Leave Request Panel -->
+        <div class="leave-request-panel backdrop-blur" id="leaveRequestPanel">
+            <div class="panel-header">
+                <h3 data-term="leave">Request Annual Leave</h3>
+                <button class="close-btn" id="closeLeavePanel" aria-label="Close panel">×</button>
+            </div>
+            
+            <form id="leaveRequestForm">
+                <div class="leave-type-selector">
+                    <label for="leaveType">Type of Leave</label>
+                    <select id="leaveType" class="form-select" required>
+                        <option value="" disabled selected>Select leave type...</option>
+                    </select>
+                </div>
+
+                <div class="date-selection">
+                    <div class="date-range">
+                        <div class="date-input">
+                            <label for="startDate">Start Date</label>
+                            <input type="date" id="startDate" class="form-input" required>
+                        </div>
+                        <div class="date-input">
+                            <label for="endDate">End Date</label>
+                            <input type="date" id="endDate" class="form-input" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leave-summary">
+                    <div class="summary-item">
+                        <span class="label">Working Days:</span>
+                        <span class="value" id="workingDays">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="label" data-term="leave">Annual Leave</span>
+                        <span class="label">Remaining:</span>
+                        <span class="value" id="leaveBalance">-</span>
+                    </div>
+                </div>
+
+                <div class="validation-message" id="validationMessage" role="alert" aria-live="polite"></div>
+
+                <button type="submit" class="submit-btn" id="submitLeave" disabled>
+                    Submit Request
+                </button>
+            </form>
+        </div>
+
+        <!-- Smart Planning Section -->
+        <div class="smart-planner-container">
+            <div class="planner-header">
+                <h3>Smart Planning</h3>
+                <div class="optimization-controls">
+                    <button class="optimize-btn">Optimize Leave</button>
+                    <button class="team-view-btn">Team Coverage</button>
+                </div>
+            </div>
+            <div class="suggestions-panel"></div>
+            <div class="coverage-panel"></div>
+        </div>
+
+        <!-- Leave Assistant -->
+        <div class="assistant-container">
+            <div class="assistant-header">
+                <h3>Leave Assistant</h3>
+                <button class="close-assistant">×</button>
+            </div>
+            <div class="conversation-view"></div>
+            <div class="suggestions-panel"></div>
+            <div class="assistant-input">
+                <input type="text" placeholder="Ask about leave planning..." class="query-input">
+                <button class="send-query">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
     </main>
 
     <!-- Footer -->
@@ -129,6 +204,9 @@
     <script src="js/effects.js" defer></script>
     <script src="js/region-context.js" defer></script>
     <script src="js/calendar.js" defer></script>
+    <script src="js/leave-request.js" defer></script>
+    <script src="js/smart-planning.js" defer></script>
+    <script src="js/leave-assistant.js" defer></script>
     <script>
         // Handle transition between welcome and calendar sections
         document.getElementById('startButton').addEventListener('click', function() {
