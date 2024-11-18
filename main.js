@@ -15,6 +15,13 @@ function App() {
     setCurrentView(view);
   };
 
+  // Footer links with unique keys
+  const footerLinks = [
+    { id: 'contact', text: 'Contact Us', href: '#' },
+    { id: 'learn', text: 'Learn More', href: '#' },
+    { id: 'privacy', text: 'Privacy Policy', href: '#' }
+  ];
+
   const calendarSection = h(
     "section",
     {
@@ -23,7 +30,7 @@ function App() {
       className: "calendar-section",
       style: { display: currentView === "calendar" ? "block" : "none" }
     },
-    h("div", { className: "calendar-view" }, [
+    h("div", { className: "calendar-view", key: "calendar-view" }, [
       // Calendar Header
       h("header", { className: "calendar-header", key: "calendar-header" }, [
         h("div", { className: "nav-controls", key: "nav-controls" }, [
@@ -37,31 +44,27 @@ function App() {
         ])
       ]),
       
-      // Calendar Grid
+      // Calendar Grid with unique keys for each weekday
       h("div", { className: "calendar-grid", key: "calendar-grid" }, [
-        h("div", { className: "weekdays", key: "weekdays" }, [
-          h("div", { key: "mon" }, "Mon"),
-          h("div", { key: "tue" }, "Tue"),
-          h("div", { key: "wed" }, "Wed"),
-          h("div", { key: "thu" }, "Thu"),
-          h("div", { key: "fri" }, "Fri"),
-          h("div", { key: "sat" }, "Sat"),
-          h("div", { key: "sun" }, "Sun")
-        ]),
+        h("div", { className: "weekdays", key: "weekdays" }, 
+          ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(day => 
+            h("div", { key: `weekday-${day.toLowerCase()}` }, day)
+          )
+        ),
         h("div", { className: "days", id: "calendarDays", key: "calendar-days" })
       ]),
       
-      // Leave Status
+      // Leave Status with unique keys
       h("div", { className: "leave-status", key: "leave-status" }, [
-        h("div", { className: "status-item", key: "status-pto" }, [
+        h("div", { className: "status-item", key: "status-item-pto" }, [
           h("span", { className: "status-dot pto", key: "dot-pto" }),
           h("span", { "data-term": "leave", key: "text-pto" }, "Annual Leave")
         ]),
-        h("div", { className: "status-item", key: "status-holiday" }, [
+        h("div", { className: "status-item", key: "status-item-holiday" }, [
           h("span", { className: "status-dot holiday", key: "dot-holiday" }),
           h("span", { "data-term": "holiday", key: "text-holiday" }, "Bank Holiday")
         ]),
-        h("div", { className: "status-item", key: "status-weekend" }, [
+        h("div", { className: "status-item", key: "status-item-weekend" }, [
           h("span", { className: "status-dot weekend", key: "dot-weekend" }),
           h("span", { key: "text-weekend" }, "Weekend")
         ])
@@ -79,43 +82,44 @@ function App() {
     },
     h(
       "div",
-      { className: "content-wrapper" },
+      { className: "content-wrapper", key: "welcome-wrapper" },
       h(
         "div",
-        { className: "hero-content slide-up" },
+        { className: "hero-content slide-up", key: "hero-content" },
         [
           h(
             "h1",
-            { className: "main-title" },
+            { className: "main-title", key: "main-title" },
             [
-              h("span", { className: "title-line", key: "title-1" }, "Make Time for"),
-              h("span", { className: "title-line", key: "title-2" }, "What Matters...")
+              h("span", { className: "title-line", key: "title-line-1" }, "Make Time for"),
+              h("span", { className: "title-line", key: "title-line-2" }, "What Matters...")
             ]
           ),
           h(
             "div",
-            { className: "hero-text fade-in-delayed" },
+            { className: "hero-text fade-in-delayed", key: "hero-text" },
             [
-              h("p", { className: "subtitle" }, [
+              h("p", { className: "subtitle", key: "subtitle" }, [
                 "Because the best stories",
-                h("br"),
+                h("br", { key: "subtitle-break" }),
                 "unfold when you're living them"
               ]),
-              h("p", { className: "tagline" }, "Your companion to a seamless year of leave")
+              h("p", { className: "tagline", key: "tagline" }, "Your companion to a seamless year of leave")
             ]
           ),
           h(
             "div",
-            { className: "cta-wrapper fade-in-delayed-2" },
+            { className: "cta-wrapper fade-in-delayed-2", key: "cta-wrapper" },
             h(
               "button",
               {
                 className: "cta-button",
-                onClick: () => handleViewChange("calendar")
+                onClick: () => handleViewChange("calendar"),
+                key: "cta-button"
               },
               [
-                h("span", null, "Start Planning"),
-                h("div", { className: "button-glow" })
+                h("span", { key: "cta-text" }, "Start Planning"),
+                h("div", { className: "button-glow", key: "button-glow" })
               ]
             )
           )
@@ -124,7 +128,6 @@ function App() {
     )
   );
 
-  // Single return statement with complete structure
   return h(
     ModalProvider,
     { key: "modal-provider" },
@@ -159,6 +162,7 @@ function App() {
           "main", 
           { 
             className: "flex-grow",
+            key: "main-content",
             style: {
               width: "100%",
               position: "relative"
@@ -167,21 +171,26 @@ function App() {
           [welcomeSection, calendarSection]
         ),
 
-        // Footer
+        // Footer with mapped links
         h(
           "footer",
-          { className: "footer fade-in-delayed-2" },
+          { className: "footer fade-in-delayed-2", key: "footer" },
           h(
             "div",
-            { className: "footer-content" },
+            { className: "footer-content", key: "footer-content" },
             h(
               "nav",
-              { className: "footer-nav" },
-              [
-                h("a", { href: "#", className: "footer-link" }, "Contact Us"),
-                h("a", { href: "#", className: "footer-link" }, "Learn More"),
-                h("a", { href: "#", className: "footer-link" }, "Privacy Policy")
-              ]
+              { className: "footer-nav", key: "footer-nav" },
+              footerLinks.map(link => 
+                h("a", 
+                  { 
+                    href: link.href, 
+                    className: "footer-link",
+                    key: `footer-link-${link.id}`
+                  }, 
+                  link.text
+                )
+              )
             )
           )
         ),
