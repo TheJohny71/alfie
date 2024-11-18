@@ -7,7 +7,7 @@
     <title>Alfie - Make Time for What Matters</title>
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Styles -->
     <link rel="stylesheet" href="styles/main.css">
@@ -19,6 +19,14 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/alfie/assets/images/favicon.svg">
+
+    <!-- React and ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
     <!-- Background Effects -->
@@ -31,193 +39,109 @@
         <div class="mouse-gradient"></div>
     </div>
 
-    <!-- Navigation Header -->
-    <header class="header">
-        <nav class="nav-container">
-            <a href="/" class="brand fade-in">alfie</a>
-        </nav>
-    </header>
-
-    <!-- Main Content -->
-    <main>
-        <!-- Welcome Section -->
-        <section id="welcome" class="hero">
-            <div class="content-wrapper">
-                <div class="hero-content slide-up">
-                    <h1 class="main-title">
-                        <span class="title-line">Make Time for</span>
-                        <span class="title-line">What Matters...</span>
-                    </h1>
-                    
-                    <div class="hero-text fade-in-delayed">
-                        <p class="subtitle">Because the best stories<br>unfold when you're living them</p>
-                        <p class="tagline">Your companion to a seamless year of leave</p>
-                    </div>
-
-                    <div class="cta-wrapper fade-in-delayed-2">
-                        <button class="cta-button" id="startButton">
-                            <span>Start Planning</span>
-                            <div class="button-glow"></div>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Calendar Section (Initially Hidden) -->
-        <section id="calendar" class="calendar-section" style="display: none;">
-            <div class="calendar-view">
-                <header class="calendar-header">
-                    <div class="nav-controls">
-                        <button class="nav-btn" id="prevMonth">←</button>
-                        <h2 id="currentMonth">November 2024</h2>
-                        <button class="nav-btn" id="nextMonth">→</button>
-                    </div>
-                    <div class="view-controls">
-                        <button class="view-btn active" data-view="month">Month</button>
-                        <button class="view-btn" data-view="week">Week</button>
-                    </div>
-                </header>
-                
-                <div class="calendar-grid">
-                    <div class="weekdays">
-                        <div>Mon</div>
-                        <div>Tue</div>
-                        <div>Wed</div>
-                        <div>Thu</div>
-                        <div>Fri</div>
-                        <div>Sat</div>
-                        <div>Sun</div>
-                    </div>
-                    <div class="days" id="calendarDays"></div>
-                </div>
-                
-                <div class="leave-status">
-                    <div class="status-item">
-                        <span class="status-dot pto"></span>
-                        <span data-term="leave">Annual Leave</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-dot holiday"></span>
-                        <span data-term="holiday">Bank Holiday</span>
-                    </div>
-                    <div class="status-item">
-                        <span class="status-dot weekend"></span>
-                        <span>Weekend</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-<!-- Add this before the leave request panel -->
-<div class="modal-backdrop" id="modalBackdrop"></div>
-
-<!-- Update leave request panel attributes -->
-<div class="leave-request-panel backdrop-blur" id="leaveRequestPanel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="panel-header">
-        <h3 id="modalTitle" data-term="leave">Request Annual Leave</h3>
-        <!-- Rest of the panel content remains the same -->
-    </div>
-    ...
-</div>
-        <!-- Leave Request Panel -->
-        <div class="leave-request-panel backdrop-blur" id="leaveRequestPanel">
-            <div class="panel-header">
-                <h3 data-term="leave">Request Annual Leave</h3>
-                <button class="close-btn" id="closeLeavePanel" aria-label="Close panel">×</button>
-            </div>
-            
-            <form id="leaveRequestForm">
-                <div class="leave-type-selector">
-                    <label for="leaveType">Type of Leave</label>
-                    <select id="leaveType" class="form-select" required>
-                        <option value="" disabled selected>Select leave type...</option>
-                    </select>
-                </div>
-
-                <div class="date-selection">
-                    <div class="date-range">
-                        <div class="date-input">
-                            <label for="startDate">Start Date</label>
-                            <input type="date" id="startDate" class="form-input" required>
-                        </div>
-                        <div class="date-input">
-                            <label for="endDate">End Date</label>
-                            <input type="date" id="endDate" class="form-input" required>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="leave-summary">
-                    <div class="summary-item">
-                        <span class="label">Working Days:</span>
-                        <span class="value" id="workingDays">0</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="label" data-term="leave">Annual Leave</span>
-                        <span class="label">Remaining:</span>
-                        <span class="value" id="leaveBalance">-</span>
-                    </div>
-                </div>
-
-                <div class="validation-message" id="validationMessage" role="alert" aria-live="polite"></div>
-
-                <button type="submit" class="submit-btn" id="submitLeave" disabled>
-                    Submit Request
-                </button>
-            </form>
-        </div>
-
-        <!-- Smart Planning Section -->
-        <div class="smart-planner-container">
-            <div class="planner-header">
-                <h3>Smart Planning</h3>
-                <div class="optimization-controls">
-                    <button class="optimize-btn">Optimize Leave</button>
-                    <button class="team-view-btn">Team Coverage</button>
-                </div>
-            </div>
-            <div class="suggestions-panel"></div>
-            <div class="coverage-panel"></div>
-        </div>
-
-        <!-- Leave Assistant -->
-        <div class="assistant-container">
-            <div class="assistant-header">
-                <h3>Leave Assistant</h3>
-                <button class="close-assistant">×</button>
-            </div>
-            <div class="conversation-view"></div>
-            <div class="suggestions-panel"></div>
-            <div class="assistant-input">
-                <input type="text" placeholder="Ask about leave planning..." class="query-input">
-                <button class="send-query">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer fade-in-delayed-2">
-        <div class="footer-content">
-            <nav class="footer-nav">
-                <a href="#" class="footer-link">Contact Us</a>
-                <a href="#" class="footer-link">Learn More</a>
-                <a href="#" class="footer-link">Privacy Policy</a>
+    <!-- Root element for React app -->
+    <div id="root">
+        <!-- Navigation Header -->
+        <header class="header">
+            <nav class="nav-container">
+                <a href="/" class="brand fade-in">alfie</a>
             </nav>
-        </div>
-    </footer>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Welcome Section -->
+            <section id="welcome" class="hero">
+                <div class="content-wrapper">
+                    <div class="hero-content slide-up">
+                        <h1 class="main-title">
+                            <span class="title-line">Make Time for</span>
+                            <span class="title-line">What Matters...</span>
+                        </h1>
+                        
+                        <div class="hero-text fade-in-delayed">
+                            <p class="subtitle">Because the best stories<br>unfold when you're living them</p>
+                            <p class="tagline">Your companion to a seamless year of leave</p>
+                        </div>
+
+                        <div class="cta-wrapper fade-in-delayed-2">
+                            <button class="cta-button" id="startButton">
+                                <span>Start Planning</span>
+                                <div class="button-glow"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Calendar Section -->
+            <section id="calendar" class="calendar-section" style="display: none;">
+                <div class="calendar-view">
+                    <header class="calendar-header">
+                        <div class="nav-controls">
+                            <button class="nav-btn" id="prevMonth">←</button>
+                            <h2 id="currentMonth">November 2024</h2>
+                            <button class="nav-btn" id="nextMonth">→</button>
+                        </div>
+                        <div class="view-controls">
+                            <button class="view-btn active" data-view="month">Month</button>
+                            <button class="view-btn" data-view="week">Week</button>
+                        </div>
+                    </header>
+                    
+                    <div class="calendar-grid">
+                        <div class="weekdays">
+                            <div>Mon</div>
+                            <div>Tue</div>
+                            <div>Wed</div>
+                            <div>Thu</div>
+                            <div>Fri</div>
+                            <div>Sat</div>
+                            <div>Sun</div>
+                        </div>
+                        <div class="days" id="calendarDays"></div>
+                    </div>
+                    
+                    <div class="leave-status">
+                        <div class="status-item">
+                            <span class="status-dot pto"></span>
+                            <span data-term="leave">Annual Leave</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-dot holiday"></span>
+                            <span data-term="holiday">Bank Holiday</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-dot weekend"></span>
+                            <span>Weekend</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer fade-in-delayed-2">
+            <div class="footer-content">
+                <nav class="footer-nav">
+                    <a href="#" class="footer-link">Contact Us</a>
+                    <a href="#" class="footer-link">Learn More</a>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                </nav>
+            </div>
+        </footer>
+    </div>
 
     <!-- Scripts -->
     <script src="js/effects.js" defer></script>
-    <script src="js/region-context.js" defer></script>
+    <script src="js/background-effects.js" defer></script>
     <script src="js/calendar.js" defer></script>
-    <script src="js/leave-request.js" defer></script>
-    <script src="js/smart-planning.js" defer></script>
-    <script src="js/leave-assistant.js" defer></script>
+    <script src="js/region-context.js" defer></script>
+
+    <!-- React Components -->
+    <script type="text/babel" src="components/modals/index.js"></script>
+    <script type="text/babel" src="main.js"></script>
+
     <script>
         // Handle transition between welcome and calendar sections
         document.getElementById('startButton').addEventListener('click', function() {
