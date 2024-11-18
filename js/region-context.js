@@ -1,10 +1,10 @@
 // js/region-context.js
 class RegionManager {
   constructor() {
-    this.region = 'UK'; // Default region
+    this.region = 'UK';
     this.preferences = {
       dateFormat: 'DD/MM/YYYY',
-      weekStart: 1, // Monday
+      weekStart: 1,
       terminology: 'UK'
     };
     
@@ -20,40 +20,53 @@ class RegionManager {
         sick: 'Sick Time'
       }
     };
+
+    // Only initialize if toggle doesn't exist
+    if (!document.querySelector('.region-toggle')) {
+      this.initializeHeader();
+    }
     
-    this.initializeHeader();
+    // Add event listener to any existing toggles
+    document.querySelectorAll('.region-toggle').forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        if (e.target.classList.contains('region-btn')) {
+          this.setRegion(e.target.dataset.region);
+        }
+      });
+    });
   }
 
   initializeHeader() {
     const header = document.querySelector('.header');
+    const brand = header.querySelector('.brand');
+    
+    if (!brand) return;
+
     const regionToggle = document.createElement('div');
-    regionToggle.className = 'region-toggle';
+    regionToggle.className = 'region-toggle fade-in';
     regionToggle.innerHTML = `
       <button class="region-btn ${this.region === 'UK' ? 'active' : ''}" data-region="UK">UK</button>
       <button class="region-btn ${this.region === 'US' ? 'active' : ''}" data-region="US">US</button>
     `;
     
-    // Add to header after brand
-    const brand = header.querySelector('.brand');
     brand.parentNode.insertBefore(regionToggle, brand.nextSibling);
-    
-    // Add event listeners
-    regionToggle.addEventListener('click', (e) => {
-      if (e.target.classList.contains('region-btn')) {
-        this.setRegion(e.target.dataset.region);
-      }
-    });
   }
 
   setRegion(newRegion) {
+    if (newRegion !== 'UK' && newRegion !== 'US') return;
+    
     this.region = newRegion;
     this.updatePreferences();
     this.updateUI();
     
-    // Update buttons
     document.querySelectorAll('.region-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.region === newRegion);
     });
+
+    // Dispatch event for other components
+    window.dispatchEvent(new CustomEvent('regionChanged', { 
+      detail: { region: newRegion } 
+    }));
   }
 
   updatePreferences() {
@@ -65,7 +78,6 @@ class RegionManager {
   }
 
   updateUI() {
-    // Update terminology
     document.querySelectorAll('[data-term]').forEach(element => {
       const termKey = element.dataset.term;
       if (this.terms[this.region][termKey]) {
@@ -79,7 +91,11 @@ class RegionManager {
   }
 
   formatDate(date) {
+    if (!date) return '';
+    
     const d = new Date(date);
+    if (isNaN(d.getTime())) return '';
+    
     const day = String(d.getDate()).padStart(2, '0');
     const month = String(d.getMonth() + 1).padStart(2, '0');
     const year = d.getFullYear();
