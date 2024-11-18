@@ -124,66 +124,48 @@ function App() {
     )
   );
 
-  // In your main.js, update the return statement
-return h(
+  // Single return statement with complete structure
+  return h(
     ModalProvider,
     { key: "modal-provider" },
     h(
-        "div",
-        {
-            key: "app-container",
+      "div",
+      {
+        key: "app-container",
+        style: {
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+          width: "100%",
+          overflow: "hidden"
+        }
+      },
+      [
+        // Header
+        h(
+          "header",
+          { 
+            className: "header",
+            key: "header",
             style: {
-                display: "flex",
-                flexDirection: "column",
-                minHeight: "100vh",
-                width: "100%",
-                overflow: "hidden"
+              width: "100%",
+              zIndex: 10
             }
-        },
-        [
-            // Header
-            h(
-                "header",
-                { 
-                    className: "header",
-                    key: "header",
-                    style: {
-                        width: "100%",
-                        zIndex: 10
-                    }
-                },
-                // ... rest of header content
-            ),
-
-            // Main Content (with flex-grow)
-            h("main", { 
-                className: "flex-grow",
-                style: {
-                    width: "100%",
-                    position: "relative"
-                }
-            }, [welcomeSection, calendarSection]),
-
-            // Footer
-            h(
-                "footer",
-                { 
-                    className: "footer fade-in-delayed-2",
-                    style: {
-                        width: "100%"
-                    }
-                },
-                // ... rest of footer content
-            ),
-
-            // Modal Triggers
-            h(ModalTriggers, { key: "modal-triggers" })
-        ]
-    )
-);
+          }
+        ),
 
         // Main Content
-        h("main", { className: "flex-grow" }, [welcomeSection, calendarSection]),
+        h(
+          "main", 
+          { 
+            className: "flex-grow",
+            style: {
+              width: "100%",
+              position: "relative"
+            }
+          }, 
+          [welcomeSection, calendarSection]
+        ),
 
         // Footer
         h(
