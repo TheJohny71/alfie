@@ -4,7 +4,7 @@ const ReactDOM = window.ReactDOM;
 const { createElement, useState, useEffect } = React;
 const { createRoot } = ReactDOM;
 
-import { ModalProvider, ModalTriggers } from './components/modals/index.js';
+const { ModalProvider, ModalTriggers } = await import('./components/modals/index.js');
 
 function App() {
   const [currentView, setCurrentView] = useState("welcome");
