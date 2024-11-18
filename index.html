@@ -18,30 +18,15 @@
     <link rel="stylesheet" href="styles/calendar.css">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 
-    <!-- React Dependencies - Order is important -->
+    <!-- React Setup -->
     <script>
-        // Define global React and ReactDOM variables
-        window.React = { createElement: null };
+        window.React = { createElement: null, useState: null, useEffect: null };
         window.ReactDOM = { createRoot: null };
     </script>
-    <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone@7.22.5/babel.min.js"></script>
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-
-    <!-- Configure Babel -->
-    <script>
-        Babel.registerPreset('custom', {
-            presets: [
-                [Babel.availablePresets.react],
-                [Babel.availablePresets.env, { modules: false }]
-            ]
-        });
-    </script>
+    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
 </head>
 <body>
     <!-- Background Effects -->
@@ -148,9 +133,9 @@
         </footer>
     </div>
 
-    <!-- Core Scripts -->
+    <!-- Application Scripts -->
     <script>
-        // Initialize particle container
+        // Initialize background effects
         window.addEventListener('DOMContentLoaded', () => {
             if (!window.particlesInitialized) {
                 window.particlesInitialized = true;
@@ -159,27 +144,35 @@
                     container.innerHTML = '';
                 }
             }
+
+            // Handle welcome to calendar transition
+            document.getElementById('startButton')?.addEventListener('click', function() {
+                document.getElementById('welcome').style.display = 'none';
+                document.getElementById('calendar').style.display = 'block';
+            });
         });
+
+        // Handle resize
+        const handleResize = () => {
+            document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+        };
+        window.addEventListener('resize', () => requestAnimationFrame(handleResize));
+        handleResize();
     </script>
 
-    <!-- Application Scripts -->
+    <!-- Core JavaScript -->
     <script src="js/effects.js"></script>
     <script src="js/background-effects.js"></script>
     <script src="js/calendar.js"></script>
     <script src="js/region-context.js"></script>
 
-    <!-- React Components -->
-    <script type="text/babel" data-presets="custom" src="components/modals/index.js"></script>
-    <script type="text/babel" data-presets="custom" src="main.js"></script>
-
-    <!-- Initialization Script -->
+    <!-- Load main.js after all dependencies -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Handle transition between welcome and calendar sections
-            document.getElementById('startButton').addEventListener('click', function() {
-                document.getElementById('welcome').style.display = 'none';
-                document.getElementById('calendar').style.display = 'block';
-            });
+            const script = document.createElement('script');
+            script.src = 'main.js';
+            script.type = 'text/javascript';
+            document.body.appendChild(script);
         });
     </script>
 </body>
