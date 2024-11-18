@@ -21,9 +21,14 @@
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 
     <!-- React Setup -->
-    <script>
-        window.React = { createElement: null, useState: null, useEffect: null };
-        window.ReactDOM = { createRoot: null };
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0",
+        "react-dom": "https://esm.sh/react-dom@18.2.0",
+        "lucide-react": "https://esm.sh/lucide-react@0.263.1"
+      }
+    }
     </script>
     <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
@@ -134,7 +139,7 @@
     </div>
 
     <!-- Application Scripts -->
-    <script>
+    <script type="module">
         // Initialize background effects
         window.addEventListener('DOMContentLoaded', () => {
             if (!window.particlesInitialized) {
@@ -151,29 +156,16 @@
                 document.getElementById('calendar').style.display = 'block';
             });
         });
-
-        // Handle resize
-        const handleResize = () => {
-            document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
-        };
-        window.addEventListener('resize', () => requestAnimationFrame(handleResize));
-        handleResize();
     </script>
 
     <!-- Core JavaScript -->
-    <script src="js/effects.js"></script>
-    <script src="js/background-effects.js"></script>
-    <script src="js/calendar.js"></script>
-    <script src="js/region-context.js"></script>
+    <script type="module" src="js/effects.js"></script>
+    <script type="module" src="js/background-effects.js"></script>
+    <script type="module" src="js/calendar.js"></script>
+    <script type="module" src="js/region-context.js"></script>
+    <script type="module" src="main.js"></script>
 
-    <!-- Load main.js after all dependencies -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const script = document.createElement('script');
-            script.src = 'main.js';
-            script.type = 'text/javascript';
-            document.body.appendChild(script);
-        });
-    </script>
+    <!-- Modal System -->
+    <script type="module" src="components/modals/index.js"></script>
 </body>
 </html>
