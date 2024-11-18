@@ -650,4 +650,24 @@ label {
   .conversation-view {
     height: 250px;
   }
+.leave-request-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 400px;
+  width: 90%;
+  background: rgba(42, 16, 82, 0.8);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .leave-request-panel {
+    bottom: 0;
+    top: auto;
+    transform: translateX(-50%);
+    border-radius: 16px 16px 0 0;
+  }
 }
