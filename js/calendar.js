@@ -3,129 +3,119 @@ class Calendar {
   constructor() {
     this.currentDate = new Date();
     this.selectedDates = new Set();
-    this.initializeElements();
-    this.addEventListeners();
-    this.render();
+    this.currentView = 'month';
+    this.init();
   }
 
-  initializeElements() {
-    this.monthDisplay = document.getElementById('currentMonth');
-    this.daysContainer = document.getElementById('calendarDays');
-    this.prevButton = document.getElementById('prevMonth');
-    this.nextButton = document.getElementById('nextMonth');
-    this.viewButtons = document.querySelectorAll('.view-btn');
+  init() {
+    this.renderCalendar();
+    this.attachEventListeners();
   }
 
-  addEventListeners() {
-    this.prevButton.addEventListener('click', () => this.changeMonth(-1));
-    this.nextButton.addEventListener('click', () => this.changeMonth(1));
-    this.viewButtons.forEach(btn => {
-      btn.addEventListener('click', () => this.changeView(btn));
+  renderCalendar() {
+    const daysContainer = document.querySelector('.days');
+    const currentMonthElement = document.getElementById('currentMonth');
+    
+    if (!daysContainer || !currentMonthElement) return;
+
+    // Clear existing content
+    daysContainer.innerHTML = '';
+
+    // Update month display
+    const monthYear = this.currentDate.toLocaleString('default', { 
+      month: 'long', 
+      year: 'numeric' 
     });
+    currentMonthElement.textContent = monthYear;
 
-    // Handle keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') this.changeMonth(-1);
-      if (e.key === 'ArrowRight') this.changeMonth(1);
-    });
+    // Calculate days
+    const firstDay = new Date(
+      this.currentDate.getFullYear(),
+      this.currentDate.getMonth(),
+      1
+    );
+    const lastDay = new Date(
+      this.currentDate.getFullYear(),
+      this.currentDate.getMonth() + 1,
+      0
+    );
+
+    // Calculate start padding
+    const startPadding = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+
+    // Add padding days
+    for (let i = 0; i < startPadding; i++) {
+      const dayElement = document.createElement('div');
+      dayElement.className = 'calendar-day padding';
+      daysContainer.appendChild(dayElement);
+    }
+
+    // Add month days
+    for (let day = 1; day <= lastDay.getDate(); day++) {
+      const date = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day);
+      const dayElement = document.createElement('div');
+      
+      // Set base classes
+      const classes = ['calendar-day'];
+      
+      // Add weekend class
+      if (date.getDay() === 0 || date.getDay() === 6) {
+        classes.push('weekend');
+      }
+      
+      // Add selected class
+      if (this.selectedDates.has(date.toDateString())) {
+        classes.push('selected');
+      }
+      
+      dayElement.className = classes.join(' ');
+      dayElement.textContent = day;
+      dayElement.setAttribute('data-date', date.toDateString());
+      
+      // Add click handler
+      dayElement.addEventListener('click', () => this.toggleDate(date));
+      
+      daysContainer.appendChild(dayElement);
+    }
   }
 
-  changeMonth(delta) {
-    this.currentDate.setMonth(this.currentDate.getMonth() + delta);
-    this.render();
-  }
-
-  changeView(button) {
-    this.viewButtons.forEach(btn => btn.classList.remove('active'));
-    button.classList.add('active');
-    // View switching logic will be implemented in next phase
-  }
-
-  handleDateClick(date) {
-    const dateStr = date.toISOString().split('T')[0];
-    if (this.selectedDates.has(dateStr)) {
-      this.selectedDates.delete(dateStr);
+  toggleDate(date) {
+    const dateString = date.toDateString();
+    if (this.selectedDates.has(dateString)) {
+      this.selectedDates.delete(dateString);
     } else {
-      this.selectedDates.add(dateStr);
+      this.selectedDates.add(dateString);
     }
-    this.render();
+    this.renderCalendar();
   }
 
-  isDateSelected(date) {
-    const dateStr = date.toISOString().split('T')[0];
-    return this.selectedDates.has(dateStr);
-  }
+  attachEventListeners() {
+    // Navigation
+    document.getElementById('prevMonth')?.addEventListener('click', () => {
+      this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+      this.renderCalendar();
+    });
 
-  render() {
-    const year = this.currentDate.getFullYear();
-    const month = this.currentDate.getMonth();
-    
-    // Update month display with animation
-    const monthName = this.currentDate.toLocaleString('default', { month: 'long' });
-    this.monthDisplay.textContent = `${monthName} ${year}`;
-    
-    // Clear previous days with fade out
-    this.daysContainer.style.opacity = '0';
-    setTimeout(() => {
-      this.daysContainer.innerHTML = '';
-      
-      // Get first day and total days
-      const firstDay = new Date(year, month, 1);
-      const lastDay = new Date(year, month + 1, 0);
-      const totalDays = lastDay.getDate();
-      
-      // Add empty cells for days before start of month
-      let firstDayOfWeek = firstDay.getDay();
-      if (firstDayOfWeek === 0) firstDayOfWeek = 7; // Adjust Sunday from 0 to 7
-      
-      for (let i = 1; i < firstDayOfWeek; i++) {
-        this.createDayElement('');
-      }
-      
-      // Add days of month
-      for (let day = 1; day <= totalDays; day++) {
-        const date = new Date(year, month, day);
-        const isWeekend = date.getDay() === 0 || date.getDay() === 6;
-        const isSelected = this.isDateSelected(date);
-        this.createDayElement(day, isWeekend, isSelected, date);
-      }
-      
-      // Fade in new days
-      this.daysContainer.style.opacity = '1';
-    }, 150);
-  }
+    document.getElementById('nextMonth')?.addEventListener('click', () => {
+      this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+      this.renderCalendar();
+    });
 
-  createDayElement(content, isWeekend = false, isSelected = false, date = null) {
-    const dayElement = document.createElement('div');
-    dayElement.className = 'calendar-day';
-    if (isWeekend) dayElement.classList.add('weekend');
-    if (isSelected) dayElement.classList.add('selected');
-    dayElement.textContent = content;
-
-    if (date) {
-      dayElement.addEventListener('click', () => this.handleDateClick(date));
-    }
-
-    this.daysContainer.appendChild(dayElement);
+    // View toggle
+    document.querySelectorAll('.view-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.view-btn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        button.classList.add('active');
+        this.currentView = button.dataset.view;
+        this.renderCalendar();
+      });
+    });
   }
 }
 
-// Initialize calendar when DOM is loaded
+// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-  // Wait for start button click (calendar is initially hidden)
-  document.getElementById('startButton').addEventListener('click', () => {
-    const welcome = document.getElementById('welcome');
-    const calendar = document.getElementById('calendar');
-    
-    // Fade out welcome
-    welcome.style.opacity = '0';
-    welcome.style.transition = 'opacity 0.5s ease-out';
-    
-    // After welcome fades out, show calendar
-    setTimeout(() => {
-      welcome.style.display = 'none';
-      calendar.style.display = 'block';
-      new Calendar();
-    }, 500);
-  });
+  window.calendar = new Calendar();
 });
