@@ -1,5 +1,6 @@
 // components/modals/index.js
-import React, { createContext, useContext, useState, useEffect } from 'react';
+const React = window.React;
+const { createElement: h, createContext, useContext, useState, useEffect } = React;
 import { X, Send, Calendar, Users, MessageCircle } from 'lucide-react';
 
 // Create Modal Context
@@ -26,28 +27,27 @@ export const ModalProvider = ({ children }) => {
     document.body.style.overflow = '';
   };
 
-  return (
-    <ModalContext.Provider value={{ activeModal, openModal, closeModal }}>
-      {children}
-      {activeModal === MODAL_TYPES.SMART_PLANNING && <SmartPlanningModal />}
-      {activeModal === MODAL_TYPES.LEAVE_REQUEST && <LeaveRequestModal />}
-      {activeModal === MODAL_TYPES.LEAVE_ASSISTANT && <LeaveAssistantModal />}
-    </ModalContext.Provider>
+  const value = {
+    activeModal,
+    openModal,
+    closeModal
+  };
+
+  return h(
+    ModalContext.Provider,
+    { value },
+    h('div', null, [
+      children,
+      activeModal === MODAL_TYPES.SMART_PLANNING && h(SmartPlanningModal),
+      activeModal === MODAL_TYPES.LEAVE_REQUEST && h(LeaveRequestModal),
+      activeModal === MODAL_TYPES.LEAVE_ASSISTANT && h(LeaveAssistantModal)
+    ])
   );
 };
 
 // Base Modal Component
 const Modal = ({ children, onClose }) => {
-  const [isClosing, setIsClosing] = useState(false);
   const [touchStart, setTouchStart] = useState(null);
-
-  const handleClose = () => {
-    setIsClosing(true);
-    setTimeout(() => {
-      onClose();
-      setIsClosing(false);
-    }, 300);
-  };
 
   const handleTouchStart = (e) => {
     setTouchStart(e.touches[0].clientY);
@@ -55,228 +55,171 @@ const Modal = ({ children, onClose }) => {
 
   const handleTouchMove = (e) => {
     if (!touchStart) return;
-    
     const deltaY = e.touches[0].clientY - touchStart;
-    if (deltaY > 50) {
-      handleClose();
-    }
+    if (deltaY > 50) onClose();
   };
 
   useEffect(() => {
     const handleEscape = (e) => {
-      if (e.key === 'Escape') handleClose();
+      if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', handleEscape);
     return () => window.removeEventListener('keydown', handleEscape);
-  }, []);
+  }, [onClose]);
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div 
-        className="fixed inset-0 bg-black/20 backdrop-blur-sm"
-        onClick={handleClose}
-      />
-      <div 
-        className={`
-          relative w-11/12 max-w-lg bg-[rgba(42,16,82,0.8)] backdrop-blur-xl
-          border border-white/10 rounded-2xl p-6 shadow-xl
-          transform transition-all duration-300 ease-out
-          ${isClosing ? 'scale-95 opacity-0' : 'scale-100 opacity-100'}
-        `}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-      >
-        <button
-          onClick={handleClose}
-          className="absolute right-4 top-4 text-white/70 hover:text-white transition-colors"
-        >
-          <X size={24} />
-        </button>
-        {children}
-      </div>
-    </div>
-  );
+  return h('div', { 
+    className: 'fixed inset-0 z-50 flex items-center justify-center'
+  }, [
+    h('div', {
+      className: 'fixed inset-0 bg-black/20 backdrop-blur-sm',
+      onClick: onClose
+    }),
+    h('div', {
+      className: 'relative w-11/12 max-w-lg bg-[rgba(42,16,82,0.8)] backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-xl',
+      onTouchStart: handleTouchStart,
+      onTouchMove: handleTouchMove
+    }, [
+      h('button', {
+        onClick: onClose,
+        className: 'absolute right-4 top-4 text-white/70 hover:text-white transition-colors'
+      }, h(X, { size: 24 })),
+      children
+    ])
+  ]);
 };
 
-// Leave Request Modal
-const LeaveRequestModal = () => {
-  const { closeModal } = useContext(ModalContext);
-  const [formData, setFormData] = useState({
-    leaveType: '',
-    startDate: '',
-    endDate: ''
-  });
-
-  return (
-    <Modal onClose={closeModal}>
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold text-white">New Leave Request</h2>
-        <div className="space-y-3">
-          <div>
-            <label className="block text-sm text-white/80 mb-1">Leave Type</label>
-            <select 
-              className="w-full p-2 rounded-lg bg-white/10 border border-white/20 text-white"
-              value={formData.leaveType}
-              onChange={e => setFormData(prev => ({ ...prev, leaveType: e.target.value }))}
-            >
-              <option value="">Select type...</option>
-              <option value="annual">Annual Leave</option>
-              <option value="sick">Sick Leave</option>
-            </select>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm text-white/80 mb-1">Start Date</label>
-              <input 
-                type="date"
-                className="w-full p-2 rounded-lg bg-white/10 border border-white/20 text-white"
-                value={formData.startDate}
-                onChange={e => setFormData(prev => ({ ...prev, startDate: e.target.value }))}
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-white/80 mb-1">End Date</label>
-              <input 
-                type="date"
-                className="w-full p-2 rounded-lg bg-white/10 border border-white/20 text-white"
-                value={formData.endDate}
-                onChange={e => setFormData(prev => ({ ...prev, endDate: e.target.value }))}
-              />
-            </div>
-          </div>
-          <button 
-            className="w-full py-3 px-4 bg-[#4B0082] hover:bg-[#4B0082]/90 
-                     text-white rounded-full font-medium transition-colors"
-            onClick={closeModal}
-          >
-            Submit Request
-          </button>
-        </div>
-      </div>
-    </Modal>
-  );
-};
-
-// Smart Planning Modal
-const SmartPlanningModal = () => {
-  const { closeModal } = useContext(ModalContext);
-
-  return (
-    <Modal onClose={closeModal}>
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold text-white">Smart Planning</h2>
-        <div className="bg-white/5 rounded-lg p-3">
-          <h3 className="font-medium text-[#4B0082] mb-2">Suggested Leave Dates</h3>
-          <p className="text-sm text-white/80">Based on team coverage and holidays:</p>
-          <ul className="mt-2 space-y-1 text-sm text-white/90">
-            <li>• Dec 27-29 (3 days, low coverage)</li>
-            <li>• Mar 15-19 (5 days, bank holiday bonus)</li>
-          </ul>
-        </div>
-        <button 
-          onClick={closeModal}
-          className="w-full py-3 px-4 bg-[#4B0082] hover:bg-[#4B0082]/90 
-                   text-white rounded-full font-medium transition-colors"
-        >
-          Apply Suggestion
-        </button>
-      </div>
-    </Modal>
-  );
-};
-
-// Leave Assistant Modal
+// Leave Assistant Modal (converted from your leave-assistant.js)
 const LeaveAssistantModal = () => {
   const { closeModal } = useContext(ModalContext);
-  const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([
     { type: 'assistant', text: 'How can I help you plan your leave?' }
   ]);
+  const [input, setInput] = useState('');
 
-  const sendMessage = () => {
-    if (!message.trim()) return;
+  const suggestions = [
+    "How can I maximize my leave?",
+    "When is team coverage lowest?",
+    "What are the upcoming holidays?"
+  ];
+
+  const handleSendMessage = async () => {
+    if (!input.trim()) return;
     
-    setMessages(prev => [...prev, { type: 'user', text: message }]);
-    setMessage('');
-    
-    // Simulate assistant response
+    setMessages(prev => [...prev, { type: 'user', text: input }]);
+    setInput('');
+
+    // Simulate response
     setTimeout(() => {
-      setMessages(prev => [...prev, { 
-        type: 'assistant', 
-        text: 'I can help you find the best dates for your leave based on team coverage and holidays.'
+      setMessages(prev => [...prev, {
+        type: 'assistant',
+        text: generateResponse(input)
       }]);
     }, 1000);
   };
 
-  return (
-    <Modal onClose={closeModal}>
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold text-white">Leave Assistant</h2>
-        <div className="h-64 overflow-y-auto p-3 rounded-lg bg-white/5 space-y-3">
-          {messages.map((msg, index) => (
-            <div key={index} className={`flex gap-2 ${msg.type === 'user' ? 'justify-end' : ''}`}>
-              {msg.type === 'assistant' && (
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#4B0082] 
-                              flex items-center justify-center text-white">
-                  A
-                </div>
-              )}
-              <div className={`rounded-2xl p-3 max-w-[80%] ${
-                msg.type === 'user' ? 'bg-[#4B0082]' : 'bg-white/10'
-              }`}>
-                <p className="text-sm text-white">{msg.text}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="flex gap-2">
-          <input 
-            type="text"
-            placeholder="Type your message..."
-            className="flex-1 p-2 rounded-full bg-white/10 border border-white/20 text-white"
-            value={message}
-            onChange={e => setMessage(e.target.value)}
-            onKeyPress={e => e.key === 'Enter' && sendMessage()}
-          />
-          <button 
-            onClick={sendMessage}
-            className="p-2 bg-[#4B0082] hover:bg-[#4B0082]/90 
-                     text-white rounded-full transition-colors"
-          >
-            <Send size={20} />
-          </button>
-        </div>
-      </div>
-    </Modal>
-  );
+  const generateResponse = (query) => {
+    const responses = {
+      holiday: "Based on the calendar, taking leave around bank holidays in December could give you 10 days off using only 3 days of leave.",
+      team: "Your team's coverage is lowest in March. Consider planning your leave in February or April instead.",
+      balance: "You have 15 days of leave remaining this year. Would you like suggestions for how to use them effectively?"
+    };
+
+    const topic = Object.keys(responses).find(key => query.toLowerCase().includes(key)) || 'default';
+    return responses[topic] || "I can help you plan your leave effectively. What would you like to know?";
+  };
+
+  return h(Modal, { onClose: closeModal }, [
+    h('div', { className: 'space-y-4' }, [
+      h('h2', { className: 'text-xl font-semibold text-white' }, 'Leave Assistant'),
+      h('div', {
+        className: 'h-64 overflow-y-auto p-3 rounded-lg bg-white/5 space-y-3'
+      }, messages.map((msg, index) => 
+        h('div', {
+          key: index,
+          className: `flex gap-2 ${msg.type === 'user' ? 'justify-end' : ''}`
+        }, [
+          msg.type === 'assistant' && h('div', {
+            className: 'flex-shrink-0 w-8 h-8 rounded-full bg-[#4B0082] flex items-center justify-center text-white'
+          }, 'A'),
+          h('div', {
+            className: `rounded-2xl p-3 max-w-[80%] ${
+              msg.type === 'user' ? 'bg-[#4B0082]' : 'bg-white/10'
+            }`
+          }, h('p', { className: 'text-sm text-white' }, msg.text))
+        ])
+      )),
+      h('div', { className: 'flex gap-2' }, [
+        h('input', {
+          type: 'text',
+          placeholder: 'Type your message...',
+          className: 'flex-1 p-2 rounded-full bg-white/10 border border-white/20 text-white',
+          value: input,
+          onChange: (e) => setInput(e.target.value),
+          onKeyPress: (e) => e.key === 'Enter' && handleSendMessage()
+        }),
+        h('button', {
+          onClick: handleSendMessage,
+          className: 'p-2 bg-[#4B0082] hover:bg-[#4B0082]/90 text-white rounded-full transition-colors'
+        }, h(Send, { size: 20 }))
+      ])
+    ])
+  ]);
 };
 
-// Modal Triggers Component
-export const ModalTriggers = () => {
-  const { openModal } = useContext(ModalContext);
-  
-  return (
-    <div className="fixed bottom-4 right-4 flex gap-2">
-      <button 
-        onClick={() => openModal(MODAL_TYPES.SMART_PLANNING)}
-        className="rounded-full p-3 bg-purple-800/90 hover:bg-purple-700/90 backdrop-blur-xl"
-      >
-        <Users className="w-5 h-5 text-white" />
-      </button>
-      <button 
-        onClick={() => openModal(MODAL_TYPES.LEAVE_REQUEST)}
-        className="rounded-full p-3 bg-purple-800/90 hover:bg-purple-700/90 backdrop-blur-xl"
-      >
-        <Calendar className="w-5 h-5 text-white" />
-      </button>
-      <button 
-        onClick={() => openModal(MODAL_TYPES.LEAVE_ASSISTANT)}
-        className="rounded-full p-3 bg-purple-800/90 hover:bg-purple-700/90 backdrop-blur-xl"
-      >
-        <MessageCircle className="w-5 h-5 text-white" />
-      </button>
-    </div>
-  );
+// SmartPlanningModal (converted from your smart-planning.js)
+const SmartPlanningModal = () => {
+  const { closeModal } = useContext(ModalContext);
+  const [view, setView] = useState('suggestions');
+  const [suggestions] = useState([
+    {
+      type: 'optimization',
+      message: 'Consider taking leave around bank holidays to maximize time off',
+      dates: ['2024-12-24', '2024-12-27'],
+      impact: 'Get 5 days off using only 2 days of leave'
+    },
+    {
+      type: 'coverage',
+      message: 'Team coverage is low in March',
+      dates: ['2024-03-15', '2024-03-30'],
+      impact: 'Consider alternative dates'
+    }
+  ]);
+
+  return h(Modal, { onClose: closeModal }, [
+    h('div', { className: 'space-y-4' }, [
+      h('h2', { className: 'text-xl font-semibold text-white' }, 'Smart Planning'),
+      h('div', { className: 'flex gap-2 mb-4' }, [
+        h('button', {
+          className: `px-4 py-2 rounded-lg ${
+            view === 'suggestions' ? 'bg-[#4B0082]' : 'bg-white/10'
+          } text-white`,
+          onClick: () => setView('suggestions')
+        }, 'Suggestions'),
+        h('button', {
+          className: `px-4 py-2 rounded-lg ${
+            view === 'coverage' ? 'bg-[#4B0082]' : 'bg-white/10'
+          } text-white`,
+          onClick: () => setView('coverage')
+        }, 'Team Coverage')
+      ]),
+      h('div', { className: 'space-y-3' },
+        suggestions.map((suggestion, index) => 
+          h('div', {
+            key: index,
+            className: 'bg-white/5 rounded-lg p-4'
+          }, [
+            h('div', { className: 'text-[#4B0082] font-medium' }, suggestion.type),
+            h('p', { className: 'text-white mt-2' }, suggestion.message),
+            h('p', { className: 'text-white/70 text-sm mt-1' }, suggestion.impact),
+            h('button', {
+              className: 'mt-3 px-4 py-2 bg-[#4B0082] hover:bg-[#4B0082]/90 text-white rounded-full transition-colors'
+            }, 'Apply')
+          ])
+        )
+      )
+    ])
+  ]);
 };
 
-export default Modal;
+// Export components
+export { Modal, LeaveAssistantModal, SmartPlanningModal };
