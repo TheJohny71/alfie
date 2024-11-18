@@ -18,15 +18,15 @@
     <link rel="stylesheet" href="styles/calendar.css">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/alfie/assets/images/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
 
-    <!-- React and ReactDOM -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- React Dependencies -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
     <!-- Background Effects -->
@@ -37,6 +37,7 @@
             <div class="aurora-beam aurora-beam-3"></div>
         </div>
         <div class="mouse-gradient"></div>
+        <div id="particles-container"></div>
     </div>
 
     <!-- Root element for React app -->
@@ -132,21 +133,39 @@
         </footer>
     </div>
 
-    <!-- Scripts -->
-    <script src="js/effects.js" defer></script>
-    <script src="js/background-effects.js" defer></script>
-    <script src="js/calendar.js" defer></script>
-    <script src="js/region-context.js" defer></script>
+    <!-- Core Scripts -->
+    <script>
+        // Initialize particle container
+        window.addEventListener('DOMContentLoaded', () => {
+            if (!window.particlesInitialized) {
+                window.particlesInitialized = true;
+                const container = document.getElementById('particles-container');
+                if (container) {
+                    // Ensure container is empty
+                    container.innerHTML = '';
+                }
+            }
+        });
+    </script>
+
+    <!-- Application Scripts -->
+    <script src="js/effects.js"></script>
+    <script src="js/background-effects.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/region-context.js"></script>
 
     <!-- React Components -->
-    <script type="text/babel" src="components/modals/index.js"></script>
-    <script type="text/babel" src="main.js"></script>
+    <script type="text/babel" data-type="module" src="components/modals/index.js"></script>
+    <script type="text/babel" data-type="module" src="main.js"></script>
 
+    <!-- Initialization Script -->
     <script>
-        // Handle transition between welcome and calendar sections
-        document.getElementById('startButton').addEventListener('click', function() {
-            document.getElementById('welcome').style.display = 'none';
-            document.getElementById('calendar').style.display = 'block';
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle transition between welcome and calendar sections
+            document.getElementById('startButton').addEventListener('click', function() {
+                document.getElementById('welcome').style.display = 'none';
+                document.getElementById('calendar').style.display = 'block';
+            });
         });
     </script>
 </body>
