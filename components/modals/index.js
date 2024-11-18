@@ -35,11 +35,11 @@ export const ModalProvider = ({ children }) => {
   return h(
     ModalContext.Provider,
     { value },
-    h('div', null, [
+    h('div', { key: 'modal-wrapper' }, [
       children,
-      activeModal === MODAL_TYPES.SMART_PLANNING && h(SmartPlanningModal),
-      activeModal === MODAL_TYPES.LEAVE_REQUEST && h(LeaveRequestModal),
-      activeModal === MODAL_TYPES.LEAVE_ASSISTANT && h(LeaveAssistantModal)
+      activeModal === MODAL_TYPES.SMART_PLANNING && h(SmartPlanningModal, { key: 'smart-planning' }),
+      activeModal === MODAL_TYPES.LEAVE_REQUEST && h(LeaveRequestModal, { key: 'leave-request' }),
+      activeModal === MODAL_TYPES.LEAVE_ASSISTANT && h(LeaveAssistantModal, { key: 'leave-assistant' })
     ])
   );
 };
@@ -67,18 +67,22 @@ const Modal = ({ children, onClose }) => {
   }, [onClose]);
 
   return h('div', { 
-    className: 'fixed inset-0 z-50 flex items-center justify-center'
+    className: 'fixed inset-0 z-50 flex items-center justify-center',
+    key: 'modal-container'
   }, [
     h('div', {
+      key: 'modal-backdrop',
       className: 'fixed inset-0 bg-black/20 backdrop-blur-sm',
       onClick: onClose
     }),
     h('div', {
+      key: 'modal-content',
       className: 'relative w-11/12 max-w-lg bg-[rgba(42,16,82,0.8)] backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-xl',
       onTouchStart: handleTouchStart,
       onTouchMove: handleTouchMove
     }, [
       h('button', {
+        key: 'close-button',
         onClick: onClose,
         className: 'absolute right-4 top-4 text-white/70 hover:text-white transition-colors'
       }, 'X'),
@@ -87,51 +91,65 @@ const Modal = ({ children, onClose }) => {
   ]);
 };
 
-// Modal Triggers Component (Now properly exported)
+// Modal Triggers Component
 export const ModalTriggers = () => {
   const { openModal } = useContext(ModalContext);
   
-  return h('div', { className: 'fixed bottom-4 right-4 flex gap-2' }, [
-    h('button', {
+  const triggers = [
+    {
+      key: 'plan-button',
       onClick: () => openModal(MODAL_TYPES.SMART_PLANNING),
-      className: 'rounded-full p-3 bg-purple-800/90 hover:bg-purple-700/90 backdrop-blur-xl text-white'
-    }, 'Plan'),
-    h('button', {
+      text: 'Plan'
+    },
+    {
+      key: 'leave-button',
       onClick: () => openModal(MODAL_TYPES.LEAVE_REQUEST),
-      className: 'rounded-full p-3 bg-purple-800/90 hover:bg-purple-700/90 backdrop-blur-xl text-white'
-    }, 'Leave'),
-    h('button', {
+      text: 'Leave'
+    },
+    {
+      key: 'help-button',
       onClick: () => openModal(MODAL_TYPES.LEAVE_ASSISTANT),
-      className: 'rounded-full p-3 bg-purple-800/90 hover:bg-purple-700/90 backdrop-blur-xl text-white'
-    }, 'Help')
-  ]);
+      text: 'Help'
+    }
+  ];
+
+  return h('div', 
+    { 
+      className: 'fixed bottom-4 right-4 flex gap-2',
+      key: 'modal-triggers'
+    }, 
+    triggers.map(trigger => 
+      h('button', {
+        key: trigger.key,
+        onClick: trigger.onClick,
+        className: 'rounded-full p-3 bg-purple-800/90 hover:bg-purple-700/90 backdrop-blur-xl text-white'
+      }, trigger.text)
+    )
+  );
 };
 
-// Leave Request Modal
+// Modal Components
 const LeaveRequestModal = () => {
   const { closeModal } = useContext(ModalContext);
-  return h(Modal, { onClose: closeModal }, 
-    h('div', null, 'Leave Request Form')
+  return h(Modal, { onClose: closeModal, key: 'leave-request-modal' }, 
+    h('div', { key: 'leave-request-content' }, 'Leave Request Form')
   );
 };
 
-// Smart Planning Modal
 const SmartPlanningModal = () => {
   const { closeModal } = useContext(ModalContext);
-  return h(Modal, { onClose: closeModal }, 
-    h('div', null, 'Smart Planning')
+  return h(Modal, { onClose: closeModal, key: 'smart-planning-modal' }, 
+    h('div', { key: 'smart-planning-content' }, 'Smart Planning')
   );
 };
 
-// Leave Assistant Modal
 const LeaveAssistantModal = () => {
   const { closeModal } = useContext(ModalContext);
-  return h(Modal, { onClose: closeModal }, 
-    h('div', null, 'Leave Assistant')
+  return h(Modal, { onClose: closeModal, key: 'leave-assistant-modal' }, 
+    h('div', { key: 'leave-assistant-content' }, 'Leave Assistant')
   );
 };
 
-// Export everything needed
 export {
   Modal,
   LeaveRequestModal,
