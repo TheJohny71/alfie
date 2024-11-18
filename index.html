@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="styles/utilities.css">
     <link rel="stylesheet" href="styles/effects.css">
     <link rel="stylesheet" href="styles/calendar.css">
+    <link rel="stylesheet" href="styles/modals.css">
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -71,7 +72,7 @@
                         </div>
 
                         <div class="cta-wrapper fade-in-delayed-2">
-                            <button class="cta-button" id="startButton">
+                            <button class="cta-button">
                                 <span>Start Planning</span>
                                 <div class="button-glow"></div>
                             </button>
@@ -137,21 +138,6 @@
             </div>
         </footer>
     </div>
-
-    <!-- Application Scripts -->
-    <script type="module">
-        // Initialize background effects
-        window.addEventListener('DOMContentLoaded', () => {
-            if (!window.particlesInitialized) {
-                window.particlesInitialized = true;
-                const container = document.getElementById('particles-container');
-                if (container) {
-                    container.innerHTML = '';
-                }
-            }
-
-    });
-    </script>
 
     <!-- Core JavaScript -->
     <script type="module" src="js/effects.js"></script>
