@@ -1,166 +1,112 @@
-/* Entry Animations */
-.fade-in {
-    animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* Background Effects */
+.aurora-beam {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-blend-mode: screen;
+    mix-blend-mode: soft-light;
+    pointer-events: none;
 }
 
-.fade-in-delayed {
-    opacity: 0;
-    animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: 0.4s;
-}
-
-.fade-in-delayed-2 {
-    opacity: 0;
-    animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: 0.8s;
-}
-
-.slide-up {
-    opacity: 0;
-    animation: slideUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* Continuous Animations */
-.animate-float {
-    animation: float 6s ease-in-out infinite;
-}
-
-.animate-pulse {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Text Animations */
-.title-line {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: revealText 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.title-line-1 {
-    animation-delay: 0.2s;
-}
-
-.title-line-2 {
-    animation-delay: 0.4s;
-}
-
-/* Button Animations */
-.cta-button {
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                background 0.3s ease,
-                box-shadow 0.3s ease;
-}
-
-.button-glow {
-    animation: buttonGlow 2s ease-in-out infinite;
-}
-
-/* Animation Keyframes */
-@keyframes fadeIn {
-    from { 
-        opacity: 0;
-        transform: scale(0.98);
-    }
-    to { 
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-@keyframes revealText {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes buttonGlow {
-    0%, 100% {
-        filter: brightness(1);
-    }
-    50% {
-        filter: brightness(1.2);
-    }
-}
-
-@keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.8;
-    }
-}
-
-/* Hover Animations */
-.hover-scale {
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.hover-scale:hover {
-    transform: scale(1.02);
-}
-
-.hover-lift {
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.hover-lift:hover {
-    transform: translateY(-4px);
-}
-
-/* Background Animations */
-.particle {
-    animation: particleFloat 20s linear infinite;
-}
-
-@keyframes particleFloat {
-    0% {
-        transform: translateY(0) rotate(0deg);
-    }
-    100% {
-        transform: translateY(-100vh) rotate(360deg);
-    }
-}
-
-/* Loading Animations */
-.loading-shimmer {
+.aurora-beam-1 {
     background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.1) 50%,
-        transparent 100%
+        217deg,
+        rgba(155, 106, 255, 0.4),
+        rgba(155, 106, 255, 0) 70%
     );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
+    animation: aurora1 25s linear infinite;
 }
 
-@keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
+.aurora-beam-2 {
+    background: linear-gradient(
+        127deg,
+        rgba(103, 65, 217, 0.4),
+        rgba(103, 65, 217, 0) 70%
+    );
+    animation: aurora2 30s linear infinite;
+}
+
+.aurora-beam-3 {
+    background: linear-gradient(
+        336deg,
+        rgba(191, 123, 255, 0.4),
+        rgba(191, 123, 255, 0) 70%
+    );
+    animation: aurora3 35s linear infinite;
+}
+
+.gradient-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at center,
+        rgba(75, 0, 130, 0.2),
+        rgba(75, 0, 130, 0.8)
+    );
+}
+
+/* Aurora Animations */
+@keyframes aurora1 {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes aurora2 {
+    from { transform: rotate(120deg); }
+    to { transform: rotate(480deg); }
+}
+
+@keyframes aurora3 {
+    from { transform: rotate(240deg); }
+    to { transform: rotate(600deg); }
+}
+
+/* Content Animations */
+.hero-content {
+    animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.main-title {
+    animation: slideIn 1s ease-out;
+}
+
+.subtitle, .tagline {
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.subtitle {
+    animation-delay: 0.3s;
+}
+
+.tagline {
+    animation-delay: 0.6s;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
 }
