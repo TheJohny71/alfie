@@ -68,13 +68,17 @@ body {
     right: 0;
     z-index: 100;
     padding: var(--spacing-md);
+    background: rgba(75, 0, 130, 0.2); /* Subtle background */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .nav-container {
     max-width: 1400px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start; /* Align to left */
     align-items: center;
 }
 
