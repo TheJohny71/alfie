@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Alfie - Transform time off into moments that matter. Premium leave management for UK and US employees.">
-    <meta name="theme-color" content="#4B0082">
-    <title>Alfie - Transform time off into moments that matter</title>
-    
+    <meta name="description" content="Alfie - Transform time off into moments that matter">
+    <title>Alfie - Make Time for What Matters</title>
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -20,16 +18,9 @@
     <link rel="stylesheet" href="styles/animations.css">
     <link rel="stylesheet" href="styles/utilities.css">
     <link rel="stylesheet" href="styles/effects.css">
-    
-    <!-- React Setup -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    
-    <!-- Vanilla-tilt.js for 3D card effects -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
 </head>
 <body class="loading">
-    <!-- Immersive Background -->
+    <!-- Background Effects -->
     <canvas id="aurora-canvas" class="aurora-canvas"></canvas>
     <div class="background-effects">
         <div class="gradient-background"></div>
@@ -37,26 +28,23 @@
         <div class="aurora-beam aurora-beam-2"></div>
         <div class="aurora-beam aurora-beam-3"></div>
         <div class="gradient-overlay"></div>
-        <div class="noise-overlay"></div>
     </div>
 
     <!-- Root element -->
-    <div id="root" class="root">
+    <div id="root">
         <!-- Navigation Header -->
-        <header class="header glass-effect" data-scroll-header>
+        <header class="header glass-effect">
             <nav class="nav-container">
                 <div class="brand-wrapper">
-                    <div class="logo-container" data-tilt data-tilt-max="20" data-tilt-speed="400">
-                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="brand-logo">
-                            <circle cx="20" cy="20" r="18" fill="url(#logoGradient)"/>
-                            <defs>
-                                <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                    </div>
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="brand-logo">
+                        <circle cx="20" cy="20" r="18" fill="url(#logoGradient)"/>
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
                     <a href="/" class="brand fade-in">alfie</a>
                 </div>
             </nav>
@@ -64,6 +52,7 @@
 
         <!-- Main Content -->
         <main>
+            <!-- Hero Section -->
             <section id="welcome" class="hero">
                 <div class="content-wrapper">
                     <div class="hero-content">
@@ -88,12 +77,12 @@
                 </div>
             </section>
 
-            <!-- Feature Cards -->
+            <!-- Features Section -->
             <section id="features" class="features-section">
                 <div class="content-wrapper">
                     <div class="features-grid">
                         <!-- Smart Planning Card -->
-                        <div class="feature-card" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-scale="1.05">
+                        <div class="feature-card" data-tilt data-tilt-max="10" data-tilt-speed="400">
                             <div class="feature-content">
                                 <div class="feature-icon">
                                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-3d">
@@ -106,11 +95,10 @@
                                 <h3>Smart Planning</h3>
                                 <p>Intelligent leave management with team coverage analysis</p>
                             </div>
-                            <div class="card-backdrop"></div>
                         </div>
 
                         <!-- Region Aware Card -->
-                        <div class="feature-card" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-scale="1.05">
+                        <div class="feature-card" data-tilt data-tilt-max="10" data-tilt-speed="400">
                             <div class="feature-content">
                                 <div class="feature-icon">
                                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-3d">
@@ -122,11 +110,10 @@
                                 <h3>Region Aware</h3>
                                 <p>Customized for UK and US holiday systems</p>
                             </div>
-                            <div class="card-backdrop"></div>
                         </div>
 
                         <!-- Time Intelligence Card -->
-                        <div class="feature-card" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-scale="1.05">
+                        <div class="feature-card" data-tilt data-tilt-max="10" data-tilt-speed="400">
                             <div class="feature-content">
                                 <div class="feature-icon">
                                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="icon-3d">
@@ -137,7 +124,6 @@
                                 <h3>Time Intelligence</h3>
                                 <p>AI-powered suggestions for optimal leave planning</p>
                             </div>
-                            <div class="card-backdrop"></div>
                         </div>
                     </div>
                 </div>
@@ -163,9 +149,9 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="js/effects.js" type="module"></script>
-    <script src="js/background-effects.js" type="module"></script>
-    <script src="js/main.js" type="module"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/background-effects.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
