@@ -16,15 +16,18 @@
     <link rel="stylesheet" href="styles/utilities.css">
     <link rel="stylesheet" href="styles/effects.css">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+    <!-- React Setup -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 </head>
 <body>
     <!-- Background Effects -->
     <div class="background-effects">
         <div class="gradient-background"></div>
-        <div class="vignette-overlay"></div>
-        <div class="particle-container"></div>
+        <div class="aurora-beam aurora-beam-1"></div>
+        <div class="aurora-beam aurora-beam-2"></div>
+        <div class="aurora-beam aurora-beam-3"></div>
+        <div class="gradient-overlay"></div>
     </div>
 
     <!-- Root element -->
@@ -32,8 +35,17 @@
         <!-- Navigation Header -->
         <header class="header">
             <nav class="nav-container">
-                <div class="brand-wrapper animate-float">
-                    <img src="assets/logo.svg" alt="Alfie" class="brand-logo">
+                <div class="brand-wrapper">
+                    <!-- Use inline SVG instead of external file -->
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="brand-logo">
+                        <circle cx="20" cy="20" r="18" fill="url(#logoGradient)"/>
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
                     <a href="/" class="brand fade-in">alfie</a>
                 </div>
             </nav>
@@ -41,21 +53,20 @@
 
         <!-- Main Content -->
         <main>
-            <!-- Welcome Section -->
             <section id="welcome" class="hero">
                 <div class="content-wrapper">
-                    <div class="hero-content slide-up">
+                    <div class="hero-content">
                         <h1 class="main-title">
-                            <span class="title-line title-line-1">Create moments</span>
-                            <span class="title-line title-line-2">for what matters...</span>
+                            <span class="title-line">Create moments</span>
+                            <span class="title-line">for what matters...</span>
                         </h1>
                         
-                        <div class="hero-text fade-in-delayed">
+                        <div class="hero-text">
                             <p class="subtitle">Because the best stories<br>unfold when you're living them</p>
                             <p class="tagline">Your companion to a seamless year of leave</p>
                         </div>
 
-                        <div class="cta-wrapper fade-in-delayed-2">
+                        <div class="cta-wrapper">
                             <button class="cta-button glassmorphism">
                                 <span>Start Planning</span>
                                 <div class="button-glow"></div>
@@ -67,7 +78,7 @@
         </main>
 
         <!-- Footer -->
-        <footer class="footer fade-in-delayed-2">
+        <footer class="footer">
             <div class="footer-content">
                 <nav class="footer-nav">
                     <a href="#" class="footer-link">Contact Us</a>
