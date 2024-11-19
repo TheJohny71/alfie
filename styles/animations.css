@@ -1,166 +1,52 @@
-/* Aurora Background */
-.aurora-container {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    background: linear-gradient(to bottom right, var(--color-primary), var(--color-secondary));
-}
-
-.aurora-beam {
-    position: absolute;
-    top: -100%;
-    left: -100%;
-    width: 300%;
-    height: 300%;
-    background-blend-mode: screen;
-    mix-blend-mode: soft-light;
-    pointer-events: none;
-}
-
-.aurora-beam-1 {
-    background: linear-gradient(
-        217deg,
-        rgba(155, 106, 255, 0.4) 0%,
-        rgba(155, 106, 255, 0.1) 40%,
-        transparent 80%
-    );
-    animation: aurora-beam-1 25s linear infinite;
-    opacity: 0.7;
-}
-
-.aurora-beam-2 {
-    background: linear-gradient(
-        127deg,
-        rgba(103, 65, 217, 0.4) 0%,
-        rgba(103, 65, 217, 0.1) 40%,
-        transparent 80%
-    );
-    animation: aurora-beam-2 30s linear infinite;
-    opacity: 0.5;
-}
-
-.aurora-beam-3 {
-    background: linear-gradient(
-        336deg,
-        rgba(191, 123, 255, 0.4) 0%,
-        rgba(191, 123, 255, 0.1) 40%,
-        transparent 80%
-    );
-    animation: aurora-beam-3 35s linear infinite;
-    opacity: 0.6;
-}
-
-/* Mouse Gradient */
-.mouse-gradient {
-    position: absolute;
-    inset: 0;
-    opacity: 0.4;
-    background: radial-gradient(
-        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(191, 123, 255, 0.3),
-        transparent 70%
-    );
-    transition: opacity 0.3s ease;
-}
-
-/* Button Glow */
-.button-glow {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-        circle at var(--x, 50%) var(--y, 50%),
-        rgba(255,255,255,0.2) 0%,
-        transparent 70%
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.cta-button:hover .button-glow {
-    opacity: 1;
-}
-
-/* Aurora Animation Keyframes */
-@keyframes aurora-beam-1 {
-    0% {
-        transform: translate(10%, 10%) rotate(0deg);
-    }
-    25% {
-        transform: translate(-10%, 15%) rotate(90deg);
-    }
-    50% {
-        transform: translate(-15%, -10%) rotate(180deg);
-    }
-    75% {
-        transform: translate(10%, -15%) rotate(270deg);
-    }
-    100% {
-        transform: translate(10%, 10%) rotate(360deg);
-    }
-}
-
-@keyframes aurora-beam-2 {
-    0% {
-        transform: translate(-15%, -10%) rotate(0deg);
-    }
-    25% {
-        transform: translate(10%, -15%) rotate(90deg);
-    }
-    50% {
-        transform: translate(15%, 10%) rotate(180deg);
-    }
-    75% {
-        transform: translate(-10%, 15%) rotate(270deg);
-    }
-    100% {
-        transform: translate(-15%, -10%) rotate(360deg);
-    }
-}
-
-@keyframes aurora-beam-3 {
-    0% {
-        transform: translate(15%, -15%) rotate(0deg);
-    }
-    25% {
-        transform: translate(15%, 15%) rotate(90deg);
-    }
-    50% {
-        transform: translate(-15%, 15%) rotate(180deg);
-    }
-    75% {
-        transform: translate(-15%, -15%) rotate(270deg);
-    }
-    100% {
-        transform: translate(15%, -15%) rotate(360deg);
-    }
-}
-
 /* Entry Animations */
 .fade-in {
-    animation: fadeIn 0.8s ease forwards;
+    animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .fade-in-delayed {
     opacity: 0;
-    animation: fadeIn 0.8s ease forwards;
+    animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     animation-delay: 0.3s;
 }
 
 .fade-in-delayed-2 {
     opacity: 0;
-    animation: fadeIn 0.8s ease forwards;
+    animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     animation-delay: 0.6s;
 }
 
 .slide-up {
     opacity: 0;
-    animation: slideUp 1s ease forwards;
+    animation: slideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Entry Animation Keyframes */
+/* Hover Animations */
+.hover-lift {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px);
+}
+
+.hover-scale {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+/* Animation Keyframes */
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from { 
+        opacity: 0;
+        transform: scale(0.98);
+    }
+    to { 
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 @keyframes slideUp {
@@ -171,5 +57,67 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Background Animations */
+.aurora-beam {
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background-blend-mode: screen;
+    mix-blend-mode: soft-light;
+    pointer-events: none;
+    animation: rotateBeam 25s linear infinite;
+}
+
+@keyframes rotateBeam {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Button Animations */
+.button-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+    animation: bounceDown 2s ease-in-out infinite;
+}
+
+@keyframes bounceDown {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
     }
 }
