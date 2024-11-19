@@ -7,7 +7,7 @@
     <title>Alfie - Make Time for What Matters</title>
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Styles -->
     <link rel="stylesheet" href="styles/main.css">
@@ -15,24 +15,9 @@
     <link rel="stylesheet" href="styles/animations.css">
     <link rel="stylesheet" href="styles/utilities.css">
     <link rel="stylesheet" href="styles/effects.css">
-    <link rel="stylesheet" href="styles/calendar.css">
-    <link rel="stylesheet" href="styles/modals.css">
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-
-    <!-- React Setup -->
-    <script type="importmap">
-    {
-      "imports": {
-        "react": "https://esm.sh/react@18.2.0",
-        "react-dom": "https://esm.sh/react-dom@18.2.0",
-        "lucide-react": "https://esm.sh/lucide-react@0.263.1"
-      }
-    }
-    </script>
-    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
 </head>
 <body>
     <!-- Background Effects -->
@@ -46,12 +31,15 @@
         <div id="particles-container"></div>
     </div>
 
-    <!-- Root element for React app -->
+    <!-- Root element -->
     <div id="root">
         <!-- Navigation Header -->
         <header class="header">
             <nav class="nav-container">
-                <a href="/" class="brand fade-in">alfie</a>
+                <div class="brand-wrapper">
+                    <img src="assets/logo.svg" alt="Alfie" class="brand-logo">
+                    <a href="/" class="brand fade-in">alfie</a>
+                </div>
             </nav>
         </header>
 
@@ -62,8 +50,8 @@
                 <div class="content-wrapper">
                     <div class="hero-content slide-up">
                         <h1 class="main-title">
-                            <span class="title-line">Make Time for</span>
-                            <span class="title-line">What Matters...</span>
+                            <span class="title-line">Create moments</span>
+                            <span class="title-line">for what matters....</span>
                         </h1>
                         
                         <div class="hero-text fade-in-delayed">
@@ -80,74 +68,23 @@
                     </div>
                 </div>
             </section>
-
-            <!-- Calendar Section -->
-            <section id="calendar" class="calendar-section" style="display: none;">
-                <div class="calendar-view">
-                    <header class="calendar-header">
-                        <div class="nav-controls">
-                            <button class="nav-btn" id="prevMonth">←</button>
-                            <h2 id="currentMonth">November 2024</h2>
-                            <button class="nav-btn" id="nextMonth">→</button>
-                        </div>
-                        <div class="view-controls">
-                            <button class="view-btn active" data-view="month">Month</button>
-                            <button class="view-btn" data-view="week">Week</button>
-                        </div>
-                    </header>
-                    
-                    <div class="calendar-grid">
-                        <div class="weekdays">
-                            <div>Mon</div>
-                            <div>Tue</div>
-                            <div>Wed</div>
-                            <div>Thu</div>
-                            <div>Fri</div>
-                            <div>Sat</div>
-                            <div>Sun</div>
-                        </div>
-                        <div class="days" id="calendarDays"></div>
-                    </div>
-                    
-                    <div class="leave-status">
-                        <div class="status-item">
-                            <span class="status-dot pto"></span>
-                            <span data-term="leave">Annual Leave</span>
-                        </div>
-                        <div class="status-item">
-                            <span class="status-dot holiday"></span>
-                            <span data-term="holiday">Bank Holiday</span>
-                        </div>
-                        <div class="status-item">
-                            <span class="status-dot weekend"></span>
-                            <span>Weekend</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </main>
 
         <!-- Footer -->
-        <!-- Replace the current footer with this -->
-<footer class="footer fade-in-delayed-2">
-    <div class="footer-content">
-        <nav class="footer-nav">
-            <a href="#" class="footer-link">Contact Us</a>
-            <a href="#" class="footer-link">Learn More</a>
-            <a href="#" class="footer-link">Privacy Policy</a>
-        </nav>
-    </div>
-</footer>
+        <footer class="footer fade-in-delayed-2">
+            <div class="footer-content">
+                <nav class="footer-nav">
+                    <a href="#" class="footer-link">Contact Us</a>
+                    <a href="#" class="footer-link">Learn More</a>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                </nav>
+            </div>
+        </footer>
     </div>
 
-    <!-- Core JavaScript -->
+    <!-- Scripts -->
     <script type="module" src="js/effects.js"></script>
     <script type="module" src="js/background-effects.js"></script>
-    <script type="module" src="js/calendar.js"></script>
-    <script type="module" src="js/region-context.js"></script>
     <script type="module" src="main.js"></script>
-
-    <!-- Modal System -->
-    <script type="module" src="components/modals/index.js"></script>
 </body>
 </html>
