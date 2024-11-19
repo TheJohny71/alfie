@@ -13,7 +13,6 @@ class EffectsManager {
         this.handleReducedMotion();
     }
 
-    // Scroll-based effects
     initScrollEffects() {
         const observerOptions = {
             threshold: 0.2,
@@ -25,7 +24,6 @@ class EffectsManager {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                     
-                    // Special handling for features grid
                     if (entry.target.classList.contains('features-grid')) {
                         this.staggerChildren(entry.target);
                     }
@@ -33,64 +31,41 @@ class EffectsManager {
             });
         }, observerOptions);
 
-        // Observe elements
         document.querySelectorAll('.scroll-fade-up, .features-grid').forEach(el => {
             observer.observe(el);
         });
 
-        // Header scroll effect
         this.handleHeaderScroll();
     }
 
-    // Magnetic button effect
     initMagneticEffects() {
-        const magneticElements = document.querySelectorAll('[data-magnetic]');
+        const magneticButtons = document.querySelectorAll('[data-magnetic]');
         
-        magneticElements.forEach(element => {
+        magneticButtons.forEach(button => {
             let bounds;
-            let strength = element.dataset.magneticStrength || 0.5;
+            let strength = 0.25;
 
             const handleMouseMove = (e) => {
-                const { clientX, clientY } = e;
-                const { left, top, width, height } = bounds;
-                const x = clientX - left;
-                const y = clientY - top;
+                const rect = button.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
                 
-                const centerX = x - width / 2;
-                const centerY = y - height / 2;
-                
-                const distance = Math.sqrt(centerX ** 2 + centerY ** 2);
-                const power = Math.min(distance / width, 1);
-                
-                gsap.to(element, {
-                    duration: 0.6,
-                    x: centerX * strength * power,
-                    y: centerY * strength * power,
-                    ease: 'power2.out'
-                });
-            };
-
-            const handleMouseEnter = () => {
-                bounds = element.getBoundingClientRect();
-                element.addEventListener('mousemove', handleMouseMove);
+                button.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
             };
 
             const handleMouseLeave = () => {
-                element.removeEventListener('mousemove', handleMouseMove);
-                gsap.to(element, {
-                    duration: 0.6,
-                    x: 0,
-                    y: 0,
-                    ease: 'elastic.out(1, 0.3)'
-                });
+                button.style.transform = 'translate(0px, 0px)';
             };
 
-            element.addEventListener('mouseenter', handleMouseEnter);
-            element.addEventListener('mouseleave', handleMouseLeave);
+            button.addEventListener('mouseenter', () => {
+                bounds = button.getBoundingClientRect();
+                button.addEventListener('mousemove', handleMouseMove);
+            });
+
+            button.addEventListener('mouseleave', handleMouseLeave);
         });
     }
 
-    // Parallax effects
     initParallaxEffects() {
         const parallaxElements = document.querySelectorAll('[data-parallax]');
         
@@ -105,22 +80,22 @@ class EffectsManager {
         }, { passive: true });
     }
 
-    // Tilt effect for cards
     initTiltEffects() {
-        const tiltElements = document.querySelectorAll('[data-tilt]');
-        
-        tiltElements.forEach(element => {
-            VanillaTilt.init(element, {
-                max: 5,
-                speed: 400,
-                glare: true,
-                'max-glare': 0.2,
-                scale: 1.02
+        if (typeof VanillaTilt !== 'undefined') {
+            const tiltElements = document.querySelectorAll('[data-tilt]');
+            
+            tiltElements.forEach(element => {
+                VanillaTilt.init(element, {
+                    max: 5,
+                    speed: 400,
+                    glare: true,
+                    'max-glare': 0.2,
+                    scale: 1.02
+                });
             });
-        });
+        }
     }
 
-    // Premium hover effects
     initHoverEffects() {
         const buttons = document.querySelectorAll('.cta-button');
         
@@ -136,7 +111,6 @@ class EffectsManager {
         });
     }
 
-    // Handle header scroll effect
     handleHeaderScroll() {
         const header = document.querySelector('.header');
         let lastScroll = 0;
@@ -160,7 +134,6 @@ class EffectsManager {
         }, { passive: true });
     }
 
-    // Stagger children animations
     staggerChildren(parent) {
         const children = parent.children;
         Array.from(children).forEach((child, index) => {
@@ -169,13 +142,11 @@ class EffectsManager {
         });
     }
 
-    // Handle reduced motion preference
     handleReducedMotion() {
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
         
         const handleMotionPreference = (e) => {
             if (e.matches) {
-                // Remove all animations and transitions
                 document.documentElement.classList.add('reduce-motion');
             } else {
                 document.documentElement.classList.remove('reduce-motion');
