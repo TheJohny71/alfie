@@ -68,14 +68,17 @@ header {
 .hero {
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     padding: 2rem;
+    padding-top: 80px;
+    position: relative;
 }
 
 .hero-content {
     max-width: 800px;
     margin: 0 auto;
-    padding: 4rem 0;
+    padding: 0;
 }
 
 .hero h1 {
@@ -87,7 +90,7 @@ header {
 
 .hero-text {
     max-width: 600px;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 }
 
 .tagline {
@@ -110,7 +113,7 @@ header {
 
 /* CTA Button */
 .cta-wrapper {
-    margin-top: 3rem;
+    margin-top: 2rem;
 }
 
 .cta-button {
@@ -129,11 +132,15 @@ header {
 .cta-button:hover {
     background: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Features Section */
 .features {
-    padding: 4rem 2rem;
+    padding: 0 2rem;
+    margin-top: -120px;
+    position: relative;
+    z-index: 2;
 }
 
 .features-grid {
@@ -151,11 +158,14 @@ header {
     padding: 2rem;
     text-align: center;
     transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .feature-card:hover {
     background: rgba(255, 255, 255, 0.1);
     transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 .feature-card h3 {
@@ -167,19 +177,62 @@ header {
 .feature-card p {
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .features-grid {
+        gap: 1.5rem;
+        padding: 0 1rem;
+    }
 }
 
 @media (max-width: 768px) {
     .hero {
         padding: 1rem;
         text-align: center;
+        min-height: auto;
     }
 
     .hero-content {
-        padding: 2rem 0;
+        padding: 4rem 0 2rem;
+    }
+
+    .features {
+        margin-top: 2rem;
+        padding: 0 1rem 2rem;
     }
 
     .features-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .feature-card {
+        padding: 1.5rem;
+    }
+    
+    .nav-container {
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .tagline {
+        font-size: 1.1rem;
+    }
+
+    .tagline.tertiary {
+        font-size: 0.9rem;
+    }
+
+    .cta-button {
+        padding: 0.875rem 2rem;
+        font-size: 0.9rem;
     }
 }
