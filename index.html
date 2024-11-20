@@ -9,7 +9,7 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Styles -->
+    <!-- Styles - Keeping original structure -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/components.css">
     <link rel="stylesheet" href="styles/animations.css">
@@ -19,7 +19,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
 </head>
 <body class="loading">
-    <!-- Background Effects -->
+    <!-- Background Effects - Keeping your existing implementation -->
     <canvas id="aurora-canvas" class="aurora-canvas"></canvas>
     <div class="background-effects">
         <div class="gradient-background"></div>
@@ -28,7 +28,7 @@
 
     <!-- Root element -->
     <div id="root">
-        <!-- Navigation Header -->
+        <!-- Enhanced Navigation Header -->
         <header class="header glass-effect">
             <nav class="nav-container">
                 <div class="brand-wrapper">
@@ -49,32 +49,69 @@
 
         <!-- Main Content -->
         <main>
-            <!-- Hero Section -->
+            <!-- Enhanced Hero Section -->
             <section id="welcome" class="hero">
                 <div class="content-wrapper">
                     <div class="hero-content">
+                        <!-- Main Title with enhanced typography -->
                         <h1 class="main-title">
                             <span class="title-line">Create moments</span>
                             <span class="title-line">for what matters...</span>
                         </h1>
                         
+                        <!-- Updated messaging to match brand guidelines -->
                         <div class="hero-text">
-                            <p class="subtitle reveal-text">Because the best stories unfold when you're living them</p>
-                            <p class="tagline reveal-text">Your companion to a seamless year of leave</p>
+                            <p class="tagline primary reveal-text">Transform time off into moments that matter</p>
+                            <p class="tagline secondary reveal-text">Where life's best chapters begin</p>
                         </div>
 
                         <div class="cta-wrapper">
                             <a href="calendar.html" class="cta-button glassmorphism" data-magnetic>
                                 <span class="button-text">Start Planning</span>
+                                <span class="button-glow"></span>
                             </a>
                         </div>
                     </div>
                 </div>
             </section>
+
+            <!-- New Feature Teaser Section -->
+            <section id="features" class="features-section">
+                <div class="content-wrapper">
+                    <div class="features-grid">
+                        <!-- Calendar Feature -->
+                        <div class="feature-card" data-tilt data-tilt-max="5">
+                            <div class="feature-icon calendar-icon"></div>
+                            <h3>Smart Calendar</h3>
+                            <p>Plan your time off with our intelligent calendar system</p>
+                        </div>
+
+                        <!-- Regional Feature -->
+                        <div class="feature-card" data-tilt data-tilt-max="5">
+                            <div class="feature-icon region-icon"></div>
+                            <h3>Region Aware</h3>
+                            <p>Seamlessly handles UK and US holiday systems</p>
+                        </div>
+
+                        <!-- Team Feature -->
+                        <div class="feature-card" data-tilt data-tilt-max="5">
+                            <div class="feature-icon team-icon"></div>
+                            <h3>Team Sync</h3>
+                            <p>Coordinate leave with your team effortlessly</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
+
+        <!-- New Navigation Dots -->
+        <nav class="nav-dots" aria-label="Section navigation">
+            <button class="nav-dot active" data-section="welcome" aria-label="Welcome section"></button>
+            <button class="nav-dot" data-section="features" aria-label="Features section"></button>
+        </nav>
     </div>
 
-    <!-- Scripts -->
+    <!-- Scripts - Maintaining original structure -->
     <script src="js/effects.js"></script>
     <script src="js/background-effects.js"></script>
     <script src="main.js"></script>
