@@ -1,4 +1,3 @@
-// Premium Effects Manager
 class EffectsManager {
     constructor() {
         this.init();
@@ -7,7 +6,6 @@ class EffectsManager {
     init() {
         this.initScrollEffects();
         this.initMagneticEffects();
-        this.initParallaxEffects();
         this.initTiltEffects();
         this.initHoverEffects();
         this.handleReducedMotion();
@@ -24,6 +22,16 @@ class EffectsManager {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                     
+                    if (entry.target.classList.contains('hero-text')) {
+                        const taglines = entry.target.querySelectorAll('.tagline');
+                        taglines.forEach((tagline, index) => {
+                            setTimeout(() => {
+                                tagline.style.opacity = '1';
+                                tagline.style.transform = 'translateY(0)';
+                            }, index * 200);
+                        });
+                    }
+                    
                     if (entry.target.classList.contains('features-grid')) {
                         this.staggerChildren(entry.target);
                     }
@@ -31,7 +39,7 @@ class EffectsManager {
             });
         }, observerOptions);
 
-        document.querySelectorAll('.scroll-fade-up, .features-grid').forEach(el => {
+        document.querySelectorAll('.scroll-fade-up, .features-grid, .hero-text').forEach(el => {
             observer.observe(el);
         });
 
@@ -43,7 +51,7 @@ class EffectsManager {
         
         magneticButtons.forEach(button => {
             let bounds;
-            let strength = 0.25;
+            const strength = 0.25;
 
             const handleMouseMove = (e) => {
                 const rect = button.getBoundingClientRect();
@@ -66,32 +74,14 @@ class EffectsManager {
         });
     }
 
-    initParallaxEffects() {
-        const parallaxElements = document.querySelectorAll('[data-parallax]');
-        
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            
-            parallaxElements.forEach(element => {
-                const speed = element.dataset.parallaxSpeed || 0.5;
-                const offset = scrolled * speed;
-                element.style.transform = `translateY(${offset}px)`;
-            });
-        }, { passive: true });
-    }
-
     initTiltEffects() {
         if (typeof VanillaTilt !== 'undefined') {
-            const tiltElements = document.querySelectorAll('[data-tilt]');
-            
-            tiltElements.forEach(element => {
-                VanillaTilt.init(element, {
-                    max: 5,
-                    speed: 400,
-                    glare: true,
-                    'max-glare': 0.2,
-                    scale: 1.02
-                });
+            VanillaTilt.init(document.querySelectorAll('[data-tilt]'), {
+                max: 5,
+                speed: 400,
+                glare: true,
+                'max-glare': 0.2,
+                scale: 1.02
             });
         }
     }
@@ -158,11 +148,8 @@ class EffectsManager {
     }
 }
 
-// Initialize effects when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     const effects = new EffectsManager();
-    
-    // Remove loading state
     requestAnimationFrame(() => {
         document.body.classList.remove('loading');
     });
