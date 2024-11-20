@@ -1,33 +1,36 @@
-/* Enhanced main.css */
+/* === Complete main.css === */
 :root {
-    /* Core colors */
+    /* Colors */
     --color-primary: #4B0082;
     --color-primary-light: #6B46C1;
     --color-primary-dark: #36005F;
-    --color-accent: #9F7AEA;
-    
-    /* Text colors */
-    --color-text: rgba(255, 255, 255, 0.95);
+    --color-background: #1E1E1E;
+    --color-text: #FFFFFF;
     --color-text-secondary: rgba(255, 255, 255, 0.85);
     --color-text-tertiary: rgba(255, 255, 255, 0.7);
     
-    /* Special effects */
-    --glass-background: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --glass-shine: rgba(255, 255, 255, 0.05);
+    /* Fonts */
+    --font-primary: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     
-    /* Shadows */
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+    /* Spacing */
+    --spacing-1: 0.25rem;
+    --spacing-2: 0.5rem;
+    --spacing-4: 1rem;
+    --spacing-6: 1.5rem;
+    --spacing-8: 2rem;
+    --spacing-16: 4rem;
     
     /* Transitions */
-    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition-bounce: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    /* Z-index */
+    --z-background: -1;
+    --z-content: 1;
+    --z-header: 10;
 }
 
-/* Reset with improved defaults */
+/* Reset & Base Styles */
 *, *::before, *::after {
     margin: 0;
     padding: 0;
@@ -39,46 +42,47 @@
 html {
     font-size: 16px;
     scroll-behavior: smooth;
-    height: 100%;
 }
 
 body {
-    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    line-height: 1.5;
-    color: var(--color-text);
-    min-height: 100vh;
-    overflow-x: hidden;
+    font-family: var(--font-primary);
     background: var(--color-primary);
+    color: var(--color-text);
+    line-height: 1.5;
+    overflow-x: hidden;
+    min-height: 100vh;
 }
 
-/* Enhanced Header */
+/* Header & Navigation */
 .app-header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 100;
-    padding: 1.5rem 2rem;
-    backdrop-filter: blur(10px);
+    z-index: var(--z-header);
+    padding: var(--spacing-4) var(--spacing-8);
     background: rgba(75, 0, 130, 0.1);
-    border-bottom: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: all var(--transition-smooth);
 }
 
-.app-header.scrolled {
-    padding: 1rem 2rem;
-    background: rgba(75, 0, 130, 0.8);
+.header-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* Enhanced Brand */
 .brand {
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--spacing-2);
     text-decoration: none;
     color: var(--color-text);
+    font-size: 1.5rem;
     font-weight: 600;
-    letter-spacing: -0.02em;
     transition: transform var(--transition-bounce);
 }
 
@@ -92,7 +96,7 @@ body {
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
-/* Enhanced Hero Section */
+/* Hero Section */
 .hero {
     min-height: 100vh;
     display: flex;
@@ -104,26 +108,43 @@ body {
     position: relative;
 }
 
-.hero h1 {
+.hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.main-headline {
     font-size: clamp(2.5rem, 8vw, 5rem);
     font-weight: 700;
-    letter-spacing: -0.03em;
     line-height: 1.1;
     margin-bottom: 1.5rem;
-    background: linear-gradient(to right, var(--color-text), var(--color-text-secondary));
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 100%);
     -webkit-background-clip: text;
     background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: fadeInUp 0.8s ease-out forwards;
 }
 
-.hero p {
+.hero-subtitle {
     font-size: clamp(1.25rem, 4vw, 1.75rem);
-    max-width: 800px;
-    margin: 0 auto 2rem;
     color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out 0.2s forwards;
 }
 
-/* Enhanced CTA Button */
+.hero-tagline {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    color: var(--color-text-tertiary);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out 0.4s forwards;
+}
+
+/* CTA Button */
 .cta-button {
     display: inline-flex;
     align-items: center;
@@ -132,43 +153,29 @@ body {
     font-size: 1.125rem;
     font-weight: 500;
     color: var(--color-text);
-    background: var(--glass-background);
-    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 9999px;
     text-decoration: none;
     transition: all var(--transition-bounce);
-    backdrop-filter: blur(10px);
-    position: relative;
-    overflow: hidden;
-}
-
-.cta-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 200%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        var(--glass-shine),
-        transparent
-    );
-    transition: transform 0.6s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out 0.6s forwards;
 }
 
 .cta-button:hover {
-    transform: translateY(-2px) scale(1.02);
-    border-color: var(--color-accent);
-    box-shadow: 0 8px 32px rgba(75, 0, 130, 0.3);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 30px rgba(107, 70, 193, 0.2);
+    background: rgba(255, 255, 255, 0.15);
 }
 
-.cta-button:hover::before {
-    transform: translateX(100%);
+.cta-button:active {
+    transform: translateY(1px);
 }
 
-/* Enhanced Feature Cards */
+/* Feature Cards */
 .features {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -179,19 +186,19 @@ body {
 }
 
 .feature-card {
-    background: var(--glass-background);
-    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 1.5rem;
     padding: 2rem;
     text-align: center;
     transition: all var(--transition-bounce);
-    backdrop-filter: blur(10px);
 }
 
 .feature-card:hover {
     transform: translateY(-8px);
-    border-color: var(--color-accent);
-    box-shadow: var(--shadow-lg);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 .feature-icon {
@@ -204,7 +211,6 @@ body {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: var(--color-text);
 }
 
 .feature-card p {
@@ -212,30 +218,69 @@ body {
     line-height: 1.6;
 }
 
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .app-header {
-        padding: 1rem;
+        padding: var(--spacing-4);
     }
     
-    .app-header.scrolled {
-        padding: 0.75rem 1rem;
+    .brand {
+        font-size: 1.25rem;
+    }
+    
+    .brand img {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .hero {
+        padding: 2rem 1rem;
     }
     
     .features {
         grid-template-columns: 1fr;
         padding: 1rem;
     }
-    
-    .hero {
-        padding: 2rem 1rem;
+}
+
+/* Accessibility */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .feature-card,
+    .cta-button {
+        border-width: 2px;
     }
 }
 
-/* High-contrast & Accessibility */
-@media (prefers-contrast: high) {
-    :root {
-        --glass-background: rgba(255, 255, 255, 0.15);
-        --glass-border: rgba(255, 255, 255, 0.3);
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }
