@@ -1,204 +1,138 @@
-// === Effects Manager ===
-class EffectsManager {
-    constructor() {
-        this.init();
-    }
-
-    init() {
-        this.initScrollEffects();
-        this.initMagneticEffects();
-        this.initParallaxEffects();
-        this.initTiltEffects();
-        this.initHoverEffects();
-        this.handleReducedMotion();
-    }
-
-    initScrollEffects() {
-        const observerOptions = {
-            threshold: 0.2,
-            rootMargin: '0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    
-                    if (entry.target.classList.contains('hero-text')) {
-                        const taglines = entry.target.querySelectorAll('.tagline');
-                        taglines.forEach((tagline, index) => {
-                            setTimeout(() => {
-                                tagline.style.opacity = '1';
-                                tagline.style.transform = 'translateY(0)';
-                            }, index * 200);
-                        });
-                    }
-
-                    if (entry.target.classList.contains('features-grid')) {
-                        this.staggerChildren(entry.target);
-                    }
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.scroll-fade-up, .features-grid, .hero-text').forEach(el => {
-            observer.observe(el);
-        });
-
-        this.handleHeaderScroll();
-    }
-
-    initMagneticEffects() {
-        const magneticButtons = document.querySelectorAll('[data-magnetic]');
-        
-        magneticButtons.forEach(button => {
-            let bounds;
-            const strength = 0.25;
-            let isHovered = false;
-
-            const handleMouseMove = (e) => {
-                if (!isHovered) return;
-                const rect = button.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                
-                button.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
-            };
-
-            const handleMouseEnter = () => {
-                isHovered = true;
-                bounds = button.getBoundingClientRect();
-            };
-
-            const handleMouseLeave = () => {
-                isHovered = false;
-                button.style.transform = 'translate(0px, 0px)';
-            };
-
-            button.addEventListener('mouseenter', handleMouseEnter);
-            button.addEventListener('mousemove', handleMouseMove);
-            button.addEventListener('mouseleave', handleMouseLeave);
-        });
-    }
-
-    initParallaxEffects() {
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-        const parallaxElements = document.querySelectorAll('[data-parallax]');
-        let ticking = false;
-        
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    const scrolled = window.pageYOffset;
-                    parallaxElements.forEach(element => {
-                        const speed = element.dataset.parallaxSpeed || 0.5;
-                        const offset = scrolled * speed;
-                        element.style.transform = `translateY(${offset}px)`;
-                    });
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }, { passive: true });
-    }
-
-    initTiltEffects() {
-        if (typeof VanillaTilt === 'undefined') return;
-        
-        const tiltElements = document.querySelectorAll('[data-tilt]');
-        VanillaTilt.init(tiltElements, {
-            max: 5,
-            speed: 400,
-            glare: true,
-            'max-glare': 0.2,
-            scale: 1.02
-        });
-    }
-
-    initHoverEffects() {
-        const buttons = document.querySelectorAll('.cta-button');
-        
-        buttons.forEach(button => {
-            let isHovered = false;
-
-            const handleMouseMove = (e) => {
-                if (!isHovered) return;
-                const rect = button.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                button.style.setProperty('--mouse-x', `${x}px`);
-                button.style.setProperty('--mouse-y', `${y}px`);
-            };
-
-            button.addEventListener('mouseenter', () => isHovered = true);
-            button.addEventListener('mousemove', handleMouseMove);
-            button.addEventListener('mouseleave', () => isHovered = false);
-        });
-    }
-
-    handleHeaderScroll() {
-        const header = document.querySelector('.header');
-        let lastScroll = 0;
-        let ticking = false;
-        
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    const currentScroll = window.pageYOffset;
-                    
-                    if (currentScroll > 50) {
-                        header.classList.add('scrolled');
-                    } else {
-                        header.classList.remove('scrolled');
-                    }
-                    
-                    if (currentScroll > lastScroll && currentScroll > 500) {
-                        header.classList.add('header-hidden');
-                    } else {
-                        header.classList.remove('header-hidden');
-                    }
-                    
-                    lastScroll = currentScroll;
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }, { passive: true });
-    }
-
-    staggerChildren(parent) {
-        const children = parent.children;
-        Array.from(children).forEach((child, index) => {
-            child.style.transitionDelay = `${index * 0.1}s`;
-            child.classList.add('visible');
-        });
-    }
-
-    handleReducedMotion() {
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-        
-        const handleMotionPreference = (e) => {
-            if (e.matches) {
-                document.documentElement.classList.add('reduce-motion');
-            } else {
-                document.documentElement.classList.remove('reduce-motion');
-            }
-        };
-        
-        prefersReducedMotion.addEventListener('change', handleMotionPreference);
-        handleMotionPreference(prefersReducedMotion);
-    }
+/* === components.css === */
+:root {
+    --color-primary: #4B0082;
+    --color-secondary: #6B46C1;
+    --color-text: #FFFFFF;
+    --color-text-secondary: rgba(255, 255, 255, 0.9);
 }
 
-// Initialize effects when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    const effects = new EffectsManager();
-    
-    // Remove loading state
-    requestAnimationFrame(() => {
-        document.body.classList.remove('loading');
-        document.body.classList.add('loaded');
-    });
-});
+body {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'SF Pro Display', -apple-system, system-ui, sans-serif;
+    color: var(--color-text);
+}
+
+.main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Hero Section */
+.hero {
+    padding: 6rem 2rem;
+    text-align: left;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
+
+.hero-text {
+    max-width: 600px;
+    margin-bottom: 3rem;
+}
+
+.tagline {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.tagline.primary {
+    font-size: 1.25rem;
+    color: var(--color-text-secondary);
+}
+
+.tagline.secondary {
+    font-size: 1.25rem;
+    color: var(--color-text-secondary);
+}
+
+.tagline.tertiary {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+/* Button */
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    color: var(--color-text);
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-top: 2rem;
+}
+
+.cta-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Features */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 4rem;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.feature-card p {
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+}
+
+/* Background Effects */
+.background-effects {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(circle at top right, 
+        rgba(107, 70, 193, 0.2) 0%, 
+        rgba(75, 0, 130, 0.2) 100%);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero {
+        padding: 4rem 1rem;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
