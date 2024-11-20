@@ -1,26 +1,23 @@
 // === Main Application JavaScript ===
-
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize all main functionality
     initializeApp();
 });
 
 function initializeApp() {
-    // Remove loading state
+    // Remove loading state with slight delay
     setTimeout(() => {
         document.body.classList.remove('loading');
+        document.body.classList.add('loaded');
     }, 500);
 
     // Initialize components
     initializeFeatureCards();
-    initializeNavigation();
     initializeMagneticButtons();
     initializeScrollEffects();
 }
 
 // === Feature Cards Initialization ===
 function initializeFeatureCards() {
-    // Initialize tilt effect on feature cards
     const cards = document.querySelectorAll('.feature-card');
     
     cards.forEach(card => {
@@ -31,53 +28,6 @@ function initializeFeatureCards() {
             glare: true,
             'max-glare': 0.2,
             scale: 1.02
-        });
-
-        // Add intersection observer for animation
-        observeElement(card, () => {
-            card.classList.add('visible');
-        });
-    });
-}
-
-// === Navigation System ===
-function initializeNavigation() {
-    const navDots = document.querySelectorAll('.nav-dot');
-    const sections = document.querySelectorAll('section[id]');
-
-    // Update active dot based on scroll position
-    window.addEventListener('scroll', () => {
-        let current = '';
-        
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (window.pageYOffset >= (sectionTop - sectionHeight / 3)) {
-                current = section.getAttribute('id');
-            }
-        });
-
-        navDots.forEach(dot => {
-            dot.classList.remove('active');
-            if (dot.getAttribute('data-section') === current) {
-                dot.classList.add('active');
-            }
-        });
-    });
-
-    // Add click handlers to dots
-    navDots.forEach(dot => {
-        dot.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetId = dot.getAttribute('data-section');
-            const targetSection = document.getElementById(targetId);
-            
-            if (targetSection) {
-                targetSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
         });
     });
 }
@@ -122,22 +72,6 @@ function initializeScrollEffects() {
 }
 
 // === Utility Functions ===
-function observeElement(element, callback) {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                callback();
-                observer.unobserve(element);
-            }
-        });
-    }, {
-        threshold: 0.1
-    });
-
-    observer.observe(element);
-}
-
-// === Performance Optimization ===
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -153,5 +87,4 @@ function debounce(func, wait) {
 // === Error Handling ===
 window.addEventListener('error', (e) => {
     console.error('Application Error:', e.message);
-    // You can add error reporting service here
 });
