@@ -1,101 +1,91 @@
-class BackgroundEffect {
+/* === background-effects.js === */
+const canvas = document.getElementById('aurora-canvas');
+const ctx = canvas.getContext('2d');
+
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
+
+class Particle {
     constructor() {
-        this.canvas = document.getElementById('aurora-canvas');
-        this.ctx = this.canvas.getContext('2d');
-        this.particles = [];
-        this.mousePosition = { x: 0, y: 0 };
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 2;
+        this.speedX = Math.random() * 0.5 - 0.25;
+        this.speedY = Math.random() * 0.5 - 0.25;
+        this.opacity = Math.random() * 0.5;
+    }
+
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
         
-        this.init();
+        if (this.x > width) this.x = 0;
+        if (this.x < 0) this.x = width;
+        if (this.y > height) this.y = 0;
+        if (this.y < 0) this.y = height;
+
+        this.opacity = Math.sin(Date.now() * 0.001) * 0.5 + 0.5;
     }
 
-    init() {
-        this.setupCanvas();
-        this.createParticles();
-        this.addEventListeners();
-        this.animate();
-    }
-
-    setupCanvas() {
-        const handleResize = () => {
-            const dpr = window.devicePixelRatio || 1;
-            this.canvas.width = window.innerWidth * dpr;
-            this.canvas.height = window.innerHeight * dpr;
-            this.ctx.scale(dpr, dpr);
-            this.canvas.style.width = `${window.innerWidth}px`;
-            this.canvas.style.height = `${window.innerHeight}px`;
-        };
-
-        handleResize();
-        window.addEventListener('resize', handleResize);
-    }
-
-    createParticles() {
-        const particleCount = 80;
-        
-        for (let i = 0; i < particleCount; i++) {
-            this.particles.push({
-                x: Math.random() * this.canvas.width,
-                y: Math.random() * this.canvas.height,
-                size: Math.random() * 2 + 1,
-                speedX: (Math.random() - 0.5) * 0.3,
-                speedY: (Math.random() - 0.5) * 0.3,
-                opacity: Math.random() * 0.5 + 0.2
-            });
-        }
-    }
-
-    updateParticles() {
-        this.particles.forEach(particle => {
-            particle.x += particle.speedX;
-            particle.y += particle.speedY;
-
-            const dx = this.mousePosition.x - particle.x;
-            const dy = this.mousePosition.y - particle.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            
-            if (distance < 100) {
-                const force = (1 - distance / 100) * 0.5;
-                particle.x -= dx * force;
-                particle.y -= dy * force;
-            }
-
-            if (particle.x < 0) particle.x = this.canvas.width;
-            if (particle.x > this.canvas.width) particle.x = 0;
-            if (particle.y < 0) particle.y = this.canvas.height;
-            if (particle.y > this.canvas.height) particle.y = 0;
-        });
-    }
-
-    drawParticles() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        this.particles.forEach(particle => {
-            this.ctx.beginPath();
-            this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-            this.ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
-            this.ctx.shadowBlur = 15;
-            this.ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
-            this.ctx.fill();
-        });
-    }
-
-    addEventListeners() {
-        this.canvas.addEventListener('mousemove', (e) => {
-            const rect = this.canvas.getBoundingClientRect();
-            this.mousePosition = {
-                x: e.clientX - rect.left,
-                y: e.clientY - rect.top
-            };
-        });
-    }
-
-    animate() {
-        this.updateParticles();
-        this.drawParticles();
-        requestAnimationFrame(() => this.animate());
+    draw() {
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 0.5})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
     }
 }
 
+const particles = Array(100).fill().map(() => new Particle());
+
+function animate() {
+    ctx.clearRect(0, 0, width, height);
+    particles.forEach(particle => {
+        particle.update();
+        particle.draw();
+    });
+    requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+});
+
+animate();
+
+/* === effects.js === */
 document.addEventListener('DOMContentLoaded', () => {
-    new BackgroundEffect();
+    // Add hover effect to CTA button
+    const ctaButton = document.querySelector('.cta-button');
+    if (ctaButton) {
+        ctaButton.addEventListener('mousemove', (e) => {
+            const rect = e.target.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            e.target.style.setProperty('--x', `${x}px`);
+            e.target.style.setProperty('--y', `${y}px`);
+        });
+    }
+
+    // Intersection Observer for feature cards
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    document.querySelectorAll('.feature-card').forEach(card => {
+        observer.observe(card);
+    });
+
+    // Handle reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (prefersReducedMotion.matches) {
+        document.body.classList.add('reduce-motion');
+    }
 });
