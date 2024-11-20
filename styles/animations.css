@@ -1,11 +1,6 @@
-/* === FADE ANIMATIONS === */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @keyframes fadeInUp {
@@ -19,13 +14,20 @@
     }
 }
 
-/* === TEXT REVEAL ANIMATIONS === */
-.title-line {
+/* Initial States */
+.fade-in {
     opacity: 0;
+    animation: fadeIn 0.8s var(--transition-smooth) forwards;
+}
+
+.scroll-fade-up {
+    opacity: 0;
+    transform: translateY(20px);
     animation: fadeInUp 0.8s var(--transition-smooth) forwards;
 }
 
-.title-line:nth-child(2) {
+/* Sequence Delays */
+.main-title {
     animation-delay: 0.2s;
 }
 
@@ -42,81 +44,30 @@
 }
 
 .cta-wrapper {
-    opacity: 0;
     animation: fadeInUp 0.8s var(--transition-smooth) 1s forwards;
 }
 
-/* === FEATURE CARD ANIMATIONS === */
-.feature-card {
-    opacity: 0;
-    animation: fadeInUp 0.8s var(--transition-smooth) forwards;
-}
-
 .feature-card:nth-child(1) {
-    animation-delay: 1.2s;
+    animation: fadeInUp 0.8s var(--transition-smooth) 1.2s forwards;
 }
 
 .feature-card:nth-child(2) {
-    animation-delay: 1.4s;
+    animation: fadeInUp 0.8s var(--transition-smooth) 1.4s forwards;
 }
 
 .feature-card:nth-child(3) {
-    animation-delay: 1.6s;
+    animation: fadeInUp 0.8s var(--transition-smooth) 1.6s forwards;
 }
 
-/* === HOVER ANIMATIONS === */
-@keyframes buttonGlow {
-    from {
-        box-shadow: 0 0 0 rgba(107, 70, 193, 0);
-    }
-    to {
-        box-shadow: 0 0 20px rgba(107, 70, 193, 0.3);
-    }
-}
-
-.cta-button:hover {
-    animation: buttonGlow 0.3s var(--transition-smooth) forwards;
-}
-
-/* === LOADING ANIMATION === */
-@keyframes loadingFade {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-body:not(.loading) {
-    animation: loadingFade 0.5s ease-out forwards;
-}
-
-/* === BRAND ANIMATION === */
-.brand-logo {
-    transition: transform var(--transition-bounce);
-}
-
-.brand-wrapper:hover .brand-logo {
-    transform: scale(1.05) rotate(5deg);
-}
-
-/* === REDUCED MOTION === */
 @media (prefers-reduced-motion: reduce) {
-    .title-line,
+    .fade-in,
+    .scroll-fade-up,
+    .main-title,
     .tagline,
     .cta-wrapper,
     .feature-card {
-        animation: none !important;
+        animation: none;
         opacity: 1;
         transform: none;
-    }
-    
-    .brand-logo {
-        transition: none;
-    }
-    
-    .cta-button:hover {
-        animation: none;
     }
 }
