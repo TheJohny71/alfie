@@ -1,4 +1,4 @@
-// Enhanced background-effects.js
+// Refined background-effects.js with slower, more subtle motion
 class AuroraEffect {
     constructor() {
         this.setupCanvas();
@@ -28,25 +28,21 @@ class AuroraEffect {
         this.createParticles();
     }
 
-    init() {
-        this.createParticles();
-        this.animate();
-    }
-
     createParticles() {
         this.particles = [];
-        const density = Math.min(this.width, this.height) * 0.1;
+        // Reduced number of particles for more subtle effect
+        const density = Math.min(this.width, this.height) * 0.05;
         const numberOfParticles = Math.floor(density);
         
         for (let i = 0; i < numberOfParticles; i++) {
             this.particles.push({
                 x: Math.random() * this.width,
                 y: Math.random() * this.height,
-                radius: Math.random() * 2 + 1,
+                radius: Math.random() * 1.5 + 0.5, // Smaller particles
                 baseX: Math.random() * this.width,
                 baseY: Math.random() * this.height,
-                density: (Math.random() * 30) + 1,
-                alpha: Math.random() * 0.5 + 0.2
+                density: (Math.random() * 20) + 1,
+                alpha: Math.random() * 0.3 + 0.1 // Reduced opacity
             });
         }
     }
@@ -61,7 +57,7 @@ class AuroraEffect {
 
     drawGradientBackground() {
         const gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height);
-        const time = Date.now() * 0.001;
+        const time = Date.now() * 0.0002; // Slowed down gradient shift
         
         this.gradientColors.forEach((color, index) => {
             const offset = (Math.sin(time + index) + 1) / 2;
@@ -77,6 +73,7 @@ class AuroraEffect {
         this.drawGradientBackground();
 
         this.particles.forEach(particle => {
+            // Slower particle movement
             let dx = this.mouse.x - particle.x;
             let dy = this.mouse.y - particle.y;
             let distance = Math.sqrt(dx * dx + dy * dy);
@@ -85,8 +82,10 @@ class AuroraEffect {
 
             const maxDistance = this.mouse.radius;
             const force = (maxDistance - distance) / maxDistance;
-            const directionX = forceDirectionX * force * particle.density;
-            const directionY = forceDirectionY * force * particle.density;
+            
+            // Reduced movement speed
+            const directionX = forceDirectionX * force * particle.density * 0.3;
+            const directionY = forceDirectionY * force * particle.density * 0.3;
 
             if (distance < this.mouse.radius) {
                 particle.x -= directionX;
@@ -94,11 +93,11 @@ class AuroraEffect {
             } else {
                 if (particle.x !== particle.baseX) {
                     dx = particle.x - particle.baseX;
-                    particle.x -= dx/10;
+                    particle.x -= dx * 0.05; // Slower return to position
                 }
                 if (particle.y !== particle.baseY) {
                     dy = particle.y - particle.baseY;
-                    particle.y -= dy/10;
+                    particle.y -= dy * 0.05; // Slower return to position
                 }
             }
 
@@ -110,8 +109,14 @@ class AuroraEffect {
 
         requestAnimationFrame(this.animate);
     }
+
+    init() {
+        this.createParticles();
+        this.animate();
+    }
 }
 
+// Initialize effect when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new AuroraEffect();
 });
