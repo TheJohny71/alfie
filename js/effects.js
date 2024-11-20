@@ -1,33 +1,116 @@
-// effects.js
+// Enhanced effects.js
 document.addEventListener('DOMContentLoaded', () => {
-    // Create and animate stars
-    const stars = document.createElement('div');
-    stars.id = 'stars';
+    // Parallax effect for hero section
+    const hero = document.querySelector('.hero');
+    const heroContent = document.querySelector('.hero-content');
     
-    for (let i = 0; i < 100; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.left = `${Math.random() * 100}%`;
-        star.style.top = `${Math.random() * 100}%`;
-        star.style.animationDelay = `${Math.random() * 3}s`;
-        stars.appendChild(star);
+    if (hero && heroContent) {
+        window.addEventListener('mousemove', (e) => {
+            if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+                const mouseX = e.clientX / window.innerWidth - 0.5;
+                const mouseY = e.clientY / window.innerHeight - 0.5;
+                
+                requestAnimationFrame(() => {
+                    heroContent.style.transform = `
+                        translate(${mouseX * 20}px, ${mouseY * 20}px)
+                        scale(1.01)
+                    `;
+                });
+            }
+        });
     }
-    
-    document.querySelector('.background-wrapper').appendChild(stars);
 
-    // Add hover effects
+    // Intersection Observer for feature cards
+    const observerOptions = {
+        threshold: 0.2,
+        rootMargin: '0px 0px -10% 0px'
+    };
+
+    const featureObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('feature-visible');
+                featureObserver.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
     document.querySelectorAll('.feature-card').forEach(card => {
+        featureObserver.observe(card);
+        
+        // Enhanced hover effect
         card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-5px)';
+            if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+                const icon = card.querySelector('.feature-icon');
+                if (icon) {
+                    icon.style.transform = 'scale(1.1) translateY(-5px)';
+                }
+            }
         });
         
         card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0)';
+            const icon = card.querySelector('.feature-icon');
+            if (icon) {
+                icon.style.transform = 'none';
+            }
         });
     });
 
-    // Handle reduced motion preference
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.body.classList.add('reduce-motion');
+    // Smooth scroll for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // CTA Button effect
+    const ctaButton = document.querySelector('.cta-button');
+    if (ctaButton) {
+        ctaButton.addEventListener('mousemove', (e) => {
+            if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+                const rect = ctaButton.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                ctaButton.style.setProperty('--x', `${x}px`);
+                ctaButton.style.setProperty('--y', `${y}px`);
+            }
+        });
     }
+
+    // Performance optimizations
+    let frameId;
+    const throttle = (callback, limit) => {
+        let inThrottle;
+        return function(...args) {
+            if (!inThrottle) {
+                callback.apply(this, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    };
+
+    // Handle reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handleReducedMotion = (e) => {
+        if (e.matches) {
+            document.body.classList.add('reduce-motion');
+            if (frameId) {
+                cancelAnimationFrame(frameId);
+            }
+        } else {
+            document.body.classList.remove('reduce-motion');
+        }
+    };
+    
+    prefersReducedMotion.addEventListener('change', handleReducedMotion);
+    handleReducedMotion(prefersReducedMotion);
 });
