@@ -1,3 +1,4 @@
+/* === animations.css === */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -14,45 +15,16 @@
     }
 }
 
-.fade-in {
-    opacity: 0;
-    animation: fadeIn 0.8s var(--transition-smooth) forwards;
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
-.fade-in-up {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.8s var(--transition-smooth) forwards;
+.hero h1 {
+    background-size: 200% auto;
+    animation: gradientShift 8s ease infinite;
 }
-
-.hero .main-title {
-    animation-delay: 0.2s;
-}
-
-.hero .tagline.primary {
-    animation: fadeInUp 0.8s var(--transition-smooth) 0.4s forwards;
-}
-
-.hero .tagline.secondary {
-    animation: fadeInUp 0.8s var(--transition-smooth) 0.6s forwards;
-}
-
-.hero .tagline.tertiary {
-    animation: fadeInUp 0.8s var(--transition-smooth) 0.8s forwards;
-}
-
-.hero .cta-wrapper {
-    animation: fadeInUp 0.8s var(--transition-smooth) 1s forwards;
-}
-
-.feature-card {
-    opacity: 0;
-    animation: fadeInUp 0.8s var(--transition-smooth) forwards;
-}
-
-.feature-card:nth-child(1) { animation-delay: 1.2s; }
-.feature-card:nth-child(2) { animation-delay: 1.4s; }
-.feature-card:nth-child(3) { animation-delay: 1.6s; }
 
 @media (prefers-reduced-motion: reduce) {
     * {
