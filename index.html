@@ -44,6 +44,119 @@
             pointer-events: none;
             display: block;
         }
+
+        .header-container {
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            gap: 0.5rem;
+        }
+
+        .brand-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .hero {
+            padding: 4rem 2rem;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .main-headline {
+            font-size: 3.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .hero-tagline {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            color: var(--color-primary);
+            padding: 1rem 2rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+
+        .features {
+            padding: 4rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-icon {
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .text-gradient {
+            background: linear-gradient(90deg, #fff, rgba(255,255,255,0.5));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
     </style>
 
     <!-- Main Styles -->
@@ -54,9 +167,6 @@
     <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
 </head>
 <body>
-    <!-- Initial canvas setup -->
-    <canvas id="background-canvas"></canvas>
-    
     <!-- Header -->
     <header class="app-header" data-header>
         <div class="header-container">
@@ -129,8 +239,9 @@
         </section>
     </main>
 
-    <!-- Ensure canvas is created immediately -->
+    <!-- Initial canvas setup -->
     <script>
+        // Ensure canvas is created before any other scripts
         if (!document.getElementById('background-canvas')) {
             const canvas = document.createElement('canvas');
             canvas.id = 'background-canvas';
@@ -147,9 +258,9 @@
             document.body.insertBefore(canvas, document.body.firstChild);
         }
     </script>
-    <script src="js/background-effects.js"></script>
+
     <!-- Main Scripts -->
-    
+    <script src="js/background-effects.js"></script>
     <script src="js/effects.js"></script>
 </body>
 </html>
