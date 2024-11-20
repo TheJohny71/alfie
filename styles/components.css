@@ -1,19 +1,4 @@
 /* === components.css === */
-:root {
-    --color-primary: #4B0082;
-    --color-secondary: #6B46C1;
-    --color-text: #FFFFFF;
-}
-
-body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: 'SF Pro Display', -apple-system, system-ui, sans-serif;
-    background: var(--color-primary);
-    color: var(--color-text);
-    overflow-x: hidden;
-}
-
 .background-wrapper {
     position: fixed;
     top: 0;
@@ -33,28 +18,13 @@ body {
     opacity: 0.8;
 }
 
-#aurora-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-/* Header */
 header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     padding: 1.5rem;
-    z-index: 100;
-}
-
-.nav-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 2rem;
+    z-index: var(--z-header);
 }
 
 .brand {
@@ -64,83 +34,12 @@ header {
     font-weight: 300;
 }
 
-/* Hero Section */
-.hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 2rem;
-    padding-top: 80px;
-    position: relative;
-}
-
-.hero-content {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0;
-}
-
-.hero h1 {
-    font-size: clamp(2.5rem, 8vw, 4rem);
-    line-height: 1.2;
-    margin-bottom: 2rem;
-    font-weight: 600;
-}
-
-.hero-text {
-    max-width: 600px;
-    margin-bottom: 2rem;
-}
-
-.tagline {
-    margin-bottom: 1rem;
-    font-size: 1.25rem;
-}
-
-.tagline.primary {
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.tagline.secondary {
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.tagline.tertiary {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-/* CTA Button */
-.cta-wrapper {
-    margin-top: 2rem;
-}
-
-.cta-button {
-    display: inline-block;
-    padding: 1rem 2.5rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50px;
-    color: var(--color-text);
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.cta-button:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Features Section */
 .features {
+    position: absolute;
+    bottom: 2rem;
+    left: 0;
+    right: 0;
     padding: 0 2rem;
-    margin-top: -120px;
-    position: relative;
-    z-index: 2;
 }
 
 .features-grid {
@@ -152,87 +51,52 @@ header {
 }
 
 .feature-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(76, 29, 149, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 24px;
     padding: 2rem;
     text-align: center;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    transition: all var(--transition-bounce);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .feature-card:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(76, 29, 149, 0.6);
     transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    margin: 0 auto 1rem;
 }
 
 .feature-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+    font-size: 1.25rem;
     font-weight: 500;
+    margin-bottom: 0.5rem;
 }
 
 .feature-card p {
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.6;
-    font-size: 0.9rem;
-}
-
-/* Responsive Design */
-@media (max-width: 1200px) {
-    .features-grid {
-        gap: 1.5rem;
-        padding: 0 1rem;
-    }
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
 }
 
 @media (max-width: 768px) {
-    .hero {
-        padding: 1rem;
-        text-align: center;
-        min-height: auto;
-    }
-
-    .hero-content {
-        padding: 4rem 0 2rem;
-    }
-
-    .features {
-        margin-top: 2rem;
-        padding: 0 1rem 2rem;
-    }
-
     .features-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
     }
-
-    .feature-card {
-        padding: 1.5rem;
-    }
     
-    .nav-container {
-        padding: 0 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero h1 {
-        font-size: 2rem;
-    }
-
-    .tagline {
-        font-size: 1.1rem;
-    }
-
-    .tagline.tertiary {
-        font-size: 0.9rem;
-    }
-
-    .cta-button {
-        padding: 0.875rem 2rem;
-        font-size: 0.9rem;
+    .features {
+        position: relative;
+        bottom: auto;
+        padding: 2rem 1rem;
     }
 }
