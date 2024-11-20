@@ -7,10 +7,19 @@
     background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
 }
 
+#aurora-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .background-effects {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.1), transparent);
+    background: 
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.1), transparent 70%),
+        radial-gradient(circle at bottom left, rgba(75, 0, 130, 0.2), transparent 70%);
     mix-blend-mode: overlay;
 }
 
@@ -19,24 +28,40 @@
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-.star {
+.feature-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
     position: absolute;
-    width: 2px;
-    height: 2px;
-    background: white;
-    border-radius: 50%;
-    animation: twinkle 3s infinite;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: skewX(-15deg);
+    transition: 0.5s;
 }
 
-@keyframes twinkle {
-    0%, 100% { opacity: 0.2; }
-    50% { opacity: 1; }
+.feature-card:hover::before {
+    left: 100%;
+    transition: 0.7s ease-in-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .star {
-        animation: none;
+    .feature-card::before {
+        display: none;
     }
 }
