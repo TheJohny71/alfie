@@ -1,116 +1,42 @@
-/* === BACKGROUND EFFECTS === */
+/* === effects.css === */
+.background-wrapper {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: var(--z-background);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+}
+
 .background-effects {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    z-index: var(--z-background);
-}
-
-/* Canvas Background */
-.aurora-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: var(--z-background);
-}
-
-/* Gradient Background */
-.gradient-background {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        135deg,
-        var(--color-primary) 0%,
-        var(--color-primary-dark) 100%
-    );
-    opacity: 0.8;
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.1), transparent);
+    mix-blend-mode: overlay;
 }
 
-/* Gradient Overlay */
-.gradient-overlay {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-        circle at center,
-        transparent 0%,
-        rgba(0, 0, 0, 0.3) 100%
-    );
-    mix-blend-mode: multiply;
-}
-
-/* === GLASS EFFECTS === */
 .glass-effect {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.glassmorphism {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-}
-
-/* === TEXT EFFECTS === */
-.text-gradient {
-    background: linear-gradient(
-        135deg,
-        var(--color-primary-light) 0%,
-        var(--color-primary) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.text-glow {
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-}
-
-/* === HOVER EFFECTS === */
-.hover-glow {
-    position: relative;
-    overflow: hidden;
-}
-
-.hover-glow::before {
-    content: '';
+.star {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(
-        circle at var(--x, 50%) var(--y, 50%),
-        rgba(255, 255, 255, 0.2) 0%,
-        transparent 70%
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
 }
 
-.hover-glow:hover::before {
-    opacity: 1;
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
 }
 
-/* === PERFORMANCE OPTIMIZATIONS === */
 @media (prefers-reduced-motion: reduce) {
-    .hover-glow::before {
-        display: none;
-    }
-}
-
-/* === MOBILE OPTIMIZATIONS === */
-@media (max-width: 768px) {
-    .glass-effect,
-    .glassmorphism {
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+    .star {
+        animation: none;
     }
 }
