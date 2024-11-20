@@ -7,7 +7,7 @@
     --color-text-secondary: rgba(255, 255, 255, 0.85);
     --color-text-tertiary: rgba(255, 255, 255, 0.7);
     
-    --font-primary: 'SF Pro Display', -apple-system, system-ui, sans-serif;
+    --font-primary: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     
     --spacing-1: 0.25rem;
     --spacing-2: 0.5rem;
@@ -18,6 +18,10 @@
     
     --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    --z-background: -1;
+    --z-content: 1;
+    --z-header: 10;
 }
 
 *, *::before, *::after {
@@ -38,4 +42,60 @@ body {
     line-height: 1.5;
     overflow-x: hidden;
     min-height: 100vh;
+}
+
+.app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-header);
+    padding: var(--spacing-4) var(--spacing-8);
+}
+
+.nav-container {
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    text-decoration: none;
+    color: var(--color-text);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.brand img {
+    width: 40px;
+    height: 40px;
+}
+
+.main-content {
+    position: relative;
+    z-index: var(--z-content);
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, var(--color-text) 0%, rgba(255, 255, 255, 0.8) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 768px) {
+    .app-header {
+        padding: var(--spacing-4);
+    }
+    
+    .brand {
+        font-size: 1.25rem;
+    }
+    
+    .brand img {
+        width: 32px;
+        height: 32px;
+    }
 }
