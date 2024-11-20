@@ -4,10 +4,8 @@ class BackgroundEffect {
         this.ctx = this.canvas.getContext('2d');
         this.particles = [];
         this.mousePosition = { x: 0, y: 0 };
-        this.velocity = { x: 0, y: 0 };
-        this.lastTime = 0;
         this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
+        
         this.init();
     }
 
@@ -43,35 +41,32 @@ class BackgroundEffect {
                 speedX: (Math.random() - 0.5) * 0.5,
                 speedY: (Math.random() - 0.5) * 0.5,
                 life: Math.random() * 100,
-                opacity: Math.random() * 0.5 + 0.2,
-                depth: Math.random() * 3 + 1
+                opacity: Math.random() * 0.5 + 0.2
             });
         }
     }
 
-    updateParticles(deltaTime) {
+    updateParticles() {
         this.particles.forEach(particle => {
-            particle.x += particle.speedX * deltaTime * particle.depth;
-            particle.y += particle.speedY * deltaTime * particle.depth;
+            particle.x += particle.speedX;
+            particle.y += particle.speedY;
 
-            if (!this.isReducedMotion) {
-                const dx = this.mousePosition.x - particle.x;
-                const dy = this.mousePosition.y - particle.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                const maxDistance = 200;
-
-                if (distance < maxDistance) {
-                    const force = (1 - distance / maxDistance) * 0.3;
-                    particle.x -= dx * force;
-                    particle.y -= dy * force;
-                }
+            // Mouse interaction
+            const dx = this.mousePosition.x - particle.x;
+            const dy = this.mousePosition.y - particle.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < 200) {
+                const force = (1 - distance / 200) * 0.3;
+                particle.x -= dx * force;
+                particle.y -= dy * force;
             }
 
             // Wrap around edges
-            if (particle.x > this.canvas.width) particle.x = 0;
             if (particle.x < 0) particle.x = this.canvas.width;
-            if (particle.y > this.canvas.height) particle.y = 0;
+            if (particle.x > this.canvas.width) particle.x = 0;
             if (particle.y < 0) particle.y = this.canvas.height;
+            if (particle.y > this.canvas.height) particle.y = 0;
 
             particle.life -= 0.1;
             if (particle.life <= 0) {
@@ -82,51 +77,38 @@ class BackgroundEffect {
     }
 
     drawParticles() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
         this.particles.forEach(particle => {
             this.ctx.beginPath();
             this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
             this.ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
-            this.ctx.fill();
-
+            
             if (!this.isReducedMotion) {
                 this.ctx.shadowBlur = 15;
                 this.ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
             }
+            
+            this.ctx.fill();
         });
     }
 
     addEventListeners() {
-        let mouseMoveTimeout;
         window.addEventListener('mousemove', (e) => {
-            if (mouseMoveTimeout) return;
-            mouseMoveTimeout = setTimeout(() => {
-                const rect = this.canvas.getBoundingClientRect();
-                this.mousePosition = {
-                    x: (e.clientX - rect.left) * (this.canvas.width / rect.width),
-                    y: (e.clientY - rect.top) * (this.canvas.height / rect.height)
-                };
-                mouseMoveTimeout = null;
-            }, 16);
-        });
-
-        window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
-            this.isReducedMotion = e.matches;
-            this.particles = [];
-            this.createParticles();
+            const rect = this.canvas.getBoundingClientRect();
+            this.mousePosition = {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
         });
     }
 
-    animate(currentTime = 0) {
-        const deltaTime = (currentTime - this.lastTime) / 16;
-        this.lastTime = currentTime;
-
+    animate() {
         if (!document.hidden) {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.updateParticles(deltaTime);
+            this.updateParticles();
             this.drawParticles();
         }
-
-        requestAnimationFrame(this.animate.bind(this));
+        requestAnimationFrame(() => this.animate());
     }
 }
 
