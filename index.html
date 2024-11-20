@@ -3,215 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Alfie - Transform your time off into extraordinary stories">
+    <meta name="description" content="Alfie - Transform your time off into extraordinary moments. Smart leave management for UK and US teams.">
+    <meta name="theme-color" content="#4B0082">
+    
     <title>Alfie - Make Time for What Matters</title>
     
+    <!-- Preload critical assets -->
+    <link rel="preload" href="styles/main.css" as="style">
+    <link rel="preload" href="styles/animations.css" as="style">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600&display=swap" rel="stylesheet">
     
-    <style>
-        :root {
-            --color-primary: #4B0082;
-            --color-secondary: #663399;
-            --color-background: #1E1E1E;
-        }
-
-        body {
-            margin: 0;
-            font-family: 'SF Pro Display', -apple-system, system-ui, sans-serif;
-            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-            color: white;
-            min-height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .starry-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: radial-gradient(circle, transparent 20%, var(--color-primary) 20%, var(--color-primary) 80%, transparent 80%, transparent),
-                            radial-gradient(circle, #ffffff 1px, transparent 1px);
-            background-size: 40px 40px;
-            background-position: 0 0, 20px 20px;
-            opacity: 0.1;
-            animation: twinkle 3s infinite alternate;
-        }
-
-        @keyframes twinkle {
-            0% { opacity: 0.05; }
-            100% { opacity: 0.15; }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .app-header {
-            padding: 1.5rem 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: 500;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease forwards;
-        }
-
-        .hero {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
-            min-height: 60vh;
-        }
-
-        .main-headline {
-            font-size: clamp(3rem, 8vw, 5rem);
-            margin-bottom: 2rem;
-            line-height: 1.1;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease forwards 0.2s;
-        }
-
-        .subheadline {
-            font-size: clamp(1.5rem, 4vw, 2.25rem);
-            margin-bottom: 1rem;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease forwards 0.4s;
-        }
-
-        .tagline {
-            font-size: clamp(1.25rem, 3vw, 1.75rem);
-            margin-bottom: 3rem;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease forwards 0.6s;
-        }
-
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            padding: 1.25rem 3.5rem;
-            font-size: 1.25rem;
-            color: white;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease forwards 0.8s;
-            backdrop-filter: blur(10px);
-        }
-
-        .cta-button:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            padding: 2rem;
-            margin-top: auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease forwards;
-            backdrop-filter: blur(10px);
-        }
-
-        .feature-card:nth-child(1) { animation-delay: 1s; }
-        .feature-card:nth-child(2) { animation-delay: 1.2s; }
-        .feature-card:nth-child(3) { animation-delay: 1.4s; }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            margin: 0 auto 1rem;
-            opacity: 0.9;
-        }
-
-        @media (max-width: 768px) {
-            .features {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
 </head>
 <body>
-    <div class="starry-background"></div>
-    <header class="app-header">
-        <a href="./" class="brand">
-            <img src="assets/images/logo.svg" alt="Alfie" width="40" height="40">
-            <span>alfie</span>
-        </a>
+    <!-- Header -->
+    <header class="app-header" data-header>
+        <div class="header-container">
+            <a href="./" class="brand" aria-label="Alfie Homepage">
+                <img src="assets/images/logo.svg" alt="" width="40" height="40" />
+                <span class="brand-text">alfie</span>
+            </a>
+        </div>
     </header>
 
-    <main class="hero">
-        <h1 class="main-headline">Create moments for what matters...</h1>
-        <p class="subheadline">Because the best stories unfold when you're living them</p>
-        <p class="tagline">Plan smarter. Live fuller.</p>
-        <a href="/get-started" class="cta-button">Plan Smarter Today →</a>
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-content">
+                <h1 id="hero-title" class="main-headline">
+                    Create moments for what matters<span class="text-gradient">...</span>
+                </h1>
+                
+                <p class="hero-subtitle">
+                    Because the best stories unfold when you're living them
+                </p>
+                
+                <p class="hero-tagline">
+                    Plan smarter. Live fuller.
+                </p>
+                
+                <a href="/get-started" class="cta-button" data-tracking="hero-cta">
+                    Plan Smarter Today
+                    <svg class="icon-arrow" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+                        <path fill="currentColor" d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/>
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" aria-labelledby="features-title">
+            <h2 id="features-title" class="visually-hidden">Key Features</h2>
+            
+            <div class="feature-card" data-aos="fade-up">
+                <div class="feature-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="48" height="48">
+                        <path fill="currentColor" d="M19 4h-1V3c0-.55-.45-1-1-1s-1 .45-1 1v1H8V3c0-.55-.45-1-1-1s-1 .45-1 1v1H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/>
+                    </svg>
+                </div>
+                <h3>Smart Calendar</h3>
+                <p>Plan your time off with our intelligent calendar system that understands your needs</p>
+            </div>
+            
+            <div class="feature-card" data-aos="fade-up">
+                <div class="feature-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="48" height="48">
+                        <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                    </svg>
+                </div>
+                <h3>Region Aware</h3>
+                <p>Seamlessly handles UK and US holiday systems, adapting to your location</p>
+            </div>
+            
+            <div class="feature-card" data-aos="fade-up">
+                <div class="feature-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="48" height="48">
+                        <path fill="currentColor" d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                    </svg>
+                </div>
+                <h3>Team Sync</h3>
+                <p>Coordinate leave with your team effortlessly through smart scheduling</p>
+            </div>
+        </section>
     </main>
 
-    <section class="features">
-        <div class="feature-card">
-            <div class="feature-icon">📅</div>
-            <h3>Smart Calendar</h3>
-            <p>Plan your time off with our intelligent calendar system</p>
-        </div>
-        
-        <div class="feature-card">
-            <div class="feature-icon">🌍</div>
-            <h3>Region Aware</h3>
-            <p>Seamlessly handles UK and US holiday systems</p>
-        </div>
-        
-        <div class="feature-card">
-            <div class="feature-icon">👥</div>
-            <h3>Team Sync</h3>
-            <p>Coordinate leave with your team effortlessly</p>
-        </div>
-    </section>
+    <!-- Scripts -->
+    <script src="js/background-effects.js" defer></script>
+    <script src="js/effects.js" defer></script>
+    <script>
+        // Header scroll effect
+        const header = document.querySelector('[data-header]');
+        if (header) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
