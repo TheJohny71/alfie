@@ -1,4 +1,4 @@
-// Enhanced Background Effects with performance optimization
+// === Background Effects Class ===
 class BackgroundEffect {
     constructor() {
         this.canvas = document.getElementById('aurora-canvas');
@@ -22,9 +22,6 @@ class BackgroundEffect {
         this.addEventListeners();
         // Start animation loop
         this.animate();
-
-        // Initialize aurora beams
-        this.initAuroraBeams();
     }
 
     setupCanvas() {
@@ -100,9 +97,9 @@ class BackgroundEffect {
             Math.max(this.canvas.width, this.canvas.height) / 1.5
         );
 
-        gradient.addColorStop(0, '#4B0082');
-        gradient.addColorStop(0.5, '#36005F');
-        gradient.addColorStop(1, '#1E1E1E');
+        gradient.addColorStop(0, '#4B0082');  // Primary color
+        gradient.addColorStop(0.5, '#36005F'); // Darker shade
+        gradient.addColorStop(1, '#1E1E1E');  // Background color
 
         this.ctx.fillStyle = gradient;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -150,7 +147,7 @@ class BackgroundEffect {
             this.ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
             this.ctx.fill();
 
-            // Optional: Add glow effect
+            // Add glow effect for non-reduced motion
             if (!this.isReducedMotion) {
                 this.ctx.shadowBlur = 15;
                 this.ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
@@ -158,25 +155,19 @@ class BackgroundEffect {
         });
     }
 
-    initAuroraBeams() {
-        const beams = document.querySelectorAll('.aurora-beam');
-        beams.forEach((beam, index) => {
-            beam.style.transform = `rotate(${index * 120}deg)`;
-        });
-    }
-
     animate(currentTime = 0) {
         const deltaTime = (currentTime - this.lastTime) / 16; // Normalize to ~60fps
         this.lastTime = currentTime;
 
-        // Clear canvas
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Draw background
-        this.drawGradientBackground();
-
-        // Update and draw particles
+        // Only update if tab is visible
         if (!document.hidden) {
+            // Clear canvas
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+            // Draw background
+            this.drawGradientBackground();
+
+            // Update and draw particles
             this.updateParticles(deltaTime);
             this.drawParticles();
         }
@@ -188,42 +179,5 @@ class BackgroundEffect {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Create background effect
-    const effect = new BackgroundEffect();
-
-    // Add smooth scroll behavior
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-
-    // Initialize magnetic buttons
-    const magneticButtons = document.querySelectorAll('[data-magnetic]');
-    magneticButtons.forEach(button => {
-        button.addEventListener('mousemove', (e) => {
-            const rect = button.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            
-            const strength = 0.25;
-            button.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
-        });
-
-        button.addEventListener('mouseleave', () => {
-            button.style.transform = 'translate(0px, 0px)';
-        });
-    });
-
-    // Remove loading class to trigger intro animation
-    requestAnimationFrame(() => {
-        document.body.classList.remove('loading');
-    });
+    new BackgroundEffect();
 });
