@@ -1,3 +1,4 @@
+// === Effects Manager ===
 class EffectsManager {
     constructor() {
         this.init();
@@ -6,6 +7,7 @@ class EffectsManager {
     init() {
         this.initScrollEffects();
         this.initMagneticEffects();
+        this.initParallaxEffects();
         this.initTiltEffects();
         this.initHoverEffects();
         this.handleReducedMotion();
@@ -31,7 +33,7 @@ class EffectsManager {
                             }, index * 200);
                         });
                     }
-                    
+
                     if (entry.target.classList.contains('features-grid')) {
                         this.staggerChildren(entry.target);
                     }
@@ -52,8 +54,10 @@ class EffectsManager {
         magneticButtons.forEach(button => {
             let bounds;
             const strength = 0.25;
+            let isHovered = false;
 
             const handleMouseMove = (e) => {
+                if (!isHovered) return;
                 const rect = button.getBoundingClientRect();
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
@@ -61,66 +65,106 @@ class EffectsManager {
                 button.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
             };
 
+            const handleMouseEnter = () => {
+                isHovered = true;
+                bounds = button.getBoundingClientRect();
+            };
+
             const handleMouseLeave = () => {
+                isHovered = false;
                 button.style.transform = 'translate(0px, 0px)';
             };
 
-            button.addEventListener('mouseenter', () => {
-                bounds = button.getBoundingClientRect();
-                button.addEventListener('mousemove', handleMouseMove);
-            });
-
+            button.addEventListener('mouseenter', handleMouseEnter);
+            button.addEventListener('mousemove', handleMouseMove);
             button.addEventListener('mouseleave', handleMouseLeave);
         });
     }
 
+    initParallaxEffects() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        const parallaxElements = document.querySelectorAll('[data-parallax]');
+        let ticking = false;
+        
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrolled = window.pageYOffset;
+                    parallaxElements.forEach(element => {
+                        const speed = element.dataset.parallaxSpeed || 0.5;
+                        const offset = scrolled * speed;
+                        element.style.transform = `translateY(${offset}px)`;
+                    });
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+
     initTiltEffects() {
-        if (typeof VanillaTilt !== 'undefined') {
-            VanillaTilt.init(document.querySelectorAll('[data-tilt]'), {
-                max: 5,
-                speed: 400,
-                glare: true,
-                'max-glare': 0.2,
-                scale: 1.02
-            });
-        }
+        if (typeof VanillaTilt === 'undefined') return;
+        
+        const tiltElements = document.querySelectorAll('[data-tilt]');
+        VanillaTilt.init(tiltElements, {
+            max: 5,
+            speed: 400,
+            glare: true,
+            'max-glare': 0.2,
+            scale: 1.02
+        });
     }
 
     initHoverEffects() {
         const buttons = document.querySelectorAll('.cta-button');
         
         buttons.forEach(button => {
-            button.addEventListener('mousemove', (e) => {
+            let isHovered = false;
+
+            const handleMouseMove = (e) => {
+                if (!isHovered) return;
                 const rect = button.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
                 
                 button.style.setProperty('--mouse-x', `${x}px`);
                 button.style.setProperty('--mouse-y', `${y}px`);
-            });
+            };
+
+            button.addEventListener('mouseenter', () => isHovered = true);
+            button.addEventListener('mousemove', handleMouseMove);
+            button.addEventListener('mouseleave', () => isHovered = false);
         });
     }
 
     handleHeaderScroll() {
         const header = document.querySelector('.header');
         let lastScroll = 0;
+        let ticking = false;
         
         window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-            
-            if (currentScroll > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const currentScroll = window.pageYOffset;
+                    
+                    if (currentScroll > 50) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                    
+                    if (currentScroll > lastScroll && currentScroll > 500) {
+                        header.classList.add('header-hidden');
+                    } else {
+                        header.classList.remove('header-hidden');
+                    }
+                    
+                    lastScroll = currentScroll;
+                    ticking = false;
+                });
+                ticking = true;
             }
-            
-            if (currentScroll > lastScroll && currentScroll > 500) {
-                header.classList.add('header-hidden');
-            } else {
-                header.classList.remove('header-hidden');
-            }
-            
-            lastScroll = currentScroll;
         }, { passive: true });
     }
 
@@ -148,9 +192,13 @@ class EffectsManager {
     }
 }
 
+// Initialize effects when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     const effects = new EffectsManager();
+    
+    // Remove loading state
     requestAnimationFrame(() => {
         document.body.classList.remove('loading');
+        document.body.classList.add('loaded');
     });
 });
