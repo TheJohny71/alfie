@@ -49,36 +49,6 @@ class BackgroundEffect {
         }
     }
 
-    addEventListeners() {
-        let mouseMoveTimeout;
-        window.addEventListener('mousemove', (e) => {
-            if (mouseMoveTimeout) return;
-            mouseMoveTimeout = setTimeout(() => {
-                const rect = this.canvas.getBoundingClientRect();
-                const prevX = this.mousePosition.x;
-                const prevY = this.mousePosition.y;
-                
-                this.mousePosition = {
-                    x: (e.clientX - rect.left) * (this.canvas.width / rect.width),
-                    y: (e.clientY - rect.top) * (this.canvas.height / rect.height)
-                };
-                
-                this.velocity = {
-                    x: (this.mousePosition.x - prevX) * 0.5,
-                    y: (this.mousePosition.y - prevY) * 0.5
-                };
-                
-                mouseMoveTimeout = null;
-            }, 16);
-        });
-
-        window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
-            this.isReducedMotion = e.matches;
-            this.particles = [];
-            this.createParticles();
-        });
-    }
-
     updateParticles(deltaTime) {
         this.particles.forEach(particle => {
             particle.x += particle.speedX * deltaTime * particle.depth;
@@ -97,6 +67,7 @@ class BackgroundEffect {
                 }
             }
 
+            // Wrap around edges
             if (particle.x > this.canvas.width) particle.x = 0;
             if (particle.x < 0) particle.x = this.canvas.width;
             if (particle.y > this.canvas.height) particle.y = 0;
@@ -121,6 +92,27 @@ class BackgroundEffect {
                 this.ctx.shadowBlur = 15;
                 this.ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
             }
+        });
+    }
+
+    addEventListeners() {
+        let mouseMoveTimeout;
+        window.addEventListener('mousemove', (e) => {
+            if (mouseMoveTimeout) return;
+            mouseMoveTimeout = setTimeout(() => {
+                const rect = this.canvas.getBoundingClientRect();
+                this.mousePosition = {
+                    x: (e.clientX - rect.left) * (this.canvas.width / rect.width),
+                    y: (e.clientY - rect.top) * (this.canvas.height / rect.height)
+                };
+                mouseMoveTimeout = null;
+            }, 16);
+        });
+
+        window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
+            this.isReducedMotion = e.matches;
+            this.particles = [];
+            this.createParticles();
         });
     }
 
