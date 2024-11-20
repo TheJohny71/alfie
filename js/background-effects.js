@@ -1,7 +1,8 @@
-// Minimal background-effects.js
+// Enhanced background-effects.js with more visible stars
 class BackgroundEffect {
     constructor() {
         this.setupCanvas();
+        this.stars = [];
         this.init();
     }
 
@@ -21,12 +22,27 @@ class BackgroundEffect {
     resize = () => {
         this.width = this.canvas.width = window.innerWidth;
         this.height = this.canvas.height = window.innerHeight;
-        this.drawBackground();
+        this.createStars();
+    }
+
+    createStars() {
+        this.stars = [];
+        const numberOfStars = Math.floor((this.width * this.height) / 15000); // More stars
+        
+        for (let i = 0; i < numberOfStars; i++) {
+            this.stars.push({
+                x: Math.random() * this.width,
+                y: Math.random() * this.height,
+                radius: Math.random() * 1.5 + 0.5, // Slightly larger stars
+                opacity: Math.random() * 0.5 + 0.2, // More visible opacity
+                pulse: Math.random() * Math.PI // Random start point for pulse
+            });
+        }
     }
 
     init() {
         window.addEventListener('resize', this.resize);
-        this.drawBackground();
+        this.animate();
     }
 
     drawGradient() {
@@ -38,26 +54,26 @@ class BackgroundEffect {
         this.ctx.fillRect(0, 0, this.width, this.height);
     }
 
-    drawStars() {
-        const numberOfStars = Math.floor((this.width * this.height) / 20000); // Adjust density
-        
-        for (let i = 0; i < numberOfStars; i++) {
-            const x = Math.random() * this.width;
-            const y = Math.random() * this.height;
-            const radius = Math.random() * 1.5;
-            const opacity = Math.random() * 0.2 + 0.1; // Very subtle stars
+    drawStars(time) {
+        this.stars.forEach(star => {
+            // Create subtle pulsing effect
+            const pulseOpacity = star.opacity + (Math.sin(star.pulse + time / 2000) * 0.15);
             
             this.ctx.beginPath();
-            this.ctx.arc(x, y, radius, 0, Math.PI * 2);
-            this.ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+            this.ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            this.ctx.fillStyle = `rgba(255, 255, 255, ${pulseOpacity})`;
             this.ctx.fill();
-        }
+        });
     }
 
-    drawBackground() {
+    animate = () => {
+        const time = Date.now();
+        
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.drawGradient();
-        this.drawStars();
+        this.drawStars(time);
+        
+        requestAnimationFrame(this.animate);
     }
 }
 
