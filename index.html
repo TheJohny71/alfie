@@ -10,15 +10,14 @@
     
     <!-- Preload critical assets -->
     <link rel="preload" href="styles/main.css" as="style">
-    <link rel="preload" href="styles/animations.css" as="style">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600&display=swap" rel="stylesheet">
     
+    <!-- Initial critical CSS -->
     <style>
-        /* Critical CSS for immediate render */
         :root {
             --color-primary: #4B0082;
             --color-secondary: #663399;
@@ -28,24 +27,34 @@
         body {
             margin: 0;
             font-family: 'SF Pro Display', -apple-system, system-ui, sans-serif;
-            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            background: var(--color-primary);
             color: white;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
         }
+
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            display: block;
+        }
     </style>
 
     <!-- Main Styles -->
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/animations.css">
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
     <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
 </head>
 <body>
-    <!-- Background Canvas -->
+    <!-- Initial canvas setup -->
     <canvas id="background-canvas"></canvas>
     
     <!-- Header -->
@@ -75,7 +84,6 @@
                     Plan smarter. Live fuller.
                 </p>
                 
-                <!-- CTA Button -->
                 <a href="/get-started" class="cta-button" data-tracking="hero-cta">
                     Plan Smarter Today
                     <svg class="icon-arrow" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
@@ -96,7 +104,7 @@
                     </svg>
                 </div>
                 <h3>Smart Calendar</h3>
-                <p>Plan your time off with our intelligent calendar system that understands your needs</p>
+                <p>Plan your time off with our intelligent calendar system</p>
             </div>
             
             <div class="feature-card" data-aos="fade-up">
@@ -106,7 +114,7 @@
                     </svg>
                 </div>
                 <h3>Region Aware</h3>
-                <p>Seamlessly handles UK and US holiday systems, adapting to your location</p>
+                <p>Seamlessly handles UK and US holiday systems</p>
             </div>
             
             <div class="feature-card" data-aos="fade-up">
@@ -116,12 +124,31 @@
                     </svg>
                 </div>
                 <h3>Team Sync</h3>
-                <p>Coordinate leave with your team effortlessly through smart scheduling</p>
+                <p>Coordinate leave with your team effortlessly</p>
             </div>
         </section>
     </main>
 
-    <!-- Scripts -->
+    <!-- Ensure canvas is created immediately -->
+    <script>
+        if (!document.getElementById('background-canvas')) {
+            const canvas = document.createElement('canvas');
+            canvas.id = 'background-canvas';
+            Object.assign(canvas.style, {
+                position: 'fixed',
+                top: '0',
+                left: '0',
+                width: '100%',
+                height: '100%',
+                zIndex: '-1',
+                pointerEvents: 'none',
+                display: 'block'
+            });
+            document.body.insertBefore(canvas, document.body.firstChild);
+        }
+    </script>
+
+    <!-- Main Scripts -->
     <script src="js/background-effects.js"></script>
     <script src="js/effects.js"></script>
 </body>
