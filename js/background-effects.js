@@ -1,133 +1,162 @@
-// Complete background-effects.js
+// Fixed background-effects.js with prominent stars
 class BackgroundEffect {
     constructor() {
+        console.log('Initializing background effect');  // Debug log
         this.setupCanvas();
-        this.particles = [];
+        this.stars = [];
         this.init();
     }
 
     setupCanvas() {
-        this.canvas = document.getElementById('background-canvas');
-        if (!this.canvas) {
-            this.canvas = document.createElement('canvas');
-            this.canvas.id = 'background-canvas';
-            document.body.insertBefore(this.canvas, document.body.firstChild);
+        // Remove any existing canvas
+        const existingCanvas = document.getElementById('background-canvas');
+        if (existingCanvas) {
+            existingCanvas.remove();
         }
 
+        // Create fresh canvas
+        this.canvas = document.createElement('canvas');
+        this.canvas.id = 'background-canvas';
+        
+        // Ensure canvas is inserted at the start of body
+        document.body.insertBefore(this.canvas, document.body.firstChild);
+        
         this.ctx = this.canvas.getContext('2d');
         
-        // Style canvas
-        this.canvas.style.position = 'fixed';
-        this.canvas.style.top = '0';
-        this.canvas.style.left = '0';
-        this.canvas.style.width = '100%';
-        this.canvas.style.height = '100%';
-        this.canvas.style.zIndex = '-1';
-        this.canvas.style.pointerEvents = 'none';
-        
+        // Set canvas styles
+        Object.assign(this.canvas.style, {
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+            zIndex: '-1',
+            pointerEvents: 'none'
+        });
+
         this.resize();
+        console.log('Canvas setup complete');  // Debug log
     }
 
     resize = () => {
         const dpr = window.devicePixelRatio || 1;
-        this.width = window.innerWidth;
-        this.height = window.innerHeight;
+        const width = window.innerWidth;
+        const height = window.innerHeight;
         
-        this.canvas.width = this.width * dpr;
-        this.canvas.height = this.height * dpr;
+        // Set canvas size accounting for DPI
+        this.canvas.width = width * dpr;
+        this.canvas.height = height * dpr;
+        
+        // Store actual dimensions
+        this.width = width;
+        this.height = height;
+        
+        // Scale context for DPI
         this.ctx.scale(dpr, dpr);
         
-        this.createParticles();
+        this.createStars();
+        console.log(`Resize complete. Stars created: ${this.stars.length}`);  // Debug log
     }
 
-    createParticles() {
-        this.particles = [];
-        const numberOfParticles = Math.floor((this.width * this.height) / 8000);
+    createStars() {
+        this.stars = [];
+        // More stars, increased minimum size
+        const numberOfStars = Math.floor((this.width * this.height) / 6000);
         
-        for (let i = 0; i < numberOfParticles; i++) {
-            this.particles.push({
+        for (let i = 0; i < numberOfStars; i++) {
+            this.stars.push({
                 x: Math.random() * this.width,
                 y: Math.random() * this.height,
-                size: Math.random() * 3 + 1,
-                speedX: (Math.random() - 0.5) * 0.3,
-                speedY: Math.random() * 0.2 - 0.1,
-                opacity: Math.random() * 0.5 + 0.3,
-                hue: Math.random() * 30 - 15
+                size: Math.random() * 2 + 1.5,  // Increased minimum size
+                speedX: (Math.random() - 0.5) * 0.2,  // Slower movement
+                speedY: (Math.random() - 0.5) * 0.2,  // Slower movement
+                brightness: Math.random() * 0.5 + 0.5,  // Increased brightness
+                pulseSpeed: Math.random() * 0.01,  // Individual pulse speed
+                pulseOffset: Math.random() * Math.PI * 2  // Random pulse start
             });
         }
     }
 
     init() {
-        window.addEventListener('resize', this.resize);
+        window.addEventListener('resize', () => {
+            this.resize();
+        });
         this.animate();
+        console.log('Animation started');  // Debug log
     }
 
-    drawBackground() {
-        const gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height);
-        gradient.addColorStop(0, '#4B0082');
-        gradient.addColorStop(1, '#6B46C1');
+    drawGradient() {
+        const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);
+        gradient.addColorStop(0, '#4B0082');  // Deep purple at top
+        gradient.addColorStop(1, '#6B46C1');  // Lighter purple at bottom
         
         this.ctx.fillStyle = gradient;
         this.ctx.fillRect(0, 0, this.width, this.height);
     }
 
-    moveAndDrawParticles(time) {
-        this.particles.forEach(particle => {
-            // Update position
-            particle.x += particle.speedX;
-            particle.y += particle.speedY;
-
+    drawStars(time) {
+        this.stars.forEach(star => {
+            // Update position with wrapping
+            star.x += star.speedX;
+            star.y += star.speedY;
+            
             // Wrap around edges
-            if (particle.x > this.width) particle.x = 0;
-            if (particle.x < 0) particle.x = this.width;
-            if (particle.y > this.height) particle.y = 0;
-            if (particle.y < 0) particle.y = this.height;
+            if (star.x < 0) star.x = this.width;
+            if (star.x > this.width) star.x = 0;
+            if (star.y < 0) star.y = this.height;
+            if (star.y > this.height) star.y = 0;
 
-            // Calculate pulsing opacity
-            const pulsingOpacity = particle.opacity * (0.7 + Math.sin(time / 1000) * 0.3);
+            // Calculate pulsing effect
+            const pulse = Math.sin(time * star.pulseSpeed + star.pulseOffset);
+            const opacity = star.brightness * (0.7 + pulse * 0.3);
 
-            // Draw particle with glow effect
-            this.ctx.beginPath();
+            // Draw star glow
             const gradient = this.ctx.createRadialGradient(
-                particle.x, particle.y, 0,
-                particle.x, particle.y, particle.size * 2
+                star.x, star.y, 0,
+                star.x, star.y, star.size * 2
             );
             
-            const color = `hsla(270, 100%, ${75 + particle.hue}%, ${pulsingOpacity})`;
-            gradient.addColorStop(0, color);
+            gradient.addColorStop(0, `rgba(255, 255, 255, ${opacity})`);
             gradient.addColorStop(1, 'transparent');
             
+            this.ctx.beginPath();
             this.ctx.fillStyle = gradient;
-            this.ctx.arc(particle.x, particle.y, particle.size * 2, 0, Math.PI * 2);
+            this.ctx.arc(star.x, star.y, star.size * 2, 0, Math.PI * 2);
             this.ctx.fill();
 
-            // Draw particle core
+            // Draw star core
             this.ctx.beginPath();
-            this.ctx.arc(particle.x, particle.y, particle.size / 2, 0, Math.PI * 2);
-            this.ctx.fillStyle = `rgba(255, 255, 255, ${pulsingOpacity * 1.5})`;
+            this.ctx.fillStyle = `rgba(255, 255, 255, ${opacity * 1.5})`;
+            this.ctx.arc(star.x, star.y, star.size / 2, 0, Math.PI * 2);
             this.ctx.fill();
         });
     }
 
     animate = () => {
-        const time = Date.now();
+        const time = Date.now() / 1000;  // Convert to seconds for easier math
         
+        // Clear canvas
         this.ctx.clearRect(0, 0, this.width, this.height);
-        this.drawBackground();
-        this.moveAndDrawParticles(time);
         
+        // Draw background and stars
+        this.drawGradient();
+        this.drawStars(time);
+        
+        // Continue animation
         requestAnimationFrame(this.animate);
     }
 }
 
-// Initialize effect when DOM is loaded
+// Ensure the effect is initialized when the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    new BackgroundEffect();
+    console.log('DOM loaded, creating background effect');  // Debug log
+    window.backgroundEffect = new BackgroundEffect();
 });
 
-// Reinitialize if needed
+// Backup initialization
 window.addEventListener('load', () => {
-    if (!document.querySelector('#background-canvas')) {
-        new BackgroundEffect();
+    if (!window.backgroundEffect) {
+        console.log('Backup initialization of background effect');  // Debug log
+        window.backgroundEffect = new BackgroundEffect();
     }
 });
