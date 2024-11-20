@@ -1,28 +1,34 @@
-// Fixed timing for background-effects.js
+// Ensure single instance
 let backgroundEffect = null;
 
 class BackgroundEffect {
     constructor() {
+        // Only create new instance if one doesn't exist
+        if (backgroundEffect) {
+            return backgroundEffect;
+        }
+        backgroundEffect = this;
+        
         // Immediate initialization
         this.setupCanvas();
         this.stars = [];
         this.init();
+        
         // Force first render
-        this.forceRender();
+        requestAnimationFrame(() => {
+            this.forceRender();
+        });
     }
 
     setupCanvas() {
-        // Remove any existing canvas
-        const existingCanvas = document.getElementById('background-canvas');
-        if (existingCanvas) {
-            existingCanvas.remove();
+        // Get existing canvas or create new one
+        this.canvas = document.getElementById('background-canvas');
+        if (!this.canvas) {
+            this.canvas = document.createElement('canvas');
+            this.canvas.id = 'background-canvas';
         }
-
-        // Create fresh canvas
-        this.canvas = document.createElement('canvas');
-        this.canvas.id = 'background-canvas';
         
-        // Force canvas to take full size immediately
+        // Ensure canvas has correct styles
         Object.assign(this.canvas.style, {
             position: 'fixed',
             top: '0',
@@ -31,13 +37,15 @@ class BackgroundEffect {
             height: '100%',
             zIndex: '-1',
             pointerEvents: 'none',
-            display: 'block' // Ensure canvas is displayed
+            display: 'block'
         });
         
-        // Insert canvas at the very start of body
-        document.body.insertBefore(this.canvas, document.body.firstChild);
+        // Only append if not already in document
+        if (!this.canvas.parentElement) {
+            document.body.insertBefore(this.canvas, document.body.firstChild);
+        }
         
-        this.ctx = this.canvas.getContext('2d', { alpha: false }); // Disable alpha for performance
+        this.ctx = this.canvas.getContext('2d', { alpha: false });
         this.resize();
     }
 
@@ -51,7 +59,6 @@ class BackgroundEffect {
         this.ctx.scale(dpr, dpr);
         
         this.createStars();
-        // Force render after resize
         this.forceRender();
     }
 
@@ -74,31 +81,43 @@ class BackgroundEffect {
     }
 
     init() {
-        // Add resize listener
-        window.addEventListener('resize', this.resize, false);
+        // Add resize listener with debounce
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                this.resize();
+            }, 150);
+        }, false);
+        
         // Start animation loop
         this.animate();
     }
 
     drawGradient() {
         const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);
-        gradient.addColorStop(0, '#4B0082');
-        gradient.addColorStop(1, '#6B46C1');
+        gradient.addColorStop(0, '#4B0082');  // Deep Purple at top
+        gradient.addColorStop(1, '#6B46C1');  // Lighter Purple at bottom
         
         this.ctx.fillStyle = gradient;
         this.ctx.fillRect(0, 0, this.width, this.height);
     }
 
     drawStars(time) {
+        this.ctx.save();
+        
         this.stars.forEach(star => {
+            // Update position
             star.x += star.speedX;
             star.y += star.speedY;
             
+            // Wrap around edges
             if (star.x < 0) star.x = this.width;
             if (star.x > this.width) star.x = 0;
             if (star.y < 0) star.y = this.height;
             if (star.y > this.height) star.y = 0;
 
+            // Calculate pulse effect
             const pulse = Math.sin(time * star.pulseSpeed + star.pulseOffset);
             const opacity = star.brightness * (0.7 + pulse * 0.3);
 
@@ -122,15 +141,21 @@ class BackgroundEffect {
             this.ctx.arc(star.x, star.y, star.size / 2, 0, Math.PI * 2);
             this.ctx.fill();
         });
+        
+        this.ctx.restore();
     }
 
     forceRender() {
+        if (!this.ctx) return;
+        
         // Force an immediate render
         this.drawGradient();
         this.drawStars(Date.now() / 1000);
     }
 
     animate = () => {
+        if (!this.ctx) return;
+        
         const time = Date.now() / 1000;
         
         this.ctx.clearRect(0, 0, this.width, this.height);
@@ -139,32 +164,51 @@ class BackgroundEffect {
         
         requestAnimationFrame(this.animate);
     }
-}
 
-// Initialize immediately if document is already loaded
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    if (!backgroundEffect) {
-        backgroundEffect = new BackgroundEffect();
-    }
-} else {
-    // Otherwise wait for DOMContentLoaded
-    document.addEventListener('DOMContentLoaded', () => {
-        if (!backgroundEffect) {
-            backgroundEffect = new BackgroundEffect();
+    // Cleanup method
+    destroy() {
+        if (this.canvas && this.canvas.parentElement) {
+            this.canvas.parentElement.removeChild(this.canvas);
         }
-    });
+        backgroundEffect = null;
+    }
 }
 
-// Backup initialization
-window.addEventListener('load', () => {
+// Immediate initialization attempt
+const initBackground = () => {
     if (!backgroundEffect) {
-        backgroundEffect = new BackgroundEffect();
+        try {
+            backgroundEffect = new BackgroundEffect();
+        } catch (error) {
+            console.error('Failed to initialize background effect:', error);
+        }
     }
-});
+};
 
-// Make sure background is visible when returning to the page
+// Multiple initialization points to ensure the effect starts
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBackground);
+} else {
+    initBackground();
+}
+
+window.addEventListener('load', initBackground);
+
+// Ensure effect runs when page becomes visible
 document.addEventListener('visibilitychange', () => {
     if (!document.hidden && backgroundEffect) {
         backgroundEffect.forceRender();
     }
 });
+
+// Handle page errors gracefully
+window.addEventListener('error', (event) => {
+    if (backgroundEffect) {
+        backgroundEffect.forceRender();
+    }
+});
+
+// Export for module usage if needed
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = BackgroundEffect;
+}
