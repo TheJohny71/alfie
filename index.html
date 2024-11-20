@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Alfie - Transform your time off into extraordinary stories">
-    <meta name="theme-color" content="#5D3FD3">
     <title>Alfie - Make Time for What Matters</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,22 +12,55 @@
     
     <style>
         :root {
-            --color-primary: #5D3FD3;
-            --color-secondary: #4B0082;
+            --color-primary: #4B0082;
+            --color-secondary: #663399;
+            --color-background: #1E1E1E;
         }
 
         body {
             margin: 0;
             font-family: 'SF Pro Display', -apple-system, system-ui, sans-serif;
-            background: var(--color-primary);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
             color: white;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .starry-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle, transparent 20%, var(--color-primary) 20%, var(--color-primary) 80%, transparent 80%, transparent),
+                            radial-gradient(circle, #ffffff 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            opacity: 0.1;
+            animation: twinkle 3s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.05; }
+            100% { opacity: 0.15; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .app-header {
             padding: 1.5rem 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         .brand {
@@ -39,6 +71,8 @@
             color: white;
             font-size: 1.5rem;
             font-weight: 500;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
         }
 
         .hero {
@@ -49,27 +83,31 @@
             align-items: center;
             text-align: center;
             padding: 2rem;
+            position: relative;
+            z-index: 1;
+            min-height: 60vh;
         }
 
         .main-headline {
             font-size: clamp(3rem, 8vw, 5rem);
             margin-bottom: 2rem;
             line-height: 1.1;
-            animation: fadeIn 1s ease-out;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.2s;
         }
 
         .subheadline {
             font-size: clamp(1.5rem, 4vw, 2.25rem);
             margin-bottom: 1rem;
-            opacity: 0.95;
-            animation: fadeIn 1s ease-out 0.3s forwards;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.4s;
         }
 
         .tagline {
             font-size: clamp(1.25rem, 3vw, 1.75rem);
             margin-bottom: 3rem;
-            opacity: 0.9;
-            animation: fadeIn 1s ease-out 0.6s forwards;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.6s;
         }
 
         .cta-button {
@@ -78,17 +116,20 @@
             padding: 1.25rem 3.5rem;
             font-size: 1.25rem;
             color: white;
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 50px;
             text-decoration: none;
             transition: all 0.3s ease;
-            animation: fadeIn 1s ease-out 0.9s forwards;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.8s;
+            backdrop-filter: blur(10px);
         }
 
         .cta-button:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .features {
@@ -97,29 +138,37 @@
             gap: 2rem;
             padding: 2rem;
             margin-top: auto;
+            position: relative;
+            z-index: 1;
         }
 
         .feature-card {
             background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 1rem;
             padding: 2rem;
             text-align: center;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+            backdrop-filter: blur(10px);
         }
+
+        .feature-card:nth-child(1) { animation-delay: 1s; }
+        .feature-card:nth-child(2) { animation-delay: 1.2s; }
+        .feature-card:nth-child(3) { animation-delay: 1.4s; }
 
         .feature-card:hover {
             transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .feature-icon {
             width: 48px;
             height: 48px;
             margin: 0 auto 1rem;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            opacity: 0.9;
         }
 
         @media (max-width: 768px) {
@@ -130,6 +179,7 @@
     </style>
 </head>
 <body>
+    <div class="starry-background"></div>
     <header class="app-header">
         <a href="./" class="brand">
             <img src="assets/images/logo.svg" alt="Alfie" width="40" height="40">
