@@ -1,4 +1,4 @@
-/* === Complete main.css === */
+/* Reset & Base Styles */
 :root {
     --color-primary: #4B0082;
     --color-primary-light: #6B46C1;
@@ -6,11 +6,9 @@
     --color-text: #FFFFFF;
     --color-text-secondary: rgba(255, 255, 255, 0.85);
     --color-text-tertiary: rgba(255, 255, 255, 0.7);
-    
-    --font-primary: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
 }
 
-/* Reset & Base Styles */
 *, *::before, *::after {
     margin: 0;
     padding: 0;
@@ -21,7 +19,6 @@
 
 html, body {
     height: 100%;
-    overflow: hidden;
 }
 
 body {
@@ -30,17 +27,6 @@ body {
     color: var(--color-text);
     line-height: 1.5;
     position: relative;
-}
-
-/* Canvas Styles */
-#background-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    pointer-events: none;
 }
 
 /* Layout */
@@ -66,6 +52,15 @@ main {
     backdrop-filter: blur(10px);
 }
 
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
 .brand {
     display: inline-flex;
     align-items: center;
@@ -79,9 +74,9 @@ main {
     transform: scale(1.05);
 }
 
-.brand img {
-    width: 40px;
-    height: 40px;
+.brand-text {
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
 /* Hero Section */
@@ -94,6 +89,11 @@ main {
     text-align: center;
     padding-top: 4rem;
     max-height: 65vh;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .main-headline {
@@ -146,6 +146,14 @@ main {
 
 .cta-button:active {
     transform: translateY(1px);
+}
+
+.icon-arrow {
+    transition: transform 0.3s ease;
+}
+
+.cta-button:hover .icon-arrow {
+    transform: translateX(4px);
 }
 
 /* Features Section */
