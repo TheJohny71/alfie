@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Alfie - Your companion to a seamless year of leave planning">
+    <meta name="theme-color" content="#5D3FD3">
     <title>Alfie - Make Time for What Matters</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,71 +18,79 @@
 </head>
 <body>
     <div class="background-wrapper">
+        <canvas id="aurora-canvas"></canvas>
         <div class="background-effects"></div>
     </div>
 
-    <header>
-        <nav>
-            <a href="./" class="brand">alfie</a>
+    <header class="app-header">
+        <nav class="nav-container">
+            <a href="./" class="brand">
+                <img src="assets/images/logo.svg" alt="Alfie" width="40" height="40">
+                <span>alfie</span>
+            </a>
         </nav>
     </header>
 
-    <main>
-        <section class="hero">
-            <h1>Create moments for what matters...</h1>
+    <main class="main-content">
+        <section class="hero" aria-labelledby="hero-title">
+            <h1 id="hero-title" class="gradient-text">Create moments for what matters...</h1>
             <div class="hero-text">
                 <p class="tagline primary">Because the best stories</p>
                 <p class="tagline secondary">unfold when you're living them</p>
                 <p class="tagline tertiary">Your companion to a seamless year of leave</p>
             </div>
             <div class="cta-wrapper">
-                <a href="#" class="cta-button">Start Planning</a>
+                <a href="#get-started" class="cta-button">
+                    Start Planning
+                    <span class="cta-icon">→</span>
+                </a>
             </div>
         </section>
 
-        <section class="features">
+        <section class="features" aria-label="Features">
             <div class="features-grid">
-                <div class="feature-card">
+                <article class="feature-card">
                     <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <rect x="3" y="4" width="18" height="18" rx="2" />
-                            <path d="M3 10h18" />
-                            <path d="M16 2v4" />
-                            <path d="M8 2v4" />
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
                         </svg>
                     </div>
                     <h3>Smart Calendar</h3>
                     <p>Plan your time off with our intelligent calendar system</p>
-                </div>
+                </article>
                 
-                <div class="feature-card">
+                <article class="feature-card">
                     <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                            <path d="M2 12h20" />
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
                         </svg>
                     </div>
                     <h3>Region Aware</h3>
                     <p>Seamlessly handles UK and US holiday systems</p>
-                </div>
+                </article>
                 
-                <div class="feature-card">
+                <article class="feature-card">
                     <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                            <circle cx="9" cy="7" r="4" />
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                         </svg>
                     </div>
                     <h3>Team Sync</h3>
                     <p>Coordinate leave with your team effortlessly</p>
-                </div>
+                </article>
             </div>
         </section>
     </main>
 
+    <script src="js/background-effects.js"></script>
     <script src="js/effects.js"></script>
 </body>
 </html>
