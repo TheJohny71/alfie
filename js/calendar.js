@@ -1,20 +1,34 @@
+// /js/calendar.js
 class Calendar {
   constructor() {
     this.currentDate = new Date();
     this.selectedDates = new Set();
     this.currentView = 'month';
-    this.region = 'uk'; // Add region support
+    this.region = window.regionManager?.region || 'UK';
+    this.aiEnabled = true;
     this.init();
   }
 
-  init() {
+  async init() {
     this.renderCalendar();
     this.attachEventListeners();
     this.initializeRegionContext();
+    if (this.aiEnabled) {
+      await this.initializeAIFeatures();
+    }
+  }
+
+  async initializeAIFeatures() {
+    try {
+      await this.updateTeamCoverage();
+      this.initializeSmartPlanning();
+    } catch (error) {
+      console.error('AI features initialization failed:', error);
+      this.aiEnabled = false;
+    }
   }
 
   initializeRegionContext() {
-    // Initialize region-specific features
     this.regionSelector = document.getElementById('region-selector');
     if (this.regionSelector) {
       this.regionSelector.value = this.region;
@@ -25,23 +39,37 @@ class Calendar {
     }
   }
 
-  renderCalendar() {
+  initializeSmartPlanning() {
+    const smartPlanningButton = document.createElement('button');
+    smartPlanningButton.className = 'smart-planning-btn';
+    smartPlanningButton.innerHTML = '<i class="fas fa-brain"></i> Smart Plan';
+    smartPlanningButton.onclick = () => window.calendarModals.show('smartPlanning');
+    
+    const header = document.querySelector('.calendar-header');
+    if (header) {
+      header.appendChild(smartPlanningButton);
+    }
+  }
+
+  async renderCalendar() {
     const daysContainer = document.querySelector('.days');
     const currentMonthElement = document.getElementById('currentMonth');
     
     if (!daysContainer || !currentMonthElement) return;
 
-    // Clear existing content
     daysContainer.innerHTML = '';
-
-    // Update month display with region-aware formatting
-    const monthYear = this.currentDate.toLocaleString(this.region === 'uk' ? 'en-GB' : 'en-US', { 
-      month: 'long', 
-      year: 'numeric' 
-    });
+    
+    const monthYear = this.currentDate.toLocaleString(
+      this.region === 'UK' ? 'en-GB' : 'en-US', 
+      { month: 'long', year: 'numeric' }
+    );
     currentMonthElement.textContent = monthYear;
 
-    // Calculate days
+    let coverageData = {};
+    if (this.aiEnabled) {
+      coverageData = await this.getTeamCoverageData();
+    }
+
     const firstDay = new Date(
       this.currentDate.getFullYear(),
       this.currentDate.getMonth(),
@@ -53,53 +81,107 @@ class Calendar {
       0
     );
 
-    // Calculate start padding based on region
-    const startPadding = this.region === 'uk' 
+    const startPadding = this.region === 'UK' 
       ? (firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1)
       : firstDay.getDay();
 
     // Add padding days
     for (let i = 0; i < startPadding; i++) {
-      const dayElement = document.createElement('div');
-      dayElement.className = 'calendar-day padding';
-      daysContainer.appendChild(dayElement);
+      this.createDayElement(daysContainer, null, 'padding');
     }
 
     // Add month days
     for (let day = 1; day <= lastDay.getDate(); day++) {
       const date = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day);
-      const dayElement = document.createElement('div');
-      
-      // Set base classes
-      const classes = ['calendar-day'];
-      
-      // Add weekend class
+      this.createDayElement(daysContainer, date, '', coverageData[day]);
+    }
+
+    if (this.aiEnabled) {
+      this.updateTeamCoverageVisualization(coverageData);
+    }
+  }
+
+  createDayElement(container, date, extraClass = '', coverageData = null) {
+    const dayElement = document.createElement('div');
+    const classes = ['calendar-day'];
+    
+    if (extraClass) {
+      classes.push(extraClass);
+    }
+
+    if (date) {
       if (date.getDay() === 0 || date.getDay() === 6) {
         classes.push('weekend');
       }
       
-      // Add selected class
       if (this.selectedDates.has(date.toDateString())) {
         classes.push('selected');
       }
 
-      // Add today class
       if (date.toDateString() === new Date().toDateString()) {
         classes.push('today');
       }
-      
-      dayElement.className = classes.join(' ');
-      dayElement.textContent = day;
+
+      if (coverageData) {
+        dayElement.setAttribute('data-coverage', coverageData.coverage);
+        classes.push(`coverage-${coverageData.level}`);
+      }
+
+      dayElement.textContent = date.getDate();
       dayElement.setAttribute('data-date', date.toDateString());
-      
-      // Add click handler
       dayElement.addEventListener('click', () => this.toggleDate(date));
-      
-      daysContainer.appendChild(dayElement);
+    }
+    
+    dayElement.className = classes.join(' ');
+    container.appendChild(dayElement);
+  }
+
+  async getTeamCoverageData() {
+    try {
+      const response = await fetch('/api/team-coverage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          month: this.currentDate.getMonth() + 1,
+          year: this.currentDate.getFullYear()
+        })
+      });
+
+      if (!response.ok) throw new Error('Coverage data fetch failed');
+      return await response.json();
+    } catch (error) {
+      console.error('Failed to fetch team coverage:', error);
+      return {};
+    }
+  }
+
+  updateTeamCoverageVisualization(coverageData) {
+    const coverageContainer = document.getElementById('coverage-chart');
+    if (!coverageContainer) return;
+
+    let legend = coverageContainer.querySelector('.coverage-legend');
+    if (!legend) {
+      legend = document.createElement('div');
+      legend.className = 'coverage-legend';
+      coverageContainer.appendChild(legend);
     }
 
-    // Update team coverage if available
-    this.updateTeamCoverage();
+    legend.innerHTML = `
+      <div class="legend-item">
+        <span class="legend-color high"></span>
+        <span>High Coverage</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color medium"></span>
+        <span>Medium Coverage</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color low"></span>
+        <span>Low Coverage</span>
+      </div>
+    `;
   }
 
   toggleDate(date) {
@@ -114,22 +196,13 @@ class Calendar {
   }
 
   triggerLeaveRequest(date) {
-    // Trigger leave request modal
-    const leaveType = this.region === 'uk' ? 'Annual Leave' : 'PTO';
-    console.log(`Requesting ${leaveType} for ${date.toDateString()}`);
-    // Modal implementation will go here
-  }
-
-  updateTeamCoverage() {
-    const coverageChart = document.getElementById('coverage-chart');
-    if (coverageChart) {
-      // Implement team coverage visualization
-      // This will be enhanced with actual team data
-    }
+    window.calendarModals.show('leaveRequest', {
+      date,
+      region: this.region
+    });
   }
 
   attachEventListeners() {
-    // Navigation
     document.getElementById('prevMonth')?.addEventListener('click', () => {
       this.currentDate.setMonth(this.currentDate.getMonth() - 1);
       this.renderCalendar();
@@ -140,7 +213,6 @@ class Calendar {
       this.renderCalendar();
     });
 
-    // View toggle
     document.querySelectorAll('.view-btn').forEach(button => {
       button.addEventListener('click', () => {
         document.querySelectorAll('.view-btn').forEach(btn => {
@@ -152,16 +224,37 @@ class Calendar {
       });
     });
 
-    // Quick actions button
     const fab = document.querySelector('.fab');
     if (fab) {
-      fab.addEventListener('click', () => this.openQuickActions());
+      fab.addEventListener('click', () => window.calendarModals.show('quickActions'));
     }
+
+    this.initializeTouchSupport();
   }
 
-  openQuickActions() {
-    // Implement quick actions modal
-    console.log('Opening quick actions');
+  initializeTouchSupport() {
+    let touchStartX = 0;
+    const calendar = document.querySelector('.calendar-container');
+    
+    if (!calendar) return;
+
+    calendar.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+    });
+
+    calendar.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const deltaX = touchEndX - touchStartX;
+
+      if (Math.abs(deltaX) > 50) {
+        if (deltaX > 0) {
+          this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+        } else {
+          this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+        }
+        this.renderCalendar();
+      }
+    });
   }
 }
 
