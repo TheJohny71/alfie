@@ -1,4 +1,5 @@
 /* === components.css === */
+/* Base Components */
 .hero {
     min-height: 100vh;
     display: flex;
@@ -20,161 +21,157 @@
     -webkit-text-fill-color: transparent;
 }
 
-.hero-text {
-    max-width: 600px;
-    margin-bottom: var(--spacing-8);
+/* AI Features Components */
+.ai-suggestions-panel {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
-.tagline {
-    margin-bottom: var(--spacing-4);
-    font-size: 1.25rem;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.8s var(--transition-smooth) forwards;
-}
-
-.tagline.primary {
-    font-size: 1.75rem;
-    animation-delay: 0.4s;
-}
-
-.tagline.secondary {
-    font-size: 1.5rem;
-    animation-delay: 0.6s;
-}
-
-.tagline.tertiary {
-    font-size: 1.25rem;
-    animation-delay: 0.8s;
-}
-
-.cta-button {
-    display: inline-flex;
-    align-items: center;
-    padding: 1rem 2.5rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50px;
-    color: var(--color-text);
-    font-size: 1.125rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all var(--transition-bounce);
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.8s var(--transition-smooth) 1s forwards;
-}
-
-.cta-button:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-}
-
-.cta-button::after {
-    content: '→';
-    margin-left: 0.5rem;
-    transition: transform var(--transition-smooth);
-}
-
-.cta-button:hover::after {
-    transform: translateX(4px);
-}
-
-.features {
-    position: fixed;
-    bottom: 2rem;
-    left: 0;
-    right: 0;
-    padding: 0 var(--spacing-8);
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.feature-card {
-    background: rgba(93, 63, 211, 0.3);
+.ai-feature-card {
+    background: rgba(93, 63, 211, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1.5rem;
-    padding: var(--spacing-8);
-    text-align: center;
-    transition: all var(--transition-bounce);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.8s var(--transition-smooth) forwards;
+    border-radius: 1rem;
+    padding: 1.25rem;
+    transition: all 0.3s var(--transition-bounce);
 }
 
-.feature-card:nth-child(1) { animation-delay: 1.2s; }
-.feature-card:nth-child(2) { animation-delay: 1.4s; }
-.feature-card:nth-child(3) { animation-delay: 1.6s; }
-
-.feature-card:hover {
-    transform: translateY(-5px);
-    background: rgba(93, 63, 211, 0.4);
+.ai-feature-card:hover {
+    transform: translateY(-4px);
+    background: rgba(93, 63, 211, 0.3);
     border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-.feature-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto var(--spacing-4);
+.ai-suggestion-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 0.75rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.ai-suggestion-item:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* Enterprise Integration Components */
+.integration-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.integration-card:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+}
+
+.integration-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.integration-icon {
+    width: 2.5rem;
+    height: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
+    border-radius: 0.75rem;
 }
 
-.feature-icon svg {
-    width: 32px;
-    height: 32px;
-    stroke: currentColor;
-    stroke-width: 1.5;
+.integration-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
 }
 
-.feature-card h3 {
-    font-size: 1.25rem;
-    margin: 0 0 var(--spacing-2);
-    font-weight: 500;
-    color: var(--color-text);
+.status-connected {
+    background: rgba(74, 222, 128, 0.2);
+    color: #4ade80;
 }
 
-.feature-card p {
+.status-disconnected {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+/* Team Coverage Components */
+.coverage-widget {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.coverage-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.coverage-stat-card {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
     font-size: 0.875rem;
     color: var(--color-text-secondary);
-    margin: 0;
-    line-height: 1.5;
 }
 
-@media (max-width: 768px) {
-    .hero {
-        padding: var(--spacing-4);
-    }
-
-    .hero h1 {
-        font-size: 2.5rem;
-    }
-
-    .tagline.primary { font-size: 1.5rem; }
-    .tagline.secondary { font-size: 1.25rem; }
-    .tagline.tertiary { font-size: 1rem; }
-
-    .features {
-        position: relative;
-        bottom: auto;
-        padding: var(--spacing-4);
-    }
-
-    .features-grid {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-4);
-    }
+/* Enhanced Calendar Components */
+.calendar-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
+
+.calendar-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.calendar-filter:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* Utility Components */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.badge-primary {
+    background: rgba(107, 70, 193, 0.2);
+    color: #6b46c1
