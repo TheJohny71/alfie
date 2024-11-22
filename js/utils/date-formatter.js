@@ -207,3 +207,41 @@ class DateFormatter {
         // Ensure year has 4 digits
         if (year.length === 2) {
             year = '20' + year;
+        }
+
+        const parsedDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+        return !isNaN(parsedDate) ? parsedDate : null;
+    }
+
+    /**
+     * Get format options for Intl.DateTimeFormat
+     * @private
+     */
+    getFormatOptions(format) {
+        switch (format) {
+            case 'date':
+                return {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                };
+            case 'time':
+                return {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                };
+            case 'datetime':
+                return {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                };
+            default:
+                return {};
+        }
+    }
+}
+
+export default DateFormatter;
