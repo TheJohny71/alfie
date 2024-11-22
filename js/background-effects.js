@@ -1,23 +1,31 @@
-// Immediately Invoked Function Expression (IIFE) to avoid global scope pollution
 (function() {
-    class BackgroundEffect {
+    class CalendarBackgroundEffect {
         constructor() {
-            this.canvas = document.getElementById('background-canvas');
+            this.canvas = document.getElementById('calendar-background-canvas');
             if (!this.canvas) {
-                console.error('Background canvas not found');
-                return;
+                this.createCanvas();
             }
             
             this.ctx = this.canvas.getContext('2d', { alpha: false });
             this.stars = [];
-            
-            // Initialize immediately
             this.resize();
             this.createStars();
             this.setupEventListeners();
-            
-            // Start animation immediately
             requestAnimationFrame(() => this.animate());
+        }
+
+        createCanvas() {
+            this.canvas = document.createElement('canvas');
+            this.canvas.id = 'calendar-background-canvas';
+            this.canvas.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+            `;
+            document.getElementById('background-container')?.appendChild(this.canvas);
         }
 
         resize = () => {
@@ -67,8 +75,8 @@
 
         drawGradient() {
             const gradient = this.ctx.createLinearGradient(0, 0, 0, this.height);
-            gradient.addColorStop(0, '#4B0082');
-            gradient.addColorStop(1, '#6B46C1');
+            gradient.addColorStop(0, '#1E1E1E'); // Darker background for calendar
+            gradient.addColorStop(1, '#2D2D2D');
             
             this.ctx.fillStyle = gradient;
             this.ctx.fillRect(0, 0, this.width, this.height);
@@ -92,7 +100,7 @@
                     star.x, star.y, star.size * 2
                 );
                 
-                gradient.addColorStop(0, `rgba(255, 255, 255, ${opacity})`);
+                gradient.addColorStop(0, `rgba(107, 70, 193, ${opacity})`); // Updated color for calendar
                 gradient.addColorStop(1, 'transparent');
                 
                 this.ctx.beginPath();
@@ -101,7 +109,7 @@
                 this.ctx.fill();
 
                 this.ctx.beginPath();
-                this.ctx.fillStyle = `rgba(255, 255, 255, ${opacity * 1.5})`;
+                this.ctx.fillStyle = `rgba(107, 70, 193, ${opacity * 1.5})`; // Updated color
                 this.ctx.arc(star.x, star.y, star.size / 2, 0, Math.PI * 2);
                 this.ctx.fill();
             });
@@ -120,12 +128,10 @@
         }
     }
 
-    // Start the effect when DOM is ready
     function init() {
-        new BackgroundEffect();
+        new CalendarBackgroundEffect();
     }
 
-    // Initialize immediately if document is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
