@@ -1,15 +1,28 @@
-// js/calendar.js
 class Calendar {
   constructor() {
     this.currentDate = new Date();
     this.selectedDates = new Set();
     this.currentView = 'month';
+    this.region = 'uk'; // Add region support
     this.init();
   }
 
   init() {
     this.renderCalendar();
     this.attachEventListeners();
+    this.initializeRegionContext();
+  }
+
+  initializeRegionContext() {
+    // Initialize region-specific features
+    this.regionSelector = document.getElementById('region-selector');
+    if (this.regionSelector) {
+      this.regionSelector.value = this.region;
+      this.regionSelector.addEventListener('change', (e) => {
+        this.region = e.target.value;
+        this.renderCalendar();
+      });
+    }
   }
 
   renderCalendar() {
@@ -21,8 +34,8 @@ class Calendar {
     // Clear existing content
     daysContainer.innerHTML = '';
 
-    // Update month display
-    const monthYear = this.currentDate.toLocaleString('default', { 
+    // Update month display with region-aware formatting
+    const monthYear = this.currentDate.toLocaleString(this.region === 'uk' ? 'en-GB' : 'en-US', { 
       month: 'long', 
       year: 'numeric' 
     });
@@ -40,8 +53,10 @@ class Calendar {
       0
     );
 
-    // Calculate start padding
-    const startPadding = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+    // Calculate start padding based on region
+    const startPadding = this.region === 'uk' 
+      ? (firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1)
+      : firstDay.getDay();
 
     // Add padding days
     for (let i = 0; i < startPadding; i++) {
@@ -67,6 +82,11 @@ class Calendar {
       if (this.selectedDates.has(date.toDateString())) {
         classes.push('selected');
       }
+
+      // Add today class
+      if (date.toDateString() === new Date().toDateString()) {
+        classes.push('today');
+      }
       
       dayElement.className = classes.join(' ');
       dayElement.textContent = day;
@@ -77,6 +97,9 @@ class Calendar {
       
       daysContainer.appendChild(dayElement);
     }
+
+    // Update team coverage if available
+    this.updateTeamCoverage();
   }
 
   toggleDate(date) {
@@ -87,6 +110,22 @@ class Calendar {
       this.selectedDates.add(dateString);
     }
     this.renderCalendar();
+    this.triggerLeaveRequest(date);
+  }
+
+  triggerLeaveRequest(date) {
+    // Trigger leave request modal
+    const leaveType = this.region === 'uk' ? 'Annual Leave' : 'PTO';
+    console.log(`Requesting ${leaveType} for ${date.toDateString()}`);
+    // Modal implementation will go here
+  }
+
+  updateTeamCoverage() {
+    const coverageChart = document.getElementById('coverage-chart');
+    if (coverageChart) {
+      // Implement team coverage visualization
+      // This will be enhanced with actual team data
+    }
   }
 
   attachEventListeners() {
@@ -112,6 +151,17 @@ class Calendar {
         this.renderCalendar();
       });
     });
+
+    // Quick actions button
+    const fab = document.querySelector('.fab');
+    if (fab) {
+      fab.addEventListener('click', () => this.openQuickActions());
+    }
+  }
+
+  openQuickActions() {
+    // Implement quick actions modal
+    console.log('Opening quick actions');
   }
 }
 
