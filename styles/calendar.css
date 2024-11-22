@@ -1,36 +1,11 @@
-/* Existing classes with updated styling */
+/* === calendar.css === */
+/* Calendar Container */
 .calendar-section {
     min-height: 100vh;
     padding: 2rem;
     background: linear-gradient(to bottom right, rgba(75, 0, 130, 0.05), rgba(75, 0, 130, 0.02));
 }
 
-/* New Glass Morphism Panels */
-.glass-panel {
-    background: rgba(45, 45, 45, 0.7);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 20px;
-}
-
-/* Grid Layout for App Structure */
-.app-container {
-    display: grid;
-    grid-template-columns: 250px 1fr 250px;
-    gap: 20px;
-    padding: 20px;
-    height: 100vh;
-}
-
-/* Sidebar Styling */
-.sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-/* Your existing calendar view styles */
 .calendar-view {
     max-width: 1200px;
     margin: 0 auto;
@@ -41,7 +16,7 @@
     border: 1px solid rgba(75, 0, 130, 0.1);
 }
 
-/* Your existing calendar header styles */
+/* Calendar Header */
 .calendar-header {
     padding: 2rem;
     display: flex;
@@ -50,86 +25,272 @@
     border-bottom: 1px solid rgba(75, 0, 130, 0.1);
 }
 
-/* New Team Overview Panel */
-.team-overview {
-    color: white;
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
-.team-overview h2 {
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
-    font-weight: 500;
-}
-
-/* Coverage Analysis Panel */
-.coverage-analysis {
-    color: white;
-}
-
-.coverage-analysis h2 {
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
-    font-weight: 500;
-}
-
-/* Smart Features Panel */
-.smart-features {
-    color: white;
-}
-
-.smart-features button {
-    width: 100%;
-    padding: 0.75rem;
-    background: rgba(75, 0, 130, 0.6);
+.nav-btn {
+    padding: 0.5rem 1rem;
+    background: rgba(75, 0, 130, 0.1);
     border: none;
     border-radius: 8px;
-    color: white;
+    color: var(--color-primary);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
-.smart-features button:hover {
-    background: rgba(75, 0, 130, 0.8);
+.nav-btn:hover {
+    background: rgba(75, 0, 130, 0.2);
 }
 
-/* Floating Action Button */
-.fab {
-    position: fixed;
-    bottom: 32px;
-    right: 32px;
-    width: 56px;
-    height: 56px;
+/* View Controls */
+.view-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.view-btn {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid rgba(75, 0, 130, 0.2);
+    border-radius: 8px;
+    color: var(--color-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.view-btn.active {
+    background: var(--color-primary);
+    color: white;
+}
+
+/* Calendar Grid */
+.calendar-grid {
+    padding: 1rem;
+}
+
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    padding: 0.5rem;
+    text-align: center;
+    font-weight: 500;
+    color: var(--color-primary);
+}
+
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+/* Calendar Day Cell */
+.day-cell {
+    aspect-ratio: 1;
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(75, 0, 130, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.day-cell:hover {
+    background: rgba(75, 0, 130, 0.05);
+}
+
+.day-cell.today {
+    background: rgba(75, 0, 130, 0.1);
+    font-weight: 600;
+}
+
+.day-cell.selected {
+    background: var(--color-primary);
+    color: white;
+}
+
+/* Leave Types */
+.leave-status {
+    padding: 1rem 2rem;
+    display: flex;
+    gap: 2rem;
+    border-top: 1px solid rgba(75, 0, 130, 0.1);
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    border: none;
-    background: var(--primary);
+}
+
+.status-dot.pto {
+    background: var(--color-primary);
+}
+
+.status-dot.holiday {
+    background: #4ade80;
+}
+
+.status-dot.weekend {
+    background: #94a3b8;
+}
+
+/* Enterprise Integration Features */
+.integration-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(75, 0, 130, 0.1);
+}
+
+.sync-status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.sync-status.synced {
+    background: #4ade80;
+}
+
+.sync-status.syncing {
+    background: #facc15;
+    animation: pulse 2s infinite;
+}
+
+.sync-status.error {
+    background: #ef4444;
+}
+
+/* Team Coverage Overlay */
+.coverage-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: 4px 4px 0 0;
+}
+
+.coverage-high {
+    background: #4ade80;
+}
+
+.coverage-medium {
+    background: #facc15;
+}
+
+.coverage-low {
+    background: #ef4444;
+}
+
+/* AI Suggestions */
+.ai-suggestion {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem;
+    background: rgba(75, 0, 130, 0.95);
     color: white;
-    font-size: 24px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 1000;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
 
-.fab:hover {
-    background: var(--primary-light);
-    transform: scale(1.1);
+.day-cell:hover .ai-suggestion {
+    opacity: 1;
 }
 
-/* Keep your existing responsive styles */
+/* Loading States */
+.calendar-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px);
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(75, 0, 130, 0.1);
+    border-left-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-    .app-container {
-        grid-template-columns: 1fr;
+    .calendar-section {
+        padding: 1rem;
     }
-    
-    .sidebar {
-        display: none;
+
+    .calendar-header {
+        flex-direction: column;
+        gap: 1rem;
     }
-    
-    .fab {
-        bottom: 16px;
-        right: 16px;
+
+    .view-controls {
+        width: 100%;
+        justify-content: center;
     }
-    
-    /* Your existing mobile styles */
+
+    .leave-status {
+        flex-direction: column;
+        gap: 1rem;
+    }
 }
 
-/* Your other existing styles remain unchanged */
+/* Animations */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .loading-spinner,
+    .sync-status.syncing {
+        animation: none;
+    }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: more) {
+    .calendar-view {
+        background: white;
+        backdrop-filter: none;
+    }
+
+    .day-cell {
+        border-width: 2px;
+    }
+}
