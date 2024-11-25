@@ -8,6 +8,26 @@
     
     <title>Alfie - Make Time for What Matters</title>
 
+    <!-- Early Welcome Check -->
+    <script>
+        (() => {
+            try {
+                const hasVisited = localStorage.getItem('alfieVisited');
+                const currentPath = window.location.pathname;
+                const isWelcomePage = currentPath.endsWith('welcome.html');
+                const fromWelcome = new URLSearchParams(window.location.search).get('from') === 'welcome';
+
+                if (!hasVisited && !isWelcomePage && !fromWelcome) {
+                    window.location.replace('/welcome.html');
+                } else if (fromWelcome) {
+                    localStorage.setItem('alfieVisited', 'true');
+                }
+            } catch (error) {
+                console.error('Welcome check failed:', error);
+            }
+        })();
+    </script>
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -40,6 +60,15 @@
             pointer-events: none;
             display: block;
         }
+
+        .loading {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .loaded {
+            opacity: 1;
+        }
     </style>
 
     <!-- Main Styles -->
@@ -53,22 +82,8 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
-
-    <!-- Welcome Page Check -->
-    <script>
-        (function checkWelcomePage() {
-            const hasVisited = localStorage.getItem('alfieVisited');
-            const fromWelcome = new URLSearchParams(window.location.search).get('from') === 'welcome';
-            
-            if (!hasVisited && !fromWelcome) {
-                window.location.replace('welcome.html');
-            } else if (fromWelcome) {
-                localStorage.setItem('alfieVisited', 'true');
-            }
-        })();
-    </script>
 </head>
-<body>
+<body class="loading">
     <!-- Header -->
     <header class="app-header" data-header>
         <div class="header-container">
@@ -175,6 +190,7 @@
 
     <!-- Module imports -->
     <script type="module">
+        // Import modules
         import { Calendar } from './js/calendar.js';
         import { DateFormatter } from './js/utils/date-formatter.js';
         import { ExportUtils } from './js/utils/export-utils.js';
@@ -183,24 +199,14 @@
         import { OutlookIntegration } from './js/enterprise/outlook-integration.js';
         import { WorkdayIntegration } from './js/enterprise/workday-integration.js';
 
-        document.addEventListener('DOMContentLoaded', async function() {
+        // Initialize application
+        async function initializeApp() {
             try {
-                // Initialize background and effects
-                if (window.BackgroundEffects) {
-                    const canvas = document.getElementById('background-canvas');
-                    const effects = new BackgroundEffects(canvas);
-                    effects.init();
-                }
-
-                // Initialize utilities
+                // Initialize components
                 const dateFormatter = new DateFormatter();
                 const exportUtils = new ExportUtils(dateFormatter);
-
-                // Initialize calendar and AI
                 const calendar = new Calendar();
                 const coverageAnalyzer = new CoverageAnalyzer();
-
-                // Initialize integrations
                 const teams = new TeamsIntegration();
                 const outlook = new OutlookIntegration();
                 const workday = new WorkdayIntegration();
@@ -224,12 +230,19 @@
                     teams.initialize(),
                     outlook.initialize(),
                     workday.initialize()
-                ]).catch(console.error);
+                ]);
 
+                // Remove loading state
+                document.body.classList.remove('loading');
+                document.body.classList.add('loaded');
             } catch (error) {
                 console.error('Initialization error:', error);
+                document.body.classList.add('loaded');
             }
-        });
+        }
+
+        // Wait for DOM to load
+        document.addEventListener('DOMContentLoaded', initializeApp);
 
         // Global error handler
         window.onerror = function(msg, url, lineNo, columnNo, error) {
