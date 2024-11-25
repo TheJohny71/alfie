@@ -57,8 +57,14 @@
 <body>
     <!-- Welcome Page Check -->
     <script>
-        if (!localStorage.getItem('alfieVisited')) {
+        // Check if coming from welcome page
+        const params = new URLSearchParams(window.location.search);
+        const fromWelcome = params.get('from') === 'welcome';
+        
+        if (!localStorage.getItem('alfieVisited') && !fromWelcome) {
             window.location.href = 'welcome.html';
+        } else if (fromWelcome) {
+            localStorage.setItem('alfieVisited', 'true');
         }
     </script>
 
@@ -191,16 +197,13 @@
 
     <!-- Initialize App -->
     <script>
-        // Wait for DOM to be ready
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize background effects
             if (window.BackgroundEffects) {
                 const canvas = document.getElementById('background-canvas');
                 const effects = new BackgroundEffects(canvas);
                 effects.init();
             }
 
-            // Initialize calendar
             if (window.Alfie && window.Alfie.Calendar) {
                 const calendar = new window.Alfie.Calendar({
                     container: document.querySelector('#calendar-section'),
@@ -213,19 +216,13 @@
                 });
             }
 
-            // Initialize integrations
             try {
-                // Initialize workday integration
                 if (window.Alfie.WorkdayIntegration) {
                     const workday = new window.Alfie.WorkdayIntegration();
                 }
-
-                // Initialize teams integration
                 if (window.Alfie.TeamsIntegration) {
                     const teams = new window.Alfie.TeamsIntegration();
                 }
-
-                // Initialize outlook integration
                 if (window.Alfie.OutlookIntegration) {
                     const outlook = new window.Alfie.OutlookIntegration();
                 }
@@ -233,7 +230,6 @@
                 console.error('Integration initialization error:', error);
             }
 
-            // Initialize AI features
             try {
                 if (window.Alfie.SmartSuggestions) {
                     const smartSuggestions = new window.Alfie.SmartSuggestions();
@@ -246,7 +242,6 @@
             }
         });
 
-        // Global error handler
         window.onerror = function(msg, url, lineNo, columnNo, error) {
             console.error('Global error:', {
                 message: msg,
@@ -258,6 +253,5 @@
             return false;
         };
     </script>
-
 </body>
 </html>
