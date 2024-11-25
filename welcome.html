@@ -1,152 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Alfie - Transform time off into extraordinary stories. Smart leave management for UK and US teams.">
-    <meta name="theme-color" content="#4B0082">
-    
-    <title>Welcome to Alfie - Make Time for What Matters</title>
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Critical CSS -->
-    <style>
-        :root {
-            --color-primary: #4B0082;
-            --color-secondary: #663399;
-            --color-background: #1E1E1E;
-            --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-        }
-
-        body {
-            margin: 0;
-            font-family: var(--font-primary);
-            background: var(--color-primary);
-            color: white;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        #background-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            display: block;
-        }
-
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-            text-align: center;
-            position: relative;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: fadeIn 1s ease-out;
-        }
-
-        .main-headline {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.8) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: slideUp 0.8s ease-out;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-            margin-bottom: 1rem;
-            animation: slideUp 0.8s ease-out 0.2s backwards;
-        }
-
-        .hero-tagline {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 2rem;
-            animation: slideUp 0.8s ease-out 0.4s backwards;
-        }
-
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1rem 2rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 9999px;
-            color: white;
-            text-decoration: none;
-            font-size: 1.125rem;
-            transition: all 0.3s ease;
-            animation: slideUp 0.8s ease-out 0.6s backwards;
-            cursor: pointer;
-        }
-
-        .cta-button:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .features {
-            width: 100%;
-            max-width: 1200px;
-            margin: 4rem auto 0;
-            padding: 0 2rem;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            animation: fadeIn 0.8s ease-out 0.8s backwards;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .feature-icon {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
+border-radius: 16px;
             font-size: 1.5rem;
         }
 
@@ -259,33 +111,39 @@
         </div>
     </main>
 
-    <!-- Scripts -->
-    <script>
-        const canvas = document.getElementById('background-canvas');
-        const ctx = canvas.getContext('2d');
+    <!-- Initialize global namespace -->
+    <script>window.Alfie = window.Alfie || {};</script>
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+    <!-- Module imports -->
+    <script type="module" src="js/background-effects.js"></script>
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('background-canvas');
+            const ctx = canvas.getContext('2d');
 
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
 
-        function drawBackground() {
-            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, '#4B0082');
-            gradient.addColorStop(1, '#663399');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-        }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
 
-        function animate() {
-            drawBackground();
-            requestAnimationFrame(animate);
-        }
+            function drawBackground() {
+                const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                gradient.addColorStop(0, '#4B0082');
+                gradient.addColorStop(1, '#663399');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
 
-        animate();
+            function animate() {
+                drawBackground();
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        });
     </script>
 </body>
 </html>
