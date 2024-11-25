@@ -55,15 +55,11 @@
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
 </head>
 <body>
-    <!-- Welcome Page Check -->
+    <!-- Welcome Page Check - Must be first -->
     <script>
-        // Check if coming from welcome page
-        const params = new URLSearchParams(window.location.search);
-        const fromWelcome = params.get('from') === 'welcome';
-        
-        if (!localStorage.getItem('alfieVisited') && !fromWelcome) {
+        if (!window.location.search.includes('from=welcome') && !localStorage.getItem('alfieVisited')) {
             window.location.href = 'welcome.html';
-        } else if (fromWelcome) {
+        } else if (window.location.search.includes('from=welcome')) {
             localStorage.setItem('alfieVisited', 'true');
         }
     </script>
@@ -169,29 +165,21 @@
     <!-- Modal Container -->
     <div id="modal-container"></div>
 
-    <!-- Core Scripts -->
+    <!-- Load scripts after welcome check -->
+    <script>
+        // Global namespace
+        window.Alfie = window.Alfie || {};
+    </script>
     <script src="js/background-effects.js"></script>
     <script src="js/effects.js"></script>
     <script src="js/region-context.js"></script>
-    
-    <!-- Calendar Core -->
-    <script>
-        // Global namespace for calendar functionality
-        window.Alfie = window.Alfie || {};
-    </script>
     <script src="js/calendar.js"></script>
     <script src="js/calendar-modals.js"></script>
-
-    <!-- AI Features -->
     <script src="js/ai/smart-suggestions.js"></script>
     <script src="js/ai/coverage-analyzer.js"></script>
-
-    <!-- Enterprise Integration -->
     <script src="js/enterprise/workday-integration.js"></script>
     <script src="js/enterprise/teams-integration.js"></script>
     <script src="js/enterprise/outlook-integration.js"></script>
-
-    <!-- Utilities -->
     <script src="js/utils/date-formatter.js"></script>
     <script src="js/utils/export-utils.js"></script>
 
@@ -204,16 +192,12 @@
                 effects.init();
             }
 
-            if (window.Alfie && window.Alfie.Calendar) {
-                const calendar = new window.Alfie.Calendar({
-                    container: document.querySelector('#calendar-section'),
-                    onReady: function() {
-                        console.log('Calendar initialized successfully');
-                    },
-                    onError: function(error) {
-                        console.error('Calendar initialization error:', error);
-                    }
-                });
+            try {
+                if (window.Calendar) {
+                    window.calendar = new Calendar();
+                }
+            } catch (error) {
+                console.error('Calendar initialization error:', error);
             }
 
             try {
@@ -228,17 +212,6 @@
                 }
             } catch (error) {
                 console.error('Integration initialization error:', error);
-            }
-
-            try {
-                if (window.Alfie.SmartSuggestions) {
-                    const smartSuggestions = new window.Alfie.SmartSuggestions();
-                }
-                if (window.Alfie.CoverageAnalyzer) {
-                    const coverageAnalyzer = new window.Alfie.CoverageAnalyzer();
-                }
-            } catch (error) {
-                console.error('AI features initialization error:', error);
             }
         });
 
