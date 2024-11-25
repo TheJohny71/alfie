@@ -161,12 +161,8 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes slideUp {
@@ -228,7 +224,7 @@
             <p class="hero-subtitle">Smart leave management for modern teams</p>
             <p class="hero-tagline">Powered by AI, designed for people</p>
             
-            <a href="index.html" class="cta-button" onclick="markAsVisited()">
+            <a href="index.html?from=welcome" class="cta-button">
                 Get Started <i class="fas fa-arrow-right"></i>
             </a>
         </div>
@@ -239,24 +235,24 @@
                     <div class="feature-icon">
                         <i class="fas fa-robot"></i>
                     </div>
-                    <h3>AI-Powered</h3>
-                    <p>Smart suggestions for optimal leave planning and team coverage analysis</p>
+                    <h3>Smart Calendar</h3>
+                    <p>Plan your time off with our intelligent calendar system</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Region Aware</h3>
+                    <p>Seamlessly handles UK and US holiday systems</p>
                 </div>
                 
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-users"></i>
                     </div>
-                    <h3>Team Coverage</h3>
-                    <p>Real-time insights into team availability and workload distribution</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-plug"></i>
-                    </div>
-                    <h3>Enterprise Ready</h3>
-                    <p>Seamless integration with Workday, Teams, and Outlook</p>
+                    <h3>Team Sync</h3>
+                    <p>Coordinate leave with your team effortlessly</p>
                 </div>
             </div>
         </div>
@@ -264,12 +260,7 @@
 
     <!-- Scripts -->
     <script>
-        // Mark user as visited to skip welcome page next time
-        function markAsVisited() {
-            localStorage.setItem('alfieVisited', 'true');
-        }
-
-        // Simple background animation
+        // Background animation
         const canvas = document.getElementById('background-canvas');
         const ctx = canvas.getContext('2d');
 
@@ -281,7 +272,6 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // Create gradient background effect
         function drawBackground() {
             const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
             gradient.addColorStop(0, '#4B0082');
@@ -291,7 +281,6 @@
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
 
-        // Animate background
         function animate() {
             drawBackground();
             requestAnimationFrame(animate);
