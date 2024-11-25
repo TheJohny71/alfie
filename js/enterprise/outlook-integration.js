@@ -1,76 +1,99 @@
-// workday-integration.js
-export class WorkdayIntegration {
+// outlook-integration.js
+export class OutlookIntegration {
     constructor(config = {}) {
-        this.baseUrl = config.baseUrl || 'mock-workday-api';
+        this.clientId = config.clientId || 'mock-client-id';
         this.initialized = false;
-        this.mockData = {
-            leaveBalances: {
-                annual: 25,
-                sick: 10,
-                personal: 5,
-                carried: 3
-            },
-            leaveRequests: new Map()
+        this.mockEvents = new Map();
+        this.mockSettings = {
+            automaticReplies: false,
+            replyMessage: ''
         };
     }
 
     async initialize(credentials = {}) {
         try {
-            // Mock initialization
             this.initialized = true;
-            return { status: 'success', message: 'Workday initialized' };
+            return { status: 'success', message: 'Outlook initialized' };
         } catch (error) {
-            console.error('Workday initialization failed:', error);
-            throw new Error('Workday initialization failed');
+            console.error('Outlook initialization failed:', error);
+            throw new Error('Outlook initialization failed');
         }
     }
 
-    async syncLeaveBalances(employeeId) {
-        if (!this.initialized) return this.mockData.leaveBalances;
-        
-        return {
-            ...this.mockData.leaveBalances,
-            lastUpdated: new Date().toISOString()
-        };
-    }
-
-    async submitLeaveRequest(leaveRequest) {
+    async addLeaveToCalendar(leaveDetails) {
         if (!this.initialized) return { status: 'mock', message: 'Not initialized' };
         
-        const requestId = 'WD-' + Date.now();
-        this.mockData.leaveRequests.set(requestId, {
-            ...leaveRequest,
-            status: 'SUBMITTED',
-            submittedAt: new Date().toISOString()
-        });
-
-        return {
-            requestId,
-            status: 'SUBMITTED',
-            submissionDate: new Date().toISOString(),
-            workdayReference: `WD-REF-${Date.now()}`
+        const eventId = 'OL-' + Date.now();
+        const event = {
+            id: eventId,
+            subject: `Out of Office: ${leaveDetails.reason || 'Leave'}`,
+            start: leaveDetails.startDate,
+            end: leaveDetails.endDate,
+            status: 'confirmed'
         };
+
+        this.mockEvents.set(eventId, event);
+        
+        if (leaveDetails.setOutOfOffice) {
+            await this.setAutomaticReplies(leaveDetails);
+        }
+
+        return { eventId, status: 'created' };
     }
 
-    async cancelLeaveRequest(requestId) {
+    async updateLeaveInCalendar(eventId, updates) {
         if (!this.initialized) return { status: 'mock', message: 'Not initialized' };
         
-        this.mockData.leaveRequests.delete(requestId);
-        return {
-            status: 'CANCELLED',
-            cancellationDate: new Date().toISOString(),
-            confirmation: `CANCEL-${Date.now()}`
-        };
+        const event = this.mockEvents.get(eventId);
+        if (event) {
+            const updatedEvent = { ...event, ...updates };
+            this.mockEvents.set(eventId, updatedEvent);
+            
+            if (updates.setOutOfOffice !== undefined) {
+                await this.updateAutomaticReplies(updates);
+            }
+            
+            return { status: 'updated', eventId };
+        }
+        return { status: 'not_found' };
     }
 
-    async getLeaveRequestStatus(requestId) {
-        if (!this.initialized) return { status: 'UNKNOWN' };
+    async removeLeaveFromCalendar(eventId) {
+        if (!this.initialized) return { status: 'mock', message: 'Not initialized' };
         
-        const request = this.mockData.leaveRequests.get(requestId);
-        return request || { status: 'NOT_FOUND' };
+        this.mockEvents.delete(eventId);
+        return { status: 'deleted' };
+    }
+
+    async setAutomaticReplies(details) {
+        this.mockSettings.automaticReplies = true;
+        this.mockSettings.replyMessage = details.message || 'I am currently out of office.';
+        this.mockSettings.startDate = details.startDate;
+        this.mockSettings.endDate = details.endDate;
+        
+        return { status: 'success' };
+    }
+
+    async updateAutomaticReplies(details) {
+        if (details.setOutOfOffice) {
+            return this.setAutomaticReplies(details);
+        } else {
+            this.mockSettings.automaticReplies = false;
+            this.mockSettings.replyMessage = '';
+            return { status: 'disabled' };
+        }
+    }
+
+    async getCalendarEvents(startDate, endDate) {
+        if (!this.initialized) return [];
+        
+        return Array.from(this.mockEvents.values()).filter(event => 
+            new Date(event.start) >= new Date(startDate) &&
+            new Date(event.end) <= new Date(endDate)
+        );
     }
 }
 
 // Initialize globally
 window.Alfie = window.Alfie || {};
-window.Alfie.WorkdayIntegration = WorkdayIntegration;
+window.Alfie.OutlookIntegration = OutlookIntegration;
