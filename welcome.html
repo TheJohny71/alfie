@@ -1,4 +1,146 @@
-border-radius: 16px;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Alfie - Transform time off into extraordinary stories">
+    <meta name="theme-color" content="#4B0082">
+    
+    <title>Welcome to Alfie - Make Time for What Matters</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --color-primary: #4B0082;
+            --color-secondary: #663399;
+            --color-background: #1E1E1E;
+            --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-primary);
+            background: var(--color-primary);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .main-headline {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.8) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+            margin-bottom: 1rem;
+            animation: slideUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .hero-tagline {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            animation: slideUp 0.8s ease-out 0.4s backwards;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 9999px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.125rem;
+            transition: all 0.3s ease;
+            animation: slideUp 0.8s ease-out 0.6s backwards;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .features {
+            width: 100%;
+            max-width: 1200px;
+            margin: 4rem auto 0;
+            padding: 0 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.8s ease-out 0.8s backwards;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
             font-size: 1.5rem;
         }
 
@@ -30,54 +172,33 @@ border-radius: 16px;
         }
 
         @media (max-width: 768px) {
-            .hero {
-                padding: 1rem;
-            }
-
-            .hero-content {
-                padding: 1.5rem;
-            }
-
-            .features {
-                padding: 0 1rem;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .feature-card {
-                padding: 1.5rem;
-            }
+            .hero { padding: 1rem; }
+            .hero-content { padding: 1.5rem; }
+            .features { padding: 0 1rem; }
+            .features-grid { grid-template-columns: 1fr; }
+            .feature-card { padding: 1.5rem; }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .hero-content,
-            .main-headline,
-            .hero-subtitle,
-            .hero-tagline,
-            .cta-button,
-            .feature-card {
+            .hero-content, .main-headline, .hero-subtitle,
+            .hero-tagline, .cta-button, .feature-card {
                 animation: none;
             }
         }
     </style>
     
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
 </head>
 <body>
-    <!-- Background Canvas -->
     <canvas id="background-canvas"></canvas>
 
-    <!-- Main Content -->
     <main class="hero">
         <div class="hero-content">
             <h1 class="main-headline">Transform Time Off into Extraordinary Stories</h1>
             <p class="hero-subtitle">Smart leave management for modern teams</p>
             <p class="hero-tagline">Powered by AI, designed for people</p>
             
-            <a href="index.html?from=welcome" class="cta-button">
+            <a href="./index.html?from=welcome" class="cta-button">
                 Get Started <i class="fas fa-arrow-right"></i>
             </a>
         </div>
@@ -111,13 +232,8 @@ border-radius: 16px;
         </div>
     </main>
 
-    <!-- Initialize global namespace -->
-    <script>window.Alfie = window.Alfie || {};</script>
-
-    <!-- Module imports -->
-    <script type="module" src="js/background-effects.js"></script>
-    <script type="module">
-        document.addEventListener('DOMContentLoaded', () => {
+    <script>
+        (() => {
             const canvas = document.getElementById('background-canvas');
             const ctx = canvas.getContext('2d');
 
@@ -143,7 +259,7 @@ border-radius: 16px;
             }
 
             animate();
-        });
+        })();
     </script>
 </body>
 </html>
