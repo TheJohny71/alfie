@@ -100,6 +100,7 @@
             font-size: 1.125rem;
             transition: all 0.3s ease;
             animation: slideUp 0.8s ease-out 0.6s backwards;
+            cursor: pointer;
         }
 
         .cta-button:hover {
@@ -233,7 +234,7 @@
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-robot"></i>
+                        <i class="fas fa-calendar"></i>
                     </div>
                     <h3>Smart Calendar</h3>
                     <p>Plan your time off with our intelligent calendar system</p>
@@ -260,7 +261,6 @@
 
     <!-- Scripts -->
     <script>
-        // Background animation
         const canvas = document.getElementById('background-canvas');
         const ctx = canvas.getContext('2d');
 
@@ -276,7 +276,6 @@
             const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
             gradient.addColorStop(0, '#4B0082');
             gradient.addColorStop(1, '#663399');
-            
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
