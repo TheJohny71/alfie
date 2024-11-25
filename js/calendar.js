@@ -1,4 +1,4 @@
-// /js/calendar.js
+// calendar.js
 class Calendar {
   constructor() {
     this.currentDate = new Date();
@@ -10,11 +10,15 @@ class Calendar {
   }
 
   async init() {
-    this.renderCalendar();
-    this.attachEventListeners();
-    this.initializeRegionContext();
-    if (this.aiEnabled) {
-      await this.initializeAIFeatures();
+    try {
+      await this.renderCalendar();
+      this.attachEventListeners();
+      this.initializeRegionContext();
+      if (this.aiEnabled) {
+        await this.initializeAIFeatures();
+      }
+    } catch (error) {
+      console.error('Calendar initialization error:', error);
     }
   }
 
@@ -152,7 +156,7 @@ class Calendar {
       if (!response.ok) throw new Error('Coverage data fetch failed');
       return await response.json();
     } catch (error) {
-      console.error('Failed to fetch team coverage:', error);
+      console.warn('Failed to fetch team coverage:', error);
       return {};
     }
   }
@@ -196,10 +200,12 @@ class Calendar {
   }
 
   triggerLeaveRequest(date) {
-    window.calendarModals.show('leaveRequest', {
-      date,
-      region: this.region
-    });
+    if (window.calendarModals) {
+      window.calendarModals.show('leaveRequest', {
+        date,
+        region: this.region
+      });
+    }
   }
 
   attachEventListeners() {
@@ -226,7 +232,11 @@ class Calendar {
 
     const fab = document.querySelector('.fab');
     if (fab) {
-      fab.addEventListener('click', () => window.calendarModals.show('quickActions'));
+      fab.addEventListener('click', () => {
+        if (window.calendarModals) {
+          window.calendarModals.show('quickActions');
+        }
+      });
     }
 
     this.initializeTouchSupport();
@@ -259,6 +269,11 @@ class Calendar {
 }
 
 // Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-  window.calendar = new Calendar();
-});
+if (typeof window !== 'undefined') {
+  window.Calendar = Calendar;
+  if (!window.location.pathname.includes('welcome.html')) {
+    document.addEventListener('DOMContentLoaded', () => {
+      window.calendar = new Calendar();
+    });
+  }
+}
